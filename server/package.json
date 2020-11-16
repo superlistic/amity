@@ -1,0 +1,28 @@
+{
+  "name": "togetherness",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superlistic/togetherness.git"
+  },
+  "author": "johan-STYL <johan@styldesign.se>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.3",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/superlistic/togetherness/issues"
+  },
+  "homepage": "https://github.com/superlistic/togetherness#readme",
+  "description": ""
+}

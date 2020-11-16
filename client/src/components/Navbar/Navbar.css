@@ -1,0 +1,28 @@
+.navbar {
+  /* background-color: transparent; */
+  /* background: #2667ff; */
+  background: white;
+  /* margin-top: 1rem; */
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
+}
+
+.navbar__logo {
+  text-decoration: none;
+  margin: 0rem 1rem;
+  color: black;
+  /* color: white; */
+}
+.navbar__settings {
+  text-decoration: none;
+  margin: 0rem 1rem;
+  color: black;
+  /* color: white; */
+}
+.navbar__login {
+  text-decoration: none;
+  margin: 0rem 1rem;
+  color: black;
+  /* color: white; */
+}

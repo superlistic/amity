@@ -1,0 +1,1020 @@
+{
+  "generic": [
+    {
+      "id": 1,
+      "text": "Tell me about yourself."
+    },
+    {
+      "id": 2,
+      "text": "Have you done anything exciting lately?"
+    },
+    {
+      "id": 3,
+      "text": "What made you smile today?"
+    },
+    {
+      "id": 4,
+      "text": "How did you meet the host?"
+    },
+    {
+      "id": 5,
+      "text": "What’s your favorite form of social media?"
+    },
+    {
+      "id": 6,
+      "text": "What was the last good book you read?"
+    },
+    {
+      "id": 7,
+      "text": "Do you listen to any podcasts? Which is your favorite?"
+    },
+    {
+      "id": 8,
+      "text": "What do you think is the best show on Netflix right now?"
+    },
+    {
+      "id": 9,
+      "text": "Have you been on any interesting trips lately?"
+    },
+    {
+      "id": 10,
+      "text": " What do you think has been the best movie of the year so far?"
+    },
+    {
+      "id": 11,
+      "text": " What song do you wish you could put on right now?"
+    },
+    {
+      "id": 12,
+      "text": " Are you a cat person or a dog person?"
+    },
+    {
+      "id": 13,
+      "text": " Do you think you’re an introvert or an extrovert?"
+    },
+    {
+      "id": 14,
+      "text": " If you didn’t have the job you have now, what would you be?"
+    },
+    {
+      "id": 15,
+      "text": " What’s your strangest hidden talent?"
+    },
+    {
+      "id": 16,
+      "text": " What is something people are always surprised to learn about you?"
+    },
+    {
+      "id": 17,
+      "text": " What is the most rewarding part of your career?"
+    },
+    {
+      "id": 18,
+      "text": " Where do you want to be in five years?"
+    },
+    {
+      "id": 19,
+      "text": " What superpower do you wish you could have?"
+    },
+    {
+      "id": 20,
+      "text": " Where would you go on vacation if you had no budget?"
+    },
+    {
+      "id": 21,
+      "text": " If you could travel back in time, what decade would you choose to live in?"
+    },
+    {
+      "id": 22,
+      "text": " What’s the best thing you’ve ever bought off Amazon?"
+    },
+    {
+      "id": 23,
+      "text": " What’s the last concert you went to?"
+    },
+    {
+      "id": 24,
+      "text": " What is one thing you can’t live without?"
+    },
+    {
+      "id": 25,
+      "text": " What’s the strangest dream you’ve had recently?"
+    },
+    {
+      "id": 26,
+      "text": " What is your favorite book of all time?"
+    },
+    {
+      "id": 27,
+      "text": " How many countries have you been to?"
+    },
+    {
+      "id": 28,
+      "text": " What’s your favorite city you’ve visited?"
+    },
+    {
+      "id": 29,
+      "text": " Would you rather travel via plane or boat?"
+    },
+    {
+      "id": 30,
+      "text": " Would you rather be really hot or really cold?"
+    },
+    {
+      "id": 31,
+      "text": " What are your thoughts on the British royal family?"
+    },
+    {
+      "id": 32,
+      "text": " Do you like documentaries? Have you watched any good ones recently?"
+    },
+    {
+      "id": 33,
+      "text": " Who is your favorite celebrity couple ever?"
+    },
+    {
+      "id": 34,
+      "text": " Which celebrity couple do you wish would get back together?"
+    },
+    {
+      "id": 35,
+      "text": " If you could host a talk show, who would you have on first?"
+    },
+    {
+      "id": 36,
+      "text": " What’s your favorite sport?"
+    },
+    {
+      "id": 37,
+      "text": " What sport do you wish you were really good at?"
+    },
+    {
+      "id": 38,
+      "text": " What’s the best holiday?"
+    },
+    {
+      "id": 39,
+      "text": " How did you spend your last birthday?"
+    },
+    {
+      "id": 40,
+      "text": " Do you believe men and women can ever just be friends?"
+    }
+  ],
+  "First Time You Meet": [
+    {
+      "id": 41,
+      "text": "Are you having a good time?"
+    },
+    {
+      "id": 42,
+      "text": "Why did you come tonight?"
+    },
+    {
+      "id": 43,
+      "text": "Was it a pain for you to get here tonight?"
+    },
+    {
+      "id": 44,
+      "text": "I love that shirt/jacket/dress/shoes. Where did you get it?"
+    },
+    {
+      "id": 45,
+      "text": "Wow, it’s so hot/cold in here."
+    },
+    {
+      "id": 46,
+      "text": "Do you know a lot of people here?"
+    },
+    {
+      "id": 47,
+      "text": "What are you reading right now?"
+    },
+    {
+      "id": 48,
+      "text": "What’s your favorite restaurant around here?"
+    },
+    {
+      "id": 49,
+      "text": "What’s the next exciting event you have coming up?"
+    },
+    {
+      "id": 50,
+      "text": "Doing anything fun this weekend?"
+    },
+    {
+      "id": 51,
+      "text": "Do you have any pets?"
+    },
+    {
+      "id": 52,
+      "text": "What’s one interesting thing about yourself no one really knows?"
+    },
+    {
+      "id": 53,
+      "text": "What do you do for a living?"
+    },
+    {
+      "id": 54,
+      "text": "If you could move anywhere, where would you go?"
+    },
+    {
+      "id": 55,
+      "text": "What was the last movie you saw?"
+    },
+    {
+      "id": 56,
+      "text": "What do you normally do for fun?"
+    },
+    {
+      "id": 57,
+      "text": "What hobby do you wish you had more time for?"
+    },
+    {
+      "id": 58,
+      "text": "If you weren’t here, what would you be doing?"
+    },
+    {
+      "id": 59,
+      "text": "What is your favorite holiday?"
+    },
+    {
+      "id": 60,
+      "text": "Do you have any nicknames?"
+    },
+    {
+      "id": 61,
+      "text": "What’s your biggest pet peeve?"
+    },
+    {
+      "id": 62,
+      "text": "What is your favorite guilty pleasure TV show?"
+    },
+    {
+      "id": 63,
+      "text": "Tell me three fun facts about yourself."
+    },
+    {
+      "id": 64,
+      "text": "The food looks great. What’s the best thing you’ve had so far?"
+    },
+    {
+      "id": 65,
+      "text": "Have you ever been here before?"
+    },
+    {
+      "id": 66,
+      "text": "What’s the best thing about your job?"
+    },
+    {
+      "id": 67,
+      "text": "Where did you grow up?"
+    },
+    {
+      "id": 68,
+      "text": "Do you like to cook?"
+    },
+    {
+      "id": 69,
+      "text": "What hobby do you wish you were good at?"
+    },
+    {
+      "id": 70,
+      "text": "What song have you had stuck in your head this week?"
+    }
+  ],
+  "Deeper Conversation": [
+    {
+      "id": 71,
+      "text": "What are your long-term goals?"
+    },
+    {
+      "id": 72,
+      "text": "Who is your role model?"
+    },
+    {
+      "id": 73,
+      "text": "What did you want to be when you were a kid?"
+    },
+    {
+      "id": 74,
+      "text": "What is your biggest regret in life?"
+    },
+    {
+      "id": 75,
+      "text": "What are the top three things on your bucket list?"
+    },
+    {
+      "id": 76,
+      "text": "What has been your biggest accomplishment so far?"
+    },
+    {
+      "id": 77,
+      "text": "What is one thing you wish you could do that you know you probably never will?"
+    },
+    {
+      "id": 78,
+      "text": "What are you most afraid of?"
+    },
+    {
+      "id": 79,
+      "text": "What’s the biggest risk you’ve ever taken?"
+    },
+    {
+      "id": 80,
+      "text": "Tell me about the most life-changing piece of advice you’ve ever heard."
+    },
+    {
+      "id": 81,
+      "text": "When are you the most happy?"
+    },
+    {
+      "id": 82,
+      "text": "What always calms you down when you’re really stressed out and upset?"
+    },
+    {
+      "id": 83,
+      "text": "Who in your life has had the most influence on you?"
+    },
+    {
+      "id": 84,
+      "text": "What’s the hardest thing you’ve ever done?"
+    },
+    {
+      "id": 85,
+      "text": "What scares you the most about the future?"
+    },
+    {
+      "id": 86,
+      "text": "How have your priorities changed in the last 10 years?"
+    },
+    {
+      "id": 87,
+      "text": "What’s the nicest thing anyone has ever done for you?"
+    },
+    {
+      "id": 88,
+      "text": "Describe your perfect weekend."
+    },
+    {
+      "id": 89,
+      "text": "What’s the most controversial opinion you have?"
+    },
+    {
+      "id": 90,
+      "text": "If you could change one thing about your personality, what would it be?"
+    },
+    {
+      "id": 91,
+      "text": "What’s the first thing you would do if you won the lottery?"
+    },
+    {
+      "id": 92,
+      "text": "If you could invite one famous person to dinner, who would it be?"
+    },
+    {
+      "id": 93,
+      "text": "Who do you miss the most from your past?"
+    },
+    {
+      "id": 94,
+      "text": "If you could go back in time, what is one situation you would do differently?"
+    },
+    {
+      "id": 95,
+      "text": "Who is the most important person in your life right now?"
+    },
+    {
+      "id": 96,
+      "text": "What did you think you would be doing at this age when you were a kid?"
+    },
+    {
+      "id": 97,
+      "text": "Do you think social media is destroying our communication?"
+    },
+    {
+      "id": 98,
+      "text": "What piece of technology could you live without?"
+    },
+    {
+      "id": 99,
+      "text": "What do you think the world will be like 20 years in the future?"
+    },
+    {
+      "id": 100,
+      "text": "  What is something you’ve failed at recently?"
+    }
+  ],
+  "Networking": [
+    {
+      "id": 101,
+      "text": "What made you choose this as your career?"
+    },
+    {
+      "id": 102,
+      "text": "What’s the most interesting thing you’ve worked on lately?"
+    },
+    {
+      "id": 103,
+      "text": "What do you love most about your job?"
+    },
+    {
+      "id": 104,
+      "text": "What was your first job?"
+    },
+    {
+      "id": 105,
+      "text": "How long have you been at your current job?"
+    },
+    {
+      "id": 106,
+      "text": "Why do you think you were hired?"
+    },
+    {
+      "id": 107,
+      "text": "What is the most frustrating thing about your job?"
+    },
+    {
+      "id": 108,
+      "text": "What are your goals when it comes to work?"
+    },
+    {
+      "id": 109,
+      "text": "What inspires you at work each day?"
+    },
+    {
+      "id": 110,
+      "text": "If you could change one thing about this industry, what would it be?"
+    },
+    {
+      "id": 111,
+      "text": "Who has been your career role model?"
+    },
+    {
+      "id": 112,
+      "text": "Man, I really hate networking."
+    },
+    {
+      "id": 113,
+      "text": "What’s the most interesting thing you’ve learned at work?"
+    },
+    {
+      "id": 114,
+      "text": "Do you ever travel for your job? Where have you gone?"
+    },
+    {
+      "id": 115,
+      "text": "How do you keep yourself organized every day?"
+    },
+    {
+      "id": 116,
+      "text": "How many emails have you been avoiding answering this week?"
+    },
+    {
+      "id": 117,
+      "text": "What do you think makes someone a great manager?"
+    },
+    {
+      "id": 118,
+      "text": "What’s the biggest challenge you’ve taken on this year?"
+    },
+    {
+      "id": 119,
+      "text": "What’s your favorite project you’ve worked on so far?"
+    },
+    {
+      "id": 120,
+      "text": "What do you find most beneficial about networking events?"
+    }
+  ],
+  "Funny": [
+    {
+      "id": "121",
+      "text": "Do you ever sing in the shower?"
+    },
+    {
+      "id": "122",
+      "text": "What is the worst piece of advice you’ve ever gotten?"
+    },
+    {
+      "id": "123",
+      "text": "What’s the most embarrassing thing that’s happened to you recently?"
+    },
+    {
+      "id": "124",
+      "text": "Tell me about the worst pickup line you’ve ever gotten."
+    },
+    {
+      "id": "125",
+      "text": "What is your favorite celebrity scandal right now?"
+    },
+    {
+      "id": "126",
+      "text": "What’s the worst thing you’ve ever worn?"
+    },
+    {
+      "id": "127",
+      "text": "If you could do anything illegal without getting in trouble, what would it be?"
+    },
+    {
+      "id": "128",
+      "text": "What is the stupidest joke you’ve ever heard?"
+    },
+    {
+      "id": "129",
+      "text": "When was the last time you laughed so hard you cried?"
+    },
+    {
+      "id": "130",
+      "text": "What’s the best prank you’ve ever played on someone?"
+    },
+    {
+      "id": "131",
+      "text": "What do you think is the funniest movie ever?"
+    },
+    {
+      "id": "132",
+      "text": "What always makes you laugh, even when you’re upset?"
+    },
+    {
+      "id": "133",
+      "text": "Who is your favorite comedian?"
+    },
+    {
+      "id": "134",
+      "text": "What weird conspiracy theory do you believe?"
+    },
+    {
+      "id": "135",
+      "text": "Is a hot dog a sandwich?"
+    },
+    {
+      "id": "136",
+      "text": "Which celebrity would play you in a movie about your life?"
+    },
+    {
+      "id": "137",
+      "text": "What’s the weirdest thing you loved as a child?"
+    },
+    {
+      "id": "138",
+      "text": "What is something that’s really popular right now that will be ridiculous in five years?"
+    },
+    {
+      "id": "139",
+      "text": "What’s the worst trend you’ve ever taken part in?"
+    },
+    {
+      "id": "140",
+      "text": "What’s your go-to joke?"
+    }
+  ],
+  "Kids": [
+    {
+      "id": 141,
+      "text": " Where do you go to school?"
+    },
+    {
+      "id": 142,
+      "text": " What’s your favorite subject/class?"
+    },
+    {
+      "id": 143,
+      "text": " Who is your favorite teacher?"
+    },
+    {
+      "id": 144,
+      "text": " Why is that person your favorite teacher?"
+    },
+    {
+      "id": 145,
+      "text": " What subject do you wish you never had to take?"
+    },
+    {
+      "id": 146,
+      "text": " What was the last assignment you did really well on?"
+    },
+    {
+      "id": 147,
+      "text": " Who is your best friend in your grade?"
+    },
+    {
+      "id": 148,
+      "text": " What’s your favorite outfit to wear to school?"
+    },
+    {
+      "id": 149,
+      "text": " Do you believe in aliens?"
+    },
+    {
+      "id": 150,
+      "text": " If you could be any animal, which would it be?"
+    },
+    {
+      "id": 151,
+      "text": " What do you want to be when you grow up?"
+    },
+    {
+      "id": 152,
+      "text": " Do you have any brothers or sisters?"
+    },
+    {
+      "id": 153,
+      "text": " What do you love the most about your mom and dad?"
+    },
+    {
+      "id": 154,
+      "text": " Where do you wish you were right now?"
+    },
+    {
+      "id": 155,
+      "text": " What’s your favorite song?"
+    },
+    {
+      "id": 156,
+      "text": " Who’s your favorite cartoon character?"
+    },
+    {
+      "id": 157,
+      "text": " Do you have a favorite Disney character?"
+    },
+    {
+      "id": 158,
+      "text": " If you could change one thing about school, what would it be?"
+    },
+    {
+      "id": 159,
+      "text": " Do you like to swim?"
+    },
+    {
+      "id": 160,
+      "text": " What’s your favorite game to play?"
+    },
+    {
+      "id": 161,
+      "text": " What’s your favorite color?"
+    },
+    {
+      "id": 162,
+      "text": " What food do you hate?"
+    },
+    {
+      "id": 163,
+      "text": " What is your favorite toy to play with?"
+    },
+    {
+      "id": 164,
+      "text": " What are you doing tomorrow?"
+    },
+    {
+      "id": 165,
+      "text": " What are you afraid of?"
+    }
+  ],
+  "First Date": [
+    {
+      "id": 166,
+      "text": " Have you ever been here before?"
+    },
+    {
+      "id": 167,
+      "text": " What is one thing that always makes you laugh?"
+    },
+    {
+      "id": 168,
+      "text": " What’s the most important thing I should know about you?"
+    },
+    {
+      "id": 169,
+      "text": " What’s the worst date you’ve ever been on?"
+    },
+    {
+      "id": 170,
+      "text": " How did you become close with your best friend?"
+    },
+    {
+      "id": 171,
+      "text": " What’s your favorite movie that you could watch over and over again?"
+    },
+    {
+      "id": 172,
+      "text": " What has always been your dream job?"
+    },
+    {
+      "id": 173,
+      "text": " If you could date one celebrity, who would it be?"
+    },
+    {
+      "id": 174,
+      "text": " Are you a spender or a saver?"
+    },
+    {
+      "id": 175,
+      "text": " What do you like most about your job?"
+    },
+    {
+      "id": 176,
+      "text": " What do you think is your most annoying quirk?"
+    },
+    {
+      "id": 177,
+      "text": " What’s the weirdest text message you’ve ever gotten?"
+    },
+    {
+      "id": 178,
+      "text": " What do you hate the most about dating?"
+    },
+    {
+      "id": 179,
+      "text": " Where’s your favorite place in the world?"
+    },
+    {
+      "id": 180,
+      "text": " What’s the best vacation you’ve ever been on?"
+    },
+    {
+      "id": 181,
+      "text": " How close are you with your family?"
+    },
+    {
+      "id": 182,
+      "text": " Do you prefer to stay in or go out?"
+    },
+    {
+      "id": 183,
+      "text": " Where did you go to school?"
+    },
+    {
+      "id": 184,
+      "text": " Have you ever lived anywhere else?"
+    },
+    {
+      "id": 185,
+      "text": " What are you good at that you’re really proud of?"
+    },
+    {
+      "id": 186,
+      "text": " What’s your secret talent?"
+    },
+    {
+      "id": 187,
+      "text": " What do you think is the most annoying habit?"
+    },
+    {
+      "id": 188,
+      "text": " Tell me about one thing on your bucket list."
+    },
+    {
+      "id": 189,
+      "text": " What do you dislike most about your job?"
+    },
+    {
+      "id": 190,
+      "text": " What are you the most passionate about?"
+    },
+    {
+      "id": 191,
+      "text": " Do you like calling or texting better?"
+    },
+    {
+      "id": 192,
+      "text": " What are your honest thoughts about social media?"
+    },
+    {
+      "id": 193,
+      "text": " What do you look for in a relationship?"
+    },
+    {
+      "id": 194,
+      "text": " Did you hear about (a big news story)?"
+    },
+    {
+      "id": 195,
+      "text": " What is one thing that made you laugh this week?"
+    },
+    {
+      "id": 196,
+      "text": " What’s your favorite food?"
+    },
+    {
+      "id": 197,
+      "text": " What’s the worst thing you’ve ever eaten?"
+    },
+    {
+      "id": 198,
+      "text": " What movie are you really excited to see?"
+    },
+    {
+      "id": 199,
+      "text": " How do you spend your free time?"
+    },
+    {
+      "id": 200,
+      "text": " Are you a morning person or a night owl?"
+    }
+  ],
+  "Bar": [
+    {
+      "id": 201,
+      "text": " What are you drinking?"
+    },
+    {
+      "id": 202,
+      "text": " What drink should I order next?"
+    },
+    {
+      "id": 203,
+      "text": " Have you ever been here before?"
+    },
+    {
+      "id": 204,
+      "text": " What’s your favorite bar?"
+    },
+    {
+      "id": 205,
+      "text": " What’s your favorite thing to eat here?"
+    },
+    {
+      "id": 206,
+      "text": " Do you like this song?"
+    },
+    {
+      "id": 207,
+      "text": " If you could have them play any song right now, what would it be?"
+    },
+    {
+      "id": 208,
+      "text": " What were you doing before you came here?"
+    },
+    {
+      "id": 209,
+      "text": " What’s your favorite place to hang out around here?"
+    },
+    {
+      "id": 210,
+      "text": " Are you having fun?"
+    },
+    {
+      "id": 211,
+      "text": " Who are you here with?"
+    },
+    {
+      "id": 212,
+      "text": " Where would you rather be right now?"
+    },
+    {
+      "id": 213,
+      "text": " Which song would you make you dance at this very moment?"
+    },
+    {
+      "id": 214,
+      "text": " How do you always get a bartender’s attention?"
+    },
+    {
+      "id": 215,
+      "text": " Would you ever dance on top of this bar?"
+    },
+    {
+      "id": 216,
+      "text": " Have you ever done karaoke?"
+    },
+    {
+      "id": 217,
+      "text": " I like your shirt, where did you get that?"
+    },
+    {
+      "id": 218,
+      "text": " How do you know the friends you’re here with?"
+    },
+    {
+      "id": 219,
+      "text": " Do you know so-and-so?"
+    },
+    {
+      "id": 220,
+      "text": " What made you laugh today?"
+    }
+  ],
+  "With Friends": [
+    {
+      "id": 221,
+      "text": " If you could only eat one food for the rest of your life, what would it be?"
+    },
+    {
+      "id": 222,
+      "text": " What’s your best tip for saving money?"
+    },
+    {
+      "id": 223,
+      "text": " What is your favorite quote right now?"
+    },
+    {
+      "id": 224,
+      "text": " Have you talked to so-and-so lately?"
+    },
+    {
+      "id": 225,
+      "text": " What have you been up to since I saw you last?"
+    },
+    {
+      "id": 226,
+      "text": " Has anything big changed at work?"
+    },
+    {
+      "id": 227,
+      "text": " How are your parents doing?"
+    },
+    {
+      "id": 228,
+      "text": " What have you been loving on TV lately?"
+    },
+    {
+      "id": 229,
+      "text": " What’s your best tip for a good morning routine?"
+    },
+    {
+      "id": 230,
+      "text": " What’s your best cooking tip?"
+    },
+    {
+      "id": 231,
+      "text": " What’s the weirdest thing you’ve seen on Facebook recently?"
+    },
+    {
+      "id": 232,
+      "text": " Where is your favorite place to shop?"
+    },
+    {
+      "id": 233,
+      "text": " How was your last vacation?"
+    },
+    {
+      "id": 234,
+      "text": " Where is the coolest place you’ve been to for dinner lately?"
+    },
+    {
+      "id": 235,
+      "text": " What’s your go-to dish to bring to a dinner party?"
+    },
+    {
+      "id": 236,
+      "text": " What did you do last weekend?"
+    },
+    {
+      "id": 237,
+      "text": " What app do you use everyday?"
+    },
+    {
+      "id": 238,
+      "text": " What’s the weirdest thing in your fridge right now?"
+    },
+    {
+      "id": 239,
+      "text": " What are your plans for next summer?"
+    },
+    {
+      "id": 240,
+      "text": " What’s your favorite thing you’ve bought recently?"
+    },
+    {
+      "id": 241,
+      "text": " How can you tell when someone is lying?"
+    },
+    {
+      "id": 242,
+      "text": " What’s your most irrational fear?"
+    },
+    {
+      "id": 243,
+      "text": " Have you ever really kept a New Year’s resolution?"
+    },
+    {
+      "id": 244,
+      "text": " If you could change your name, what would you change it to?"
+    },
+    {
+      "id": 245,
+      "text": " How would your life be different if social media didn’t exist?"
+    },
+    {
+      "id": 246,
+      "text": " What do you think my best personality trait is?"
+    },
+    {
+      "id": 247,
+      "text": " What did you notice first about me?"
+    },
+    {
+      "id": 248,
+      "text": " What’s your favorite thing to do on your day off work?"
+    },
+    {
+      "id": 249,
+      "text": " What was the first job you ever had?"
+    },
+    {
+      "id": 250,
+      "text": " What’s the best compliment you’ve ever gotten?"
+    }
+  ]
+}

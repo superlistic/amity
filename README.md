@@ -19,7 +19,7 @@ combating isolation and lonliness
 - inter company teambuilding
   - company wide topics
 - social training
--
+- conversation starters floating up besides the chat/video window
 
 ## MVP
 

@@ -1,0 +1,67 @@
+.banner {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner__title {
+  font-size: 2.5rem;
+  z-index: 2;
+  margin-bottom: 6rem;
+}
+.banner__text {
+  font-size: 1rem;
+  z-index: 2;
+  margin-top: 1rem;
+}
+.cards {
+  display: flex;
+  justify-content: space-around;
+  z-index: 2;
+  /* opacity: 1; */
+}
+
+/* .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 16rem;
+    width: 16rem;
+    background: rgba(255, 255, 255, 0.2);
+  
+    z-index: 2;
+    margin: 0 1rem;
+    border-radius: 2px;
+  } */
+
+.banner__login {
+  outline: none;
+  border: none;
+  width: 6rem;
+  height: 3rem;
+  border-radius: 2px;
+  background: #d65780;
+  margin: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 2;
+  /* justify-self: flex-end; */
+  /* color: white; */
+}
+.banner__register {
+  outline: none;
+  border: none;
+  width: 6rem;
+  height: 3rem;
+  border-radius: 2px;
+  background: #acbea3;
+  margin: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 2;
+  /* color: white; */
+}
+.register {
+  z-index: 2;
+}
