@@ -30,7 +30,7 @@
   left: 0;
   width: 100%;
   height: 80vh;
-  overflow: hidden;
+  overflow: cover;
   z-index: -1;
 }
 .fullscreen-video-wrap video {
