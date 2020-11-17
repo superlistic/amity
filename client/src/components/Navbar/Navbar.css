@@ -1,28 +1,60 @@
 .navbar {
-  /* background-color: transparent; */
+  background-color: transparent;
   /* background: #2667ff; */
-  background: white;
+  /* background: white; */
   /* margin-top: 1rem; */
+  padding: 1rem 0;
+  /* box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25); */
+}
+.navbar__container {
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem 1rem;
+  /* align-items: center; */
+  /* vertical-align: middle; */
+  /* padding: 1.5rem 1rem; */
+  width: 50%;
+  margin: 0 auto;
+  z-index: 1;
 }
 
 .navbar__logo {
+  justify-self: center;
+  align-self: center;
   text-decoration: none;
-  margin: 0rem 1rem;
-  color: black;
+  /* margin: 0rem 1rem; */
+  /* color: black; */
   /* color: white; */
 }
 .navbar__settings {
   text-decoration: none;
-  margin: 0rem 1rem;
-  color: black;
+  /* margin: 0rem 1rem; */
+  /* color: black; */
   /* color: white; */
 }
-.navbar__login {
+/* .navbar__login {
   text-decoration: none;
   margin: 0rem 1rem;
-  color: black;
-  /* color: white; */
+} */
+.navbar__link {
+  text-align: center;
+  justify-self: center;
+  align-self: center;
+  text-decoration: none;
+  /* margin: 0rem 0.5rem; */
+  /* vertical-align: middle; */
+}
+
+
+.navbar__register {
+outline: none;
+border: 2px solid #d65780;
+color: #d65780;
+width: 6rem;
+height: 2rem;
+margin-left:1rem;
+border-radius: 5px;
+background:transparent;
+font-size: 1rem;
+cursor: pointer;
+box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }

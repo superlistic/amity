@@ -1,66 +1,93 @@
 .banner {
-  margin-top: 4rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 2rem;
 }
 
 .banner__title {
   font-size: 2.5rem;
   z-index: 2;
-  margin-bottom: 6rem;
+  margin-bottom: 7.5rem;
+}
+
+.banner__container {
+  /* display: flex;
+  flex-direction: column;
+  width: 90%; */
+  width: 40%;
+}
+.banner__intro {
+  /* font-family: 'Open Sans Condensed', sans-serif; */
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1rem;
+  z-index: 2;
+  margin-bottom: 0.5rem;
+  align-self: flex-end;
 }
 .banner__text {
+  /* font-family: 'Open Sans Condensed', sans-serif; */
+  font-family: 'Work Sans', sans-serif;
   font-size: 1rem;
   z-index: 2;
   margin-top: 1rem;
+  align-self: flex-end;
+}
+
+.banner__primary {
+  font-size: 3.5rem;
+  z-index: 2;
+  color: #d65780;
+}
+.banner__secondary {
+  font-size: 2.5rem;
+  z-index: 2;
+  color: #d65780;
+
+  /* font-style: italic; */
 }
 .cards {
   display: flex;
   justify-content: space-around;
   z-index: 2;
-  /* opacity: 1; */
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
-/* .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 16rem;
-    width: 16rem;
-    background: rgba(255, 255, 255, 0.2);
-  
-    z-index: 2;
-    margin: 0 1rem;
-    border-radius: 2px;
-  } */
-
-.banner__login {
+.button__highlighted {
+  font-family: 'Work Sans', sans-serif;
   outline: none;
   border: none;
-  width: 6rem;
+  width: 11.5rem;
   height: 3rem;
-  border-radius: 2px;
+  border-radius: 5px;
   background: #d65780;
-  margin: 2rem;
+  /* background: #3F8EFC; */
+  /* background: #F26CA7; */
+  margin: 0.5rem;
+  /* margin-left: 1.5rem; */
   font-size: 1rem;
   cursor: pointer;
   z-index: 2;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   /* justify-self: flex-end; */
   /* color: white; */
 }
-.banner__register {
+.button__outlined {
+  font-family: 'Work Sans', sans-serif;
   outline: none;
-  border: none;
+  border: 2px solid white;
   width: 6rem;
   height: 3rem;
-  border-radius: 2px;
-  background: #acbea3;
-  margin: 2rem;
+  border-radius: 5px;
+  background: transparent;
+  margin: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
   z-index: 2;
-  /* color: white; */
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  /* color: #acbea3; */
 }
 .register {
   z-index: 2;

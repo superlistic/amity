@@ -1,34 +1,22 @@
 .landing {
-  /* margin-top: 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center; */
 }
 
 .landing__video {
   height: 60vh;
-  width: 100vw;
   display: flex;
   align-items: center;
-  /* color: white; */
   z-index: -1;
 }
 .landing__container {
   z-index: 2;
 }
 
-/* .container {
-    max-width: 400px;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin: auto;
-    text-align: center;
-} */
 .fullscreen-video-wrap {
   position: absolute;
-  top: 4.1rem;
+  /* top: 4.1rem; */
+  top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 80vh;
   overflow: hidden;
   z-index: -1;
@@ -36,9 +24,7 @@
 .fullscreen-video-wrap video {
   min-width: 100%;
   min-height: 100%;
-  /* max-height: 70vh; */
-  /* max-width: fit-content;
-  object-fit: contain; */
+  object-fit: cover;
 }
 
 .landing__overlay {
@@ -48,19 +34,58 @@
   height: 100vh;
   width: 100vw;
   background: #2667ff;
-
-  /* background: rgb(0, 0, 0); */
+  /* background: #d65780; */
   z-index: 1;
-  opacity: 0.7;
+  /* opacity: 0.1; */
+  opacity: 0.76;
 }
 
-.create-button {
-  z-index: 2;
+/* .landing__image {
+  object-fit: cover;
+} */
+/* .landing__bg {
   position: absolute;
-  top: 50vh;
-  left: 48vw;
-  outline: none;
-  border: none;
+  top: 0;
+  left: 0;
+  background-image: url("bg2.jpg");
+  height:70vh;
+  background-size: cover;
+  z-index: 1;
+} */
+
+.fullscreen-video-wrap {
+  position: absolute;
+  /* top: 4.1rem; */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 70vh;
+  overflow: hidden;
+  z-index: -1;
+}
+.fullscreen-video-wrap video {
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+.greeting__cards {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.greeting__card {
+  /* background-color: white; */
+  background-color: #3F8EFC;
+  width: 12rem;
+  height: 10rem;
+  border-radius: 15px;
   padding: 1rem;
-  cursor: pointer;
+  margin: 0 1rem; 
+}
+.greeting__text {
+  font-family: 'Work Sans', sans-serif; 
+  /* color:#2667ff; */
 }

@@ -6,19 +6,28 @@ import './Navbar.css';
 const Navbar = () => {
   return (
     <div className="navbar">
+    <div className="navbar__container">
       <Link to="/" className="navbar__logo">
         Logo
       </Link>
-      <div>
-        <Link to="/settings" className="navbar__settings">
-          Settings
+      <Link to="/about" className="navbar__link">
+        About
+      </Link>
+      <div >
+        <Link to="/login" className="navbar__link">
+         Login
         </Link>
-        <Link to="/login" className="navbar__login">
-          Login/Logout
+        <Link to="/register">
+          <button className="navbar__register">Register</button>
         </Link>
+      </div>
       </div>
     </div>
   );
 };
 
 export default Navbar;
+
+// <Link to="/settings" className="navbar__settings">
+// Settings
+// </Link>

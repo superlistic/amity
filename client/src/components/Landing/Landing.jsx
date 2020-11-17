@@ -5,13 +5,12 @@ import Banner from './Banner/Banner';
 
 const Landing = () => {
   return (
-    <div>
+  <div className="landing">
       <Banner />
-      <div className="landing__video container">
         <div className="fullscreen-video-wrap">
           <div className="landing__overlay">
             <video
-              src="./static/landing.mp4"
+              src="./static/landing2.mp4"
               autoplay="true"
               loop
               muted
@@ -19,7 +18,23 @@ const Landing = () => {
               width="100vw"
             />
           </div>
-        </div>
+      </div>
+      <div className="greeting__cards">
+      <div className="greeting__card">
+      <p className="greeting__text">
+        Perfect for scheduling time in your calendar to meet that friend you barely have time to see.
+      </p>
+      </div>
+      <div className="greeting__card">
+      <p className="greeting__text">
+        Perfect for scheduling time in your calendar to meet that friend you barely have time to see.
+      </p>
+      </div>
+      <div className="greeting__card">
+      <p className="greeting__text">
+        Perfect for scheduling time in your calendar to meet that friend you barely have time to see.
+      </p>
+      </div>
       </div>
     </div>
   );
@@ -67,3 +82,84 @@ export default connect(mapStateToProps, {})(Landing);
 //         </div>
 //       </div>
 //     </div>
+
+
+
+//Video
+// <div>
+//       <Banner />
+//       <div className="landing__video container">
+//         <div className="fullscreen-video-wrap">
+//           <div className="landing__overlay">
+//             <video
+//               src="./static/landing.mp4"
+//               autoplay="true"
+//               loop
+//               muted
+//               height="60vh"
+//               width="100vw"
+//             />
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+
+//css Video
+// .landing {
+// }
+
+// .landing__video {
+//   height: 60vh;
+//   display: flex;
+//   align-items: center;
+//   z-index: -1;
+// }
+// .landing__container {
+//   z-index: 2;
+// }
+
+// .fullscreen-video-wrap {
+//   position: absolute;
+//   /* top: 4.1rem; */
+//   top: 0;
+//   left: 0;
+//   width: 100vw;
+//   height: 80vh;
+//   overflow: hidden;
+//   z-index: -1;
+// }
+// .fullscreen-video-wrap video {
+//   min-width: 100%;
+//   min-height: 100%;
+//   object-fit: cover;
+// }
+
+// .landing__overlay {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   height: 100vh;
+//   width: 100vw;
+//   background: #2667ff;
+//   z-index: 1;
+//   opacity: 0.7;
+// }
+
+//image
+// <div>
+// <div className="landing__bg">
+//   <Banner />
+//   </div>
+// </div>
+
+//CSS image
+
+// .landing__bg {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   background-image: url("bg2.jpg");
+//   height:70vh;
+//   background-size: cover;
+//   z-index: 1;
+// } 
