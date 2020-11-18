@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   padding-bottom: 2rem;
+  z-index: 1;
 }
 
 .banner__title {
@@ -17,6 +18,7 @@
   flex-direction: column;
   width: 90%; */
   width: 40%;
+  z-index: 2;
 }
 .banner__intro {
   /* font-family: 'Open Sans Condensed', sans-serif; */
@@ -36,14 +38,16 @@
 }
 
 .banner__primary {
-  font-size: 3.5rem;
+  font-family: 'Poiret One', cursive;
+  font-size: 4rem;
   z-index: 2;
-  color: #d65780;
+  color: var(--color3);
 }
 .banner__secondary {
-  font-size: 2.5rem;
+  font-family: 'Poiret One', cursive;
+  font-size: 3rem;
   z-index: 2;
-  color: #d65780;
+  color: var(--color3);
 
   /* font-style: italic; */
 }
@@ -62,7 +66,7 @@
   width: 11.5rem;
   height: 3rem;
   border-radius: 5px;
-  background: #d65780;
+  background: var(--color4);
   /* background: #3F8EFC; */
   /* background: #F26CA7; */
   margin: 0.5rem;
@@ -77,7 +81,7 @@
 .button__outlined {
   font-family: 'Work Sans', sans-serif;
   outline: none;
-  border: 2px solid white;
+  border: 2px solid var(--color1);
   width: 6rem;
   height: 3rem;
   border-radius: 5px;

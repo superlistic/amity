@@ -1,9 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Ubuntu:wght@300;400&family=Work+Sans:ital,wght@0,300;0,400;1,200&display=swap');
+:root {
+  --color1: #f7f7f9;
+  --color2: #2b2d42;
+  /* --color3: #ff7f11; */
+  --color3: #f7e733;
+  --color4: #e86a92;
+  --color5: #6ba292;
+  --color__white: white;
+  --color__black: black;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: white;
+  color: var(--color__white);
 }
 
 body {
@@ -18,7 +30,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background: #3b28cc; */
-  background: #2667ff;
+  /* background: #2667ff; */
+  background: var(--color2);
 }
 
 code {

@@ -2,49 +2,36 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './Landing.css';
 import Banner from './Banner/Banner';
+import GreetingCards from './GreetingCards/GreetingCards';
 
 const Landing = () => {
   return (
-  <div className="landing">
+    <div className="landing">
       <Banner />
+      <div className="landing__overlay">
         <div className="fullscreen-video-wrap">
-          <div className="landing__overlay">
-            <video
-              src="./static/landing2.mp4"
-              autoplay="true"
-              loop
-              muted
-              height="60vh"
-              width="100vw"
-            />
-          </div>
+          <video
+            src="./static/landing2.mp4"
+            autoplay="true"
+            loop
+            muted
+            height="60vh"
+            width="100vw"
+          />
+        </div>
       </div>
-      <div className="greeting__cards">
-      <div className="greeting__card">
-      <p className="greeting__text">
-        Perfect for scheduling time in your calendar to meet that friend you barely have time to see.
-      </p>
-      </div>
-      <div className="greeting__card">
-      <p className="greeting__text">
-        Perfect for scheduling time in your calendar to meet that friend you barely have time to see.
-      </p>
-      </div>
-      <div className="greeting__card">
-      <p className="greeting__text">
-        Perfect for scheduling time in your calendar to meet that friend you barely have time to see.
-      </p>
-      </div>
-      </div>
+      <GreetingCards />
     </div>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   //Login?
 });
 
 export default connect(mapStateToProps, {})(Landing);
+
+//
 
 // <div>
 //       <div className="landing">
@@ -82,8 +69,6 @@ export default connect(mapStateToProps, {})(Landing);
 //         </div>
 //       </div>
 //     </div>
-
-
 
 //Video
 // <div>
@@ -162,4 +147,4 @@ export default connect(mapStateToProps, {})(Landing);
 //   height:70vh;
 //   background-size: cover;
 //   z-index: 1;
-// } 
+// }

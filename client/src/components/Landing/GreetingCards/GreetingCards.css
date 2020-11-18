@@ -1,0 +1,20 @@
+.greeting__cards {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.greeting__card {
+  /* background-color: white; */
+  background-color: var(--color2);
+  width: 12rem;
+  height: 10rem;
+  border-radius: 15px;
+  padding: 1rem;
+  margin: 0 1rem;
+}
+.greeting__text {
+  font-family: 'Work Sans', sans-serif;
+  /* color:#2667ff; */
+}

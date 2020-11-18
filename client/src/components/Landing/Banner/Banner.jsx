@@ -6,7 +6,7 @@ const Banner = () => {
   return (
     <div className="banner">
       <p className="banner__title">
-        Welcome to <span className="banner__primary">Togetherness</span>
+        Welcome to <span className="banner__primary">Amity</span>
       </p>
       <div className="banner__container">
         <p className="banner__intro">

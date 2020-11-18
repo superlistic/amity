@@ -1,4 +1,7 @@
 .landing {
+  /* display: flex;
+  flex-direction: column; */
+  /* height: 100vh; */
 }
 
 .landing__video {
@@ -33,25 +36,9 @@
   left: 0;
   height: 100vh;
   width: 100vw;
-  background: #2667ff;
-  /* background: #d65780; */
-  z-index: 1;
-  /* opacity: 0.1; */
-  opacity: 0.76;
+  z-index: 0;
+  opacity: 0.5;
 }
-
-/* .landing__image {
-  object-fit: cover;
-} */
-/* .landing__bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-image: url("bg2.jpg");
-  height:70vh;
-  background-size: cover;
-  z-index: 1;
-} */
 
 .fullscreen-video-wrap {
   position: absolute;
@@ -67,25 +54,4 @@
   min-width: 100%;
   min-height: 100%;
   object-fit: cover;
-}
-
-.greeting__cards {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.greeting__card {
-  /* background-color: white; */
-  background-color: #3F8EFC;
-  width: 12rem;
-  height: 10rem;
-  border-radius: 15px;
-  padding: 1rem;
-  margin: 0 1rem; 
-}
-.greeting__text {
-  font-family: 'Work Sans', sans-serif; 
-  /* color:#2667ff; */
 }
