@@ -1,0 +1,35 @@
+.controller {
+  margin: 1rem;
+  background-color: var(--color__white);
+  border-radius: 15px;
+}
+.controller__header {
+  color: var(--color2);
+}
+
+.controller__icons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  /* display: grid;
+  grid-template-columns: 8fr 4fr; */
+  width: 90%;
+  height: 100%;
+  /* vertical-align: middle; */
+  /* height: 60%; */
+  margin: 0 auto;
+  /* padding-top: 1rem; */
+}
+
+.controller__text {
+  color: var(--color2);
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.controller__icon {
+  font-size: 2rem;
+  color: var(--color2);
+  cursor: pointer;
+}

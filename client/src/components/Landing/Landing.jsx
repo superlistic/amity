@@ -11,7 +11,7 @@ const Landing = () => {
       <div className="landing__overlay">
         <div className="fullscreen-video-wrap">
           <video
-            src="./static/landing2.mp4"
+            src="./static/landingVideo.mp4"
             autoplay="true"
             loop
             muted

@@ -1,4 +1,14 @@
 .about {
-    background: white;
-    height: 100vh;
+  padding-top: 3rem;
+  background: var(--color1);
+  height: 100vh;
+}
+.about__title {
+  color: var(--color2);
+}
+.about__text {
+  width: 60%;
+  margin: 0 auto;
+  color: var(--color2);
+  margin-top: 1rem;
 }

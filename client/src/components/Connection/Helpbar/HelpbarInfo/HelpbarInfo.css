@@ -1,0 +1,13 @@
+.helpbar-info {
+  /* background: var(--color2); */
+  color: var(--color2);
+}
+.helpbar-info__title {
+  /* background: var(--color2); */
+  color: var(--color2);
+}
+.helpbar-info__suggestion {
+  background: var(--color2);
+
+  color: var(--color__white);
+}
