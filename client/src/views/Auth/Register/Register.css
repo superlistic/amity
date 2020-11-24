@@ -1,14 +1,14 @@
 .register {
   width: 25%;
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: 1rem;
   /* display: flex;
   flex-direction: column;
   align-items: center; */
 }
 .register__title {
   font-size: 2.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 .register__form {
   display: flex;
@@ -32,6 +32,10 @@
   margin: 0 auto;
   margin-top: 0.5rem;
 }
+
+/* .register__facebook {
+  height: 50%;
+} */
 
 /* .register__input {
   background: var(--color1);

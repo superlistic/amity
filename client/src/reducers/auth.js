@@ -1,10 +1,12 @@
-import { LOGGED_IN, LOGGED_OUT, REGISTERED } from '../actions/types';
+import { LOGGED_IN, LOGGED_OUT, AUTH_USER } from '../actions/types';
 
 const initState = {
   // token: localStorage.getItem('token'),
+  authenticated: '',
   isAuthenticated: null,
   loading: true,
   user: null,
+  errorMessage: '',
 };
 
 export default function auth(state = initState, action) {
@@ -22,7 +24,7 @@ export default function auth(state = initState, action) {
       return {
         ...state,
       };
-    case REGISTERED:
+    case AUTH_USER:
       return {
         ...state,
         isAuthenticated: true,
