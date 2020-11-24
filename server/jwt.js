@@ -5,6 +5,7 @@ const jwtMiddle = (req, res, next) => {
   try {
     req.token = jwt.verify(req.cookies.token, secret);
     if (req.token.iat) {
+      // TODO: check time on jwt
       // console.log(req.token);
     }
   } catch (err) {

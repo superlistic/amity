@@ -13,9 +13,6 @@ const { websocket } = require('./socket');
 const chalk = require('chalk');
 const { env } = process;
 
-const sha512 = require('crypto-js/sha512');
-console.log(sha512('johan@styldesign.se' + 'password').toString());
-
 // SOCKET.IO
 const server = require('http').createServer(app);
 websocket(server);
