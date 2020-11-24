@@ -1,15 +1,15 @@
 const { Schema } = require('mongoose');
 
 module.exports = new Schema({
-  id: String,
-  fbToken: String,
-  gToken: String,
+  userID: String,
+  facebookToken: String,
+  googleToken: String,
   username: String,
   email: String,
-  passhash: String,
+  passwordHash: String,
   bio: String,
   tagline: String,
-  avatart: String,
+  avatar: String,
   callHistory: {},
   settings: {},
   usedSuggestions: {},
