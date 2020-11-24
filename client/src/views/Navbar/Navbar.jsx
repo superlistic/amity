@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-// import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated }) => {
   return (
     <div className="navbar">
       <div className="navbar__container">
@@ -17,7 +17,6 @@ const Navbar = () => {
             height="32rem"
           />
         </NavLink>
-
         <NavLink to="/about" className="navbar__link">
           About
         </NavLink>
@@ -34,8 +33,12 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
+export default connect(mapStateToProps, {})(Navbar);
+// { logout }
 // <Link to="/settings" className="navbar__settings">
 // Settings
 // </Link>

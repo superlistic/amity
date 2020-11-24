@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import './App.css';
+import AuthOnlyRoute from './routes/AuthOnlyRoute';
 import Landing from './views/Landing/Landing';
 import Navbar from './views/Navbar/Navbar';
 import About from './views/About/About';
@@ -15,9 +16,9 @@ const App = () => {
       <div className="App">
         <Navbar />
         <Switch>
-          <Route path="/about" exact component={About} />
-          <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />
+          <Route path="/register" exact component={Register} />
+          <AuthOnlyRoute path="/about" exact component={About} />
           <Route path="/connection" exact component={Connection} />
           <Route path="/" exact component={Landing} />
           <Route path="/*" component={ErrorComponent} />

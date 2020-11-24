@@ -20,10 +20,10 @@ const Register = ({ register }) => {
   const [registerData, setRegisterData] = useState(initState);
   const { username, email, password, password2 } = registerData;
 
-  const onChange = (e) =>
+  const onChange = e =>
     setRegisterData({ ...registerData, [e.target.name]: e.target.value });
 
-  const onRegister = (e) => {
+  const onRegister = e => {
     e.preventDefault();
     if (password !== password2) {
       // alert('Passwords do not match', 'danger');
@@ -36,7 +36,7 @@ const Register = ({ register }) => {
     setRegisterData(initState);
   };
 
-  const responseFacebook = (response) => {
+  const responseFacebook = response => {
     console.log(response);
   };
 
@@ -44,7 +44,7 @@ const Register = ({ register }) => {
     console.log('Clicked!');
   };
 
-  const responseGoogle = (response) => {
+  const responseGoogle = response => {
     console.log(response);
   };
   return (
@@ -66,7 +66,7 @@ const Register = ({ register }) => {
             type="text"
             name="username"
             value={username}
-            onChange={(e) => onChange(e)}
+            onChange={e => onChange(e)}
             required
           ></FormInput>
           <FormInput
@@ -75,7 +75,7 @@ const Register = ({ register }) => {
             name="email"
             type="email"
             value={email}
-            onChange={(e) => onChange(e)}
+            onChange={e => onChange(e)}
             required
           ></FormInput>
           <FormInput
@@ -84,7 +84,7 @@ const Register = ({ register }) => {
             name="password"
             type="password"
             value={password}
-            onChange={(e) => onChange(e)}
+            onChange={e => onChange(e)}
             required
           ></FormInput>
           <FormInput
@@ -93,34 +93,16 @@ const Register = ({ register }) => {
             name="password2"
             type="password"
             value={password2}
-            onChange={(e) => onChange(e)}
+            onChange={e => onChange(e)}
             required
           ></FormInput>
           <AccentButton
             className="register__button"
-            onClick={(e) => onRegister(e)}
+            onClick={e => onRegister(e)}
           >
             Register
           </AccentButton>
           <p className="register__intro">Or connect directly below.</p>
-          <div className="register__alternative-methods">
-            <GoogleLogin
-              className="register__google"
-              clientId={process.env.REACT_APP_.GOOGLE}
-              buttonText="Login with Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              theme="dark"
-            />
-            <FacebookLoginWithButton
-              size="small"
-              appId={process.env.REACT_APP_.FACEBOOK}
-              fields="name,email,picture"
-              onClick={componentClicked}
-              callback={responseFacebook}
-              icon="fa-facebook"
-            />
-          </div>
         </form>
       </motion.div>
     </div>
@@ -128,3 +110,22 @@ const Register = ({ register }) => {
 };
 
 export default connect(null, { register })(Register);
+
+//           <div className="register__alternative-methods">
+//             <GoogleLogin
+//               className="register__google"
+//               clientId={process.env.REACT_APP_.GOOGLE}
+//               buttonText="Login with Google"
+//               onSuccess={responseGoogle}
+//               onFailure={responseGoogle}
+//               theme="dark"
+//             />
+//             <FacebookLoginWithButton
+//               size="small"
+//               appId={process.env.REACT_APP_.FACEBOOK}
+//               fields="name,email,picture"
+//               onClick={componentClicked}
+//               callback={responseFacebook}
+//               icon="fa-facebook"
+//             />
+//           </div>

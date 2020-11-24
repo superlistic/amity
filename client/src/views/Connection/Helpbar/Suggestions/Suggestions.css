@@ -1,9 +1,9 @@
-.helpbar-info {
+.suggestions {
   /* background: var(--color2); */
   color: var(--color2);
 }
 
-.helpbar-info__divider {
+.suggestions__divider {
   width: 60%;
   margin: 1rem auto;
   height: 2px;
@@ -12,11 +12,11 @@
   /* border: 1px solid var(--color4); */
 }
 
-.helpbar-info__title {
+.suggestions__title {
   /* background: var(--color2); */
   color: var(--color2);
 }
-.helpbar-info__suggestion {
+.suggestion {
   height: 2rem;
   width: 60%;
   margin: 0 auto;
