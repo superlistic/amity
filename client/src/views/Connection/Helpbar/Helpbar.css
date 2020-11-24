@@ -1,0 +1,9 @@
+.helpbar {
+  display: grid;
+  grid-template-rows: 0.5fr 3fr 3.5fr 1fr;
+  background: var(--color1);
+}
+.helpbar__title {
+  align-self: center;
+  color: var(--color2);
+}
