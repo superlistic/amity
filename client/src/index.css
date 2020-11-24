@@ -12,9 +12,16 @@
 }
 
 * {
+  border: 0;
+  -webkit-font-smoothing: auto;
+  font-weight: inherit;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-decoration: none;
+  text-rendering: optimizeLegibility;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   color: var(--color__white);
 }
 
@@ -24,17 +31,12 @@ body {
   font-family: 'Ubuntu', sans-serif;
   /* font-family: 'Work Sans', sans-serif;   */
   font-weight: 300;
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background: #3b28cc; */
-  /* background: #2667ff; */
   background: var(--color2);
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */

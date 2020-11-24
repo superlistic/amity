@@ -1,0 +1,52 @@
+.banner {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.banner__title {
+  font-size: 2.5rem;
+  z-index: 2;
+  margin-bottom: 7.5rem;
+}
+
+.banner__container {
+  width: 40%;
+  z-index: 2;
+}
+.banner__intro {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  align-self: flex-end;
+}
+.banner__text {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1rem;
+  margin-top: 1rem;
+  align-self: flex-end;
+}
+
+.banner__primary {
+  font-family: 'Poiret One', cursive;
+  font-size: 4rem;
+  color: var(--color3);
+}
+.banner__secondary {
+  font-family: 'Poiret One', cursive;
+  font-size: 3rem;
+  color: var(--color3);
+}
+.cards {
+  display: flex;
+  justify-content: space-around;
+  z-index: 2;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.banner__margin {
+  margin: 0.5rem;
+}
