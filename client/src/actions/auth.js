@@ -18,7 +18,7 @@ export const login = payload => async dispatch => {
     const { email, password } = payload;
     // const userID = '119937317331';
     // const password = '123456';
-    const hash = sha512(email + hash).toString();
+    const hash = sha512(email + password).toString();
     const body = JSON.stringify({ email, hash });
     const res = await axios.post('/api/login', body, config);
     dispatch({
