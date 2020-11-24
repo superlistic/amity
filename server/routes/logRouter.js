@@ -14,7 +14,7 @@ const errorHandler = (req, res, err) => {
 const logRouter = Log => {
   const getLogs = (req, res) => {
     Log.find()
-      .where({ logType: 'TEST' })
+      .where({ logType: 'HTTP_request' })
       .then(res => {
         res.json({ ok: true, data: res });
       })
