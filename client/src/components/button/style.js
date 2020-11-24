@@ -38,6 +38,11 @@ export const StyledGrayOutlinedButton = styled(StyledButton)`
   width: 6rem;
   background: transparent;
 `;
+export const StyledRoundButton = styled(StyledButton)`
+  border-radius: 50%;
+  width: 3rem;
+  background: transparent;
+`;
 
 // &:hover {
 //     background: ${theme.bg.border};

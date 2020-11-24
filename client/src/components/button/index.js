@@ -6,6 +6,7 @@ import {
   StyledAccentOutlinedButton,
   StyledGrayButton,
   StyledGrayOutlinedButton,
+  StyledRoundButton,
 } from './style';
 
 const buttonWrapper = (Component, props) => {
@@ -15,14 +16,16 @@ const buttonWrapper = (Component, props) => {
   return Button;
 };
 
-export const Button = (props) => buttonWrapper(StyledButton, props);
+export const Button = props => buttonWrapper(StyledButton, props);
 
-export const AccentButton = (props) => buttonWrapper(StyledAccentButton, props);
+export const AccentButton = props => buttonWrapper(StyledAccentButton, props);
 
-export const GrayButton = (props) => buttonWrapper(StyledGrayButton, props);
+export const GrayButton = props => buttonWrapper(StyledGrayButton, props);
 
-export const AccentOutlinedButton = (props) =>
+export const AccentOutlinedButton = props =>
   buttonWrapper(StyledAccentOutlinedButton, props);
 
-export const GrayOutlinedButton = (props) =>
+export const GrayOutlinedButton = props =>
   buttonWrapper(StyledGrayOutlinedButton, props);
+
+export const RoundButton = props => buttonWrapper(StyledRoundButton, props);

@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import './ChatInput.css';
+import { RoundButton } from '../../../../components/button';
 
 const ChatInput = () => {
   const [message, setMessage] = useState('');
-  const sendMessage = (e) => {
+  const sendMessage = e => {
     e.preventDefault();
-    console.log(message);
-    //Send message via Sockets
-    //timestamp when message was sent?
-    setMessage('');
+    const trimmedMessage = message.trim();
+    if (trimmedMessage !== '') {
+      //få bort uppdatering av sida vid Enter :)
+      console.log(message);
+      //Send message via Sockets
+      //timestamp when message was sent?
+      setMessage('');
+    }
   };
 
   return (
@@ -20,19 +25,16 @@ const ChatInput = () => {
           type="textarea"
           value={message}
           placeholder={'Write a message..'}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={e => setMessage(e.target.value)}
           autoFocus="true"
         ></input>
 
         <span className="material-icons chat-input__emoji">
           insert_emoticon
         </span>
-        <span
-          className="material-icons chat-input__send"
-          onClick={(e) => sendMessage(e)}
-        >
-          send
-        </span>
+        <RoundButton type="submit" onClick={e => sendMessage(e)}>
+          <span className="material-icons chat-input__send">send</span>
+        </RoundButton>
       </form>
     </div>
   );

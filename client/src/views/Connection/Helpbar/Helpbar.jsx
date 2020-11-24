@@ -1,7 +1,7 @@
 import React from 'react';
 import './Helpbar.css';
 import FriendProfile from './FriendProfile/FriendProfile';
-import HelpbarInfo from './HelpbarInfo/HelpbarInfo';
+import Suggestions from './Suggestions/Suggestions';
 import Controller from './Controller/Controller';
 
 //action on load for fetching friend + suggestions.
@@ -17,7 +17,7 @@ const Helpbar = () => {
     <div className="helpbar">
       <p className="helpbar__title">You have connected with..</p>
       <FriendProfile friend={friend} />
-      <HelpbarInfo suggestion={'What is your favorite candy?'} />
+      <Suggestions suggestion={'What is your favorite candy?'} />
       <Controller />
     </div>
   );

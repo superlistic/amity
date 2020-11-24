@@ -1,10 +1,15 @@
-import { LOGGED_IN, LOGGED_OUT, AUTH_USER } from '../actions/types';
+import {
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGGED_OUT,
+  AUTH_USER,
+} from '../actions/types';
 
+// token: localStorage.getItem('token'),
 const initState = {
-  // token: localStorage.getItem('token'),
   authenticated: '',
   isAuthenticated: null,
-  loading: true,
+  loading: false,
   user: null,
   errorMessage: '',
 };
@@ -13,12 +18,20 @@ export default function auth(state = initState, action) {
   console.log(state, action);
   const { type, payload } = action;
   switch (type) {
-    case LOGGED_IN:
+    case LOGIN_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
         loading: false,
         user: payload,
+      };
+
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
       };
     case LOGGED_OUT:
       return {
@@ -32,8 +45,7 @@ export default function auth(state = initState, action) {
         user: payload,
       };
 
-    default: {
+    default:
       return state;
-    }
   }
 }
