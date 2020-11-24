@@ -5,16 +5,16 @@ const userSchema = require('./schemas/user');
 
 const Log = async () =>
   await connect(
-    env.MONGO_ATLAS_URI,
-    env.MONGO_LOGS_USER,
-    env.MONGO_LOGS_PW,
+    env.MONGO_URI,
+    env.MONGO_LOG_USER,
+    env.MONGO_LOG_PW,
     'admin',
     'Log',
     logSchema
   );
 const User = async () =>
   await connect(
-    env.MONGO_ATLAS_URI,
+    env.MONGO_URI,
     env.MONGO_APP_USER,
     env.MONGO_APP_PW,
     'admin',
