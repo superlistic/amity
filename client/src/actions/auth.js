@@ -1,4 +1,4 @@
-import { LOGGED_IN, LOGGED_OUT, REGISTERED } from './types';
+import { LOGGED_IN, LOGGED_OUT, AUTH_USER, AUTH_ERROR } from './types';
 
 export const loggedIn = (payload) => (dispatch) => {
   dispatch({
@@ -19,7 +19,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
   // try {
   //   const res = await axios.post('/api/users', body, config);
   dispatch({
-    type: REGISTERED,
+    type: AUTH_USER,
     payload: { name, email, password },
   });
 

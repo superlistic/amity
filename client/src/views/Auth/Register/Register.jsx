@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
 
 import './Register.css';
-import { register } from '../../actions/auth';
-import { AccentButton } from '../../components/button';
-import { FormInput } from '../../components/formInput/style';
-import { variantForm } from '../../animations';
+import { register } from '../../../actions/auth';
+import { AccentButton } from '../../../components/button';
+import { FormInput } from '../../../components/formInput/style';
+import { variantForm } from '../../../animations';
 
 const Register = ({ register }) => {
   const initState = {
@@ -27,9 +27,9 @@ const Register = ({ register }) => {
     e.preventDefault();
     if (password !== password2) {
       // alert('Passwords do not match', 'danger');
-      console.log('Passwords do not match', 'danger');
+      console.log('Passwords do not match.', 'danger');
     } else if (password.length < 6 || password2.length < 6) {
-      console.log('Password should be more than 6 characters long', 'danger');
+      console.log('Password should be longer than 6 characters.', 'danger');
     } else {
       register({ username, email, password });
     }
@@ -59,7 +59,7 @@ const Register = ({ register }) => {
       </motion.div>
       <motion.div variants={variantForm} initial="initial" animate="animate">
         <form className="register__form">
-          <p className="register__intro">Fill in your details below</p>
+          <p className="register__intro">Fill in your details</p>
           <FormInput
             className="register__input"
             placeholder="Username"
@@ -102,18 +102,19 @@ const Register = ({ register }) => {
           >
             Register
           </AccentButton>
-          <p className="register__intro">Or connect directly</p>
+          <p className="register__intro">Or connect directly below.</p>
           <div className="register__alternative-methods">
             <GoogleLogin
               className="register__google"
-              clientId={process.REACT_APP_.GOOGLE}
+              clientId={process.env.REACT_APP_.GOOGLE}
               buttonText="Login with Google"
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
               theme="dark"
             />
             <FacebookLoginWithButton
-              appId={process.REACT_APP_.FACEBOOK}
+              size="small"
+              appId={process.env.REACT_APP_.FACEBOOK}
               fields="name,email,picture"
               onClick={componentClicked}
               callback={responseFacebook}
