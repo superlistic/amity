@@ -8,18 +8,22 @@ export const answeringConnection = async (remoteConnection, offer) => {
     const receiveChannel = e.channel;
     receiveChannel.onmessage = e =>
       console.log('messsage received!!!' + e.data);
-    receiveChannel.onopen = e => console.log('open!!!!');
-    receiveChannel.onclose = e => console.log('closed!!!!!!');
+    receiveChannel.onopen = () => console.log('open!!!!');
+    receiveChannel.onclose = () => console.log('closed!!!!!!');
     remoteConnection.channel = receiveChannel;
   };
 
-  remoteConnection.setRemoteDescription(offer).then(a => console.log('done'));
+  remoteConnection
+    .setRemoteDescription(offer)
+    .then(answer => console.log('done'));
 
   //create answer
   await remoteConnection
     .createAnswer()
-    .then(a => remoteConnection.setLocalDescription(a))
-    .then(a => console.log(JSON.stringify(remoteConnection.localDescription)));
+    .then(answer => remoteConnection.setLocalDescription(answer))
+    .then(answer =>
+      console.log(JSON.stringify(remoteConnection.localDescription))
+    );
 };
 
 // rc.dc.send();

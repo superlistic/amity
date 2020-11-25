@@ -6,6 +6,43 @@
     <title>be more</title>
   </head>
   <body>
-    <h1>Be More</h1>
+    <input id="username" type="text" name="login" /><input
+      type="button"
+      value="login"
+      onClick="login()"
+    />
+    <ul id="events"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const login = () => {
+        const usedID = document.querySelector('#username').value;
+        console.log(userID);
+        socket.emit('auth', { userID });
+        // $events.appendChild(newItem('login with ' + username));
+      };
+      const disconnect = () => {
+        const username = document.querySelector('#username').value;
+        console.log(username);
+        socket.emit('auth', { username });
+        // $events.appendChild(newItem('login with ' + username));
+      };
+      const $events = document.getElementById('events');
+
+      const newItem = content => {
+        const item = document.createElement('li');
+        item.innerText = content;
+        return item;
+      };
+
+      socket.on('connect', () => {
+        $events.appendChild(newItem('connect'));
+      });
+      socket.on('userConnected', payload => {
+        $events.appendChild(newItem('user connected: ' + payload.username));
+      });
+    </script>
   </body>
 </html>

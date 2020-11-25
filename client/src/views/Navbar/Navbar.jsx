@@ -20,7 +20,7 @@ const Navbar = ({ isAuthenticated }) => {
 
         <div className="navbar__actions">
           <NavLink to="/settings" className="navbar__settings">
-            Settings
+            <span class="material-icons">settings</span>
           </NavLink>
           <NavLink to="/" className="navbar__link">
             Logout

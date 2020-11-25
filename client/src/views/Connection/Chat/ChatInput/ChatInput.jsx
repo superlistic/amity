@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './ChatInput.css';
 import { RoundButton } from '../../../../components/button';
+// import io from 'socket.io-client';
+// const socket = io('ws://localhost:3000');
+// const socket = io();
 
 const ChatInput = () => {
   const [message, setMessage] = useState('');
@@ -9,7 +12,7 @@ const ChatInput = () => {
     const trimmedMessage = message.trim();
     if (trimmedMessage !== '') {
       console.log(message);
-
+      //Fix autfocus after sent. Now it disappears.
       //Send message via WEBRTC here
       //timestamp when message was sent?
       setMessage('');
