@@ -34,17 +34,18 @@ const loginRouter = Users => {
       .then(user => {
         if (user) {
           res.cookie(
-            'token',
+            'x-access-token',
             signer({ userID: user.userID }, { httpOnly: true })
           );
           res.json({
             ok: true,
             user,
           });
+          console.log(chalk.grey(req.id), chalk.bgGreen('login succeeded'));
         } else {
           res.status(401);
           res.json({ ok: false, message: 'No such user' });
-          console.log(chalk.grey(req.id), chal.bgRed('login failed'));
+          console.log(chalk.grey(req.id), chalk.bgRed('login failed'));
         }
       })
       .catch(err => {

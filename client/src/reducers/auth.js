@@ -5,7 +5,7 @@ import {
   AUTH_USER,
 } from '../actions/types';
 
-// token: localStorage.getItem('token'),
+// token:
 const initState = {
   authenticated: '',
   isAuthenticated: true,
@@ -15,7 +15,7 @@ const initState = {
 };
 
 export default function auth(state = initState, action) {
-  console.log(state, action);
+  // console.log(state, action);
   const { type, payload } = action;
   switch (type) {
     case LOGIN_SUCCESS:

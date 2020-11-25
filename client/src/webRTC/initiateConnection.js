@@ -11,7 +11,7 @@ export const initiateConnection = localConnection => {
 
   localConnection
     .createOffer()
-    .then(o => localConnection.setLocalDescription(o));
+    .then(offer => localConnection.setLocalDescription(offer));
 };
 
 //  use dc.send()
