@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 
 const AuthOnlyRoute = ({
   component: Component,
-  auth: { isAuthenticated, loading },
+  isAuthenticated,
+  loading,
   ...rest
 }) => (
   <Route
@@ -20,7 +21,8 @@ const AuthOnlyRoute = ({
 );
 
 const mapStatesToProps = state => ({
-  auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading,
 });
 
 export default connect(mapStatesToProps)(AuthOnlyRoute);

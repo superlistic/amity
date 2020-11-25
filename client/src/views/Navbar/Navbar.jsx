@@ -4,8 +4,31 @@ import { connect } from 'react-redux';
 import './Navbar.css';
 
 const Navbar = ({ isAuthenticated }) => {
-  return (
-    <div className="navbar">
+  const NAV_LINKS = {
+    true: (
+      <div className="navbar__container--authenticated">
+        <NavLink to="/connection" className="navbar__link">
+          <img
+            className="navbar__logo"
+            src="./static/logo.svg"
+            alt="logo"
+            to="/"
+            width="145rem"
+            height="32rem"
+          />
+        </NavLink>
+
+        <div className="navbar__actions">
+          <NavLink to="/settings" className="navbar__settings">
+            Settings
+          </NavLink>
+          <NavLink to="/" className="navbar__link">
+            Logout
+          </NavLink>
+        </div>
+      </div>
+    ),
+    false: (
       <div className="navbar__container">
         <NavLink to="/" className="navbar__link">
           <img
@@ -13,7 +36,7 @@ const Navbar = ({ isAuthenticated }) => {
             src="./static/logo.svg"
             alt="logo"
             to="/"
-            width="120rem"
+            width="145rem"
             height="32rem"
           />
         </NavLink>
@@ -29,16 +52,16 @@ const Navbar = ({ isAuthenticated }) => {
           </NavLink>
         </div>
       </div>
-    </div>
-  );
+    ),
+  };
+
+  return <div className="navbar">{NAV_LINKS[isAuthenticated]}</div>;
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading,
 });
 
 export default connect(mapStateToProps, {})(Navbar);
 // { logout }
-// <Link to="/settings" className="navbar__settings">
-// Settings
-// </Link>

@@ -1,7 +1,7 @@
 .about {
   padding-top: 3rem;
   background: var(--color1);
-  height: 100vh;
+  height: calc(100vh - 4.2rem);
 }
 .about__title {
   color: var(--color2);

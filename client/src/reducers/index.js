@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
-import match from './match';
+import connection from './connection';
 
 export default combineReducers({
   auth,
-  match,
+  connection,
 });

@@ -16,7 +16,7 @@ const Landing = () => {
             autoplay="true"
             loop
             muted
-            height="60vh"
+            height="66vh"
             width="100vw"
           />
         </div>
@@ -26,8 +26,8 @@ const Landing = () => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  //Login?
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {})(Landing);

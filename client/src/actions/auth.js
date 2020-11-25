@@ -9,15 +9,13 @@ import {
 const axios = require('axios');
 
 export const login = payload => async dispatch => {
+  const { email, password } = payload;
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
   try {
-    const { email, password } = payload;
-    // const userID = '119937317331';
-    // const password = '123456';
     const hash = sha512(email + password).toString();
     const body = JSON.stringify({ email, hash });
     const res = await axios.post('/api/login', body, config);
@@ -47,15 +45,7 @@ export const register = ({ name, email, password }) => async dispatch => {
       type: AUTH_USER,
       payload: { name, email, password },
     });
-
-    // dispatch(loadUser());
-    // dispatch(setAlert('Ny användare skapad!', 'success'));
   } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
     dispatch({
       type: AUTH_ERROR,
     });
