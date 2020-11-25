@@ -28,23 +28,27 @@ Promise.all([Log(), User()]).then(([logs, users]) => {
   app.use(jwtMiddle);
   // app.use(logger());
   app.use(logger(logs));
-  //   // ROUTES
+  // ROUTES
   app.use('/api/logs', logRouter(logs));
   app.use('/api/login', loginRouter(users));
   app.use(
     '/static/',
     express.static(path.join(__dirname, '../client/build/static'))
   );
+
   // TODO DEBUG
-  const { signer } = require('./jwt');
-  app.get('/jwt/', (req, res) => {
-    res.cookie(
-      'x-access-token',
-      signer({ userID: 'tstuser' }, { httpOnly: true })
-    );
-    res.send('x-access-token');
-    console.log(chalk.grey(req.id), chalk.bgGreen('test jwt'));
-  });
+  // const { signer } = require('./jwt');
+  // let count = 0;
+  // app.get('/jwt/', (req, res) => {
+  //   res.cookie(
+  //     'x-access-token',
+  //     signer({ userId: 'test-' + count++ }, { httpOnly: true })
+  //   );
+  //   res.send('x-access-token');
+  //   console.log(chalk.grey(req.id), chalk.bgGreen('test jwt'), count);
+  // });
+  // TODO DEBUG END
+
   // app.use(express.static('public'));
   app.get('*', (req, res) => {
     // console.log(path.join(__dirname, '../client/build/index.html'));

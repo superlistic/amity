@@ -19,7 +19,7 @@ const loginRouter = Users => {
       { email: req.body.email, passwordHash: req.body.hash },
       {
         _id: 0,
-        userID: 1,
+        userId: 1,
         username: 1,
         email: 1,
         bio: 1,
@@ -35,7 +35,7 @@ const loginRouter = Users => {
         if (user) {
           res.cookie(
             'x-access-token',
-            signer({ userID: user.userID }, { httpOnly: true })
+            signer({ userId: user.userId }, { httpOnly: true })
           );
           res.json({
             ok: true,

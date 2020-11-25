@@ -6,10 +6,10 @@
     <title>be more</title>
   </head>
   <body>
-    <input id="username" type="text" name="login" /><input
+    <input id="username" type="text" /><input
       type="button"
-      value="login"
-      onClick="login()"
+      value="relay"
+      onClick="relay()"
     />
     <ul id="events"></ul>
 
@@ -17,11 +17,10 @@
     <script>
       const socket = io();
 
-      const login = () => {
-        const usedID = document.querySelector('#username').value;
-        console.log(userID);
-        socket.emit('auth', { userID });
-        // $events.appendChild(newItem('login with ' + username));
+      const relay = () => {
+        const msg = document.querySelector('#username').value;
+        console.log(msg);
+        socket.emit('relay', { msg: msg });
       };
       const disconnect = () => {
         const username = document.querySelector('#username').value;
@@ -40,8 +39,13 @@
       socket.on('connect', () => {
         $events.appendChild(newItem('connect'));
       });
-      socket.on('userConnected', payload => {
-        $events.appendChild(newItem('user connected: ' + payload.username));
+      socket.on('partnerMatch', payload => {
+        $events.appendChild(
+          newItem('user connected: ' + JSON.stringify(payload))
+        );
+      });
+      socket.on('relay', payload => {
+        $events.appendChild(newItem('relay: ' + JSON.stringify(payload)));
       });
     </script>
   </body>
