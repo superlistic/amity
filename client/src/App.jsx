@@ -9,6 +9,7 @@ import Register from './views/Auth/Register/Register';
 import Login from './views/Auth/Login/Login';
 import Connection from './views/Connection/Connection';
 import ErrorComponent from './views/ErrorComponent/ErrorComponent';
+import Settings from './views/Settings/Settings';
 
 const App = () => {
   return (
@@ -18,8 +19,9 @@ const App = () => {
         <Switch>
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
-          <AuthOnlyRoute path="/about" exact component={About} />
-          <Route path="/connection" exact component={Connection} />
+          <AuthOnlyRoute path="/connection" component={Connection} />
+          <Route path="/about" exact component={About} />
+          <Route path="/settings" exact component={Settings} />
           <Route path="/" exact component={Landing} />
           <Route path="/*" component={ErrorComponent} />
         </Switch>

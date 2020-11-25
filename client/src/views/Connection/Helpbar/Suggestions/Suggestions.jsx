@@ -4,6 +4,7 @@ import './Suggestions.css';
 const Suggestions = ({ suggestion }) => {
   const onHandleSuggestion = () => {
     console.log(suggestion);
+    //Send message via WEBRTC here
   };
 
   return (

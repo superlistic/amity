@@ -22,14 +22,11 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onLogin = e => {
     e.preventDefault();
-    const payload = { email, password };
-    login(payload);
+    login({ email, password });
     setLoginData(initState);
   };
 
-  if (isAuthenticated) {
-    return <Redirect to="/" />;
-  }
+  if (isAuthenticated) return <Redirect to="/connection" />;
 
   return (
     <div className="register">
@@ -49,7 +46,7 @@ const Login = ({ login, isAuthenticated }) => {
             name="email"
             type="email"
             value={email}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           ></FormInput>
           <FormInput
@@ -58,7 +55,7 @@ const Login = ({ login, isAuthenticated }) => {
             name="password"
             type="password"
             value={password}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           ></FormInput>
           <AccentButton className="login__button" onClick={e => onLogin(e)}>
@@ -76,7 +73,7 @@ const Login = ({ login, isAuthenticated }) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { login })(Login);

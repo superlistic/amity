@@ -8,6 +8,8 @@ import Sidebar from '../Sidebar/Sidebar';
 import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
 import Helpbar from './Helpbar/Helpbar';
+import { initiateConnection } from '../../webRTC/initiateConnection';
+import { answeringConnection } from '../../webRTC/answeringConnection';
 // const socket = io('ws://localhost:3000');
 const socket = io();
 
@@ -61,12 +63,21 @@ const Connection = ({ isConnected, userID }) => {
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected with the server');
-      // either with send()
       socket.emit('webRTC_connect', 'HEJ');
+
+      //mockdata, should be sent from the server upon signaling?
+      const initiator = true;
+
+      const connection = new RTCPeerConnection();
+      if (initiator) {
+        initiateConnection(connection);
+      } else {
+        answeringConnection(connection);
+      }
     });
   }, []);
 
-  return true ? (
+  return isConnected ? (
     <div className="connection">
       <Sidebar />
       <Chat />
@@ -76,14 +87,12 @@ const Connection = ({ isConnected, userID }) => {
     <div className="connection">
       <Sidebar />
       <ConnectionLobby />
-      <Helpbar />
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  // isConnected:user.state.isConnected,
-};
-//Adad
+const mapStateToProps = state => ({
+  isConnected: state.connection.isConnected,
+});
 
 export default connect(mapStateToProps)(Connection);

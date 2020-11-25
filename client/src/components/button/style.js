@@ -41,7 +41,7 @@ export const StyledGrayOutlinedButton = styled(StyledButton)`
 export const StyledRoundButton = styled(StyledButton)`
   border-radius: 50%;
   width: 3rem;
-  background: transparent;
+  background: ${theme.main};
 `;
 
 // &:hover {

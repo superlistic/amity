@@ -8,9 +8,9 @@ const ChatInput = () => {
     e.preventDefault();
     const trimmedMessage = message.trim();
     if (trimmedMessage !== '') {
-      //få bort uppdatering av sida vid Enter :)
       console.log(message);
-      //Send message via Sockets
+
+      //Send message via WEBRTC here
       //timestamp when message was sent?
       setMessage('');
     }
@@ -25,14 +25,15 @@ const ChatInput = () => {
           type="textarea"
           value={message}
           placeholder={'Write a message..'}
-          onChange={e => setMessage(e.target.value)}
-          autoFocus="true"
+          onChange={({ target }) => setMessage(target.value)}
+          autoFocus
+          autoComplete="off"
         ></input>
 
         <span className="material-icons chat-input__emoji">
           insert_emoticon
         </span>
-        <RoundButton type="submit" onClick={e => sendMessage(e)}>
+        <RoundButton type="submit" onClick={sendMessage}>
           <span className="material-icons chat-input__send">send</span>
         </RoundButton>
       </form>

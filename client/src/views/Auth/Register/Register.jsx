@@ -3,6 +3,7 @@ import FacebookLoginWithButton from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
+import { Redirect } from 'react-router-dom';
 
 import './Register.css';
 import { register } from '../../../actions/auth';
@@ -10,7 +11,7 @@ import { AccentButton } from '../../../components/button';
 import { FormInput } from '../../../components/formInput/style';
 import { variantForm } from '../../../animations';
 
-const Register = ({ register }) => {
+const Register = ({ register, isAuthenticated }) => {
   const initState = {
     username: '',
     email: '',
@@ -26,10 +27,9 @@ const Register = ({ register }) => {
   const onRegister = e => {
     e.preventDefault();
     if (password !== password2) {
-      // alert('Passwords do not match', 'danger');
-      console.log('Passwords do not match.', 'danger');
+      alert('Passwords do not match.', 'danger');
     } else if (password.length < 6 || password2.length < 6) {
-      console.log('Password should be longer than 6 characters.', 'danger');
+      alert('Password should be longer than 6 characters.', 'danger');
     } else {
       register({ username, email, password });
     }
@@ -47,6 +47,9 @@ const Register = ({ register }) => {
   const responseGoogle = response => {
     console.log(response);
   };
+
+  if (isAuthenticated) return <Redirect to="/connection" />;
+
   return (
     <div className="register">
       <motion.div
@@ -66,7 +69,7 @@ const Register = ({ register }) => {
             type="text"
             name="username"
             value={username}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           ></FormInput>
           <FormInput
@@ -75,7 +78,7 @@ const Register = ({ register }) => {
             name="email"
             type="email"
             value={email}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           ></FormInput>
           <FormInput
@@ -93,13 +96,13 @@ const Register = ({ register }) => {
             name="password2"
             type="password"
             value={password2}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           ></FormInput>
-          <AccentButton
-            className="register__button"
-            onClick={e => onRegister(e)}
-          >
+          <p className="register__intro">
+            By registering, you agree to our Terms and Privacy Policy.
+          </p>
+          <AccentButton className="register__button" onClick={onRegister}>
             Register
           </AccentButton>
           <p className="register__intro">Or connect directly below.</p>
@@ -109,7 +112,11 @@ const Register = ({ register }) => {
   );
 };
 
-export default connect(null, { register })(Register);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { register })(Register);
 
 //           <div className="register__alternative-methods">
 //             <GoogleLogin

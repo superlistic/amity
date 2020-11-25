@@ -2,7 +2,6 @@ import { IS_CONNECTED } from '../actions/types';
 
 const initState = {
   userID: null,
-  isConnected: false,
   username: '',
   email: '',
   avatar: '',
