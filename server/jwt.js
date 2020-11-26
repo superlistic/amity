@@ -1,5 +1,6 @@
 const secret = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
+const chalk = require('chalk');
 
 const jwtMiddle = (req, res, next) => {
   try {
@@ -20,8 +21,10 @@ const signer = data => {
 const verifyer = token => {
   try {
     const tok = jwt.verify(token, secret);
+    console.log(chalk.greenBright('[jwt verify] -OK- '), tok.userId);
     return tok;
   } catch (error) {
+    console.log(chalk.redBright('[jwt verify]  -FAIL- '), tok.userId);
     console.log(error);
     return error;
   }

@@ -1,4 +1,4 @@
-const chalk = require('chalk')
+const chalk = require('chalk');
 
 class UserHandler {
   constructor() {
@@ -47,7 +47,6 @@ class UserHandler {
   partnerId(uid) {
     let conn = this.connections.find(c => c.id1 === uid || c.id2 === uid);
     if (!conn) {
-      console.log('no partner found');
       return null;
     }
     if (conn && conn.id1 === uid) {
@@ -67,4 +66,4 @@ class UserHandler {
     }
   }
 }
-module.exports = UserHandler
+module.exports = UserHandler;

@@ -17,22 +17,29 @@ const websocketListener = server => {
   const handler = new UserHandler();
 
   io.on('connection', socket => {
-    // console.log(socket);
-    // TODO this is a HACK
+    // VERIFY x-access-token
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
     if (token && token.userId) {
       const result = handler.add(token.userId, socket);
       if (result) {
         socket.userId = result.userId;
-        console.log(chalk.greenBright('Authneticated: ' + token.userId));
       } else {
-        console.log(chalk.redBright('auth failed: ' + token.userId));
         socket.disconnect();
       }
     }
+    // check if partner online
+    const peerSocketId = handler.partnerId(socket.userId) || null;
+    if (peerSocketId) {
+      io.to(handler.partnerId(socket.userId)).emit('matchUpdate', {
+        msg: '[socket] partner just connected',
+      });
+      socket.emit('matchUpdate', {
+        msg: '[socket] partner is online',
+      });
+    }
 
     console.log(
-      chalk.blueBright('[socket.io]'),
+      chalk.blueBright('[sockets]'),
       chalk.grey(socket.client.id),
       chalk.blue('connected'),
       chalk.grey(socket.handshake.headers['user-agent'])
@@ -47,18 +54,18 @@ const websocketListener = server => {
 
     socket.on('ready', payload => {
       const peerSocketId = handler.partnerId(socket.userId) || null;
-      console.log(chalk.bgRedBright('works'));
+      console.log(chalk.bgGreen(chalk.black('"ready" recieved')));
       if (peerSocketId) {
         console.log('partner matched');
         io.to(handler.partnerId(socket.userId)).emit('makeOffer', {
-          msg: 'partner just connected',
+          msg: '[socket] partner just connected',
         });
         socket.emit('awaitOffer', {
-          msg: 'partner asked to send offer',
+          msg: '[socket] partner asked to send offer',
         });
       }
       console.log(
-        chalk.red('[socket.io]'),
+        chalk.red('[sockets]'),
         chalk.grey(socket.client.id),
         chalk.blue('connected'),
         chalk.grey(socket.handshake.headers['user-agent'])
@@ -67,9 +74,12 @@ const websocketListener = server => {
 
     socket.on('disconnect', reason => {
       handler.remove(socket.id);
+      io.to(handler.partnerId(socket.userId)).emit('matchUpdate', {
+        msg: '[socket] partner disconnected',
+      });
 
       console.log(
-        chalk.blueBright('[socket.io]'),
+        chalk.blueBright('[sockets]'),
         chalk.grey(socket.id),
         chalk.blue('disconnected'),
         chalk.white(reason)
