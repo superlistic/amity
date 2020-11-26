@@ -39,46 +39,23 @@ const Connection = ({ isConnected, userID }) => {
     peer.onicecandidate = handleICECandidateEvent;
     peer.ondatachannel = handleDataChannelEvent;
     peerRef.current = peer;
-
-    console.log(peerRef);
   };
 
   //Only initiator
   const createChannel = () => {
     console.log('Create CHANNEL');
     messageRef.current = peerRef.current.createDataChannel('messageRef');
-    // peerRef.current = peerRef.current;
     messageRef.current.onopen = e => console.log('open!!!!');
     messageRef.current.onmessage = e =>
       console.log('messsage received!!!' + e.data);
     messageRef.current.onclose = e => console.log('closed!!!!!!');
-    console.log('messageRef');
-    console.log(messageRef);
   };
-  // const listenChannel = () => {
-  //   console.log('listenChannel invoked');
-  //   peerRef.current.ondatachannel = e => {
-  //     console.log(e);
-  //     peerRef.current.channel = e.channel;
-  //     peerRef.current.channel.onopen = e => console.log('open!!!!');
-  //     peerRef.current.channel.onmessage = e =>
-  //       console.log('messsage received!!!' + e.data);
-  //     peerRef.current.channel.onclose = e => console.log('closed!!!!!!');
-  //   };
-
-  //   console.log(peerRef.current.channel);
-  // };
 
   const handleOffer = async sdp => {
     console.log('handleOffer');
-    console.log(sdp);
-    // peerRef.current = createPeer();
     const description = new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
     messageRef.current = peerRef.current.createDataChannel('otherMessageRef');
-    // otherMessageRef.current = peerRef.current.createDataChannel(
-    //   'otherMessageRef2'
-    // );
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
     const localDescription = peerRef.current.localDescription;
@@ -92,7 +69,6 @@ const Connection = ({ isConnected, userID }) => {
 
   const handleCandidate = data => {
     console.log('handleCandidate, ICE FOUND?');
-    console.log(data);
     const candidate = new RTCIceCandidate(data);
     peerRef.current.addIceCandidate(candidate);
   };
@@ -100,7 +76,6 @@ const Connection = ({ isConnected, userID }) => {
   const handleNegotiationNeededEvent = async () => {
     console.log('5.handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
-    // console.log(offer);
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
     socket.emit('relay', { data: localDescription, type: 'offer' });
@@ -115,7 +90,7 @@ const Connection = ({ isConnected, userID }) => {
   };
 
   const sendMessage = message => {
-    //store message in state, messageRef is from the other user :)
+    //store this message in state, own message:)
     console.log(message);
     messageRef.current.send(message);
   };
