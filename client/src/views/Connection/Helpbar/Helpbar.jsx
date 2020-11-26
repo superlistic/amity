@@ -17,7 +17,7 @@ const Helpbar = () => {
     <div className="helpbar">
       <p className="helpbar__title">You have connected with..</p>
       <FriendProfile friend={friend} />
-      <Suggestions suggestion={'What is your favorite candy?'} />
+      <Suggestions />
       <Controller />
     </div>
   );
