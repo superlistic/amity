@@ -24,4 +24,5 @@
   /* padding-top: 0.5rem; */
   color: var(--color__white);
   text-align: center;
+  cursor: pointer;
 }

@@ -7,8 +7,12 @@ const Chat = () => {
   return (
     <div className="chat">
       <section className="chat__messages">
-        <ChatMessage text={'Hello everyboddyyy'} client={true} />
-        <ChatMessage text={'YOYO'} client={false} />
+        <ChatMessage
+          text={'Hello everyboddyyy'}
+          client={true}
+          date={Date.now()}
+        />
+        <ChatMessage text={'YOYO'} client={false} date={Date.now()} />
       </section>
       <ChatInput />
     </div>

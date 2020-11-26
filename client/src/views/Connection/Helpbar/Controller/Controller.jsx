@@ -6,12 +6,15 @@ import { endConnection } from '../../../../actions/connection';
 
 const Controller = ({ endConnection, isConnected }) => {
   const onChat = () => {
+    //get chat component instead of video?
     console.log('Chat icon clicked!');
   };
   const onVolumeOff = () => {
+    //mute video component
     console.log('volume_off!');
   };
   const onVideo = () => {
+    //get video component, ask the other user to start?
     console.log('Video icon clicked!');
   };
   const onExitChat = () => {

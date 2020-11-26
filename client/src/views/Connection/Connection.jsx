@@ -7,6 +7,7 @@ import './Connection.css';
 import Sidebar from '../Sidebar/Sidebar';
 import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
+import Video from './Video/Video';
 import Helpbar from './Helpbar/Helpbar';
 // import { initiateConnection } from '../../webRTC/initiateConnection';
 // import { answeringConnection } from '../../webRTC/answeringConnection';
