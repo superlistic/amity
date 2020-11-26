@@ -23,22 +23,18 @@ const websocketListener = server => {
       const result = handler.add(token.userId, socket);
       if (result) {
         socket.userId = result.userId;
-        console.log(chalk.greenBright('Authneticated: ' + token.userId));
       } else {
-        console.log(chalk.redBright('auth failed: ' + token.userId));
         socket.disconnect();
       }
     }
     // check if partner online
     const peerSocketId = handler.partnerId(socket.userId) || null;
-    console.log(peerSocketId);
     if (peerSocketId) {
-      console.log('partner is online matched');
       io.to(handler.partnerId(socket.userId)).emit('matchUpdate', {
-        msg: 'partner just connected',
+        msg: '[socket] partner just connected',
       });
       socket.emit('matchUpdate', {
-        msg: 'partner is online',
+        msg: '[socket] partner is online',
       });
     }
 
@@ -62,10 +58,10 @@ const websocketListener = server => {
       if (peerSocketId) {
         console.log('partner matched');
         io.to(handler.partnerId(socket.userId)).emit('makeOffer', {
-          msg: 'partner just connected',
+          msg: '[socket] partner just connected',
         });
         socket.emit('awaitOffer', {
-          msg: 'partner asked to send offer',
+          msg: '[socket] partner asked to send offer',
         });
       }
       console.log(
@@ -78,6 +74,9 @@ const websocketListener = server => {
 
     socket.on('disconnect', reason => {
       handler.remove(socket.id);
+      io.to(handler.partnerId(socket.userId)).emit('matchUpdate', {
+        msg: '[socket] partner disconnected',
+      });
 
       console.log(
         chalk.blueBright('[sockets]'),

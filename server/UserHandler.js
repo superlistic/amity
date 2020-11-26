@@ -45,7 +45,6 @@ class UserHandler {
     }
   }
   partnerId(uid) {
-    console.log(uid);
     let conn = this.connections.find(c => c.id1 === uid || c.id2 === uid);
     if (!conn) {
       return null;
