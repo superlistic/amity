@@ -11,11 +11,21 @@
       value="relay"
       onClick="relay()"
     />
+    <input type="button" value="disconnect" onClick="disconnect()" />
+    <input type="button" value="dataChannel" onClick="showDataChannel()" />
+    <input
+      type="button"
+      value="localConnection"
+      onClick="showlocalConnection()"
+    />
+    <input type="button" value="webRTC send" onClick="sendOnDataChannel()" />
+    <input type="button" value="NoOp" onClick="NoOp()" />
     <ul id="events"></ul>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+      let peerConnection, dataChannel;
 
       const relay = () => {
         const msg = document.querySelector('#username').value;
@@ -24,10 +34,23 @@
       };
       const disconnect = () => {
         const username = document.querySelector('#username').value;
-        console.log(username);
-        socket.emit('auth', { username });
-        // $events.appendChild(newItem('login with ' + username));
+        socket.disconnect();
+        $events.appendChild(newItem('disconnected'));
       };
+      const showDataChannel = () => {
+        const item = document.createElement('li');
+        $events.appendChild(newItem('logged: ' + dataChannel));
+        console.log(dataChannel);
+      };
+      const showlocalConnection = () => {
+        const item = document.createElement('li');
+        $events.appendChild(newItem('logged: ' + peerConnection));
+        console.log(peerConnection);
+      };
+      const sendOnDataChannel = () => {
+        dataChannel.send('imhereMAN!');
+      };
+
       const $events = document.getElementById('events');
 
       const newItem = content => {
@@ -38,13 +61,68 @@
 
       socket.on('connect', () => {
         $events.appendChild(newItem('connect'));
+        peerConnection = new RTCPeerConnection();
       });
+
       socket.on('partnerMatch', payload => {
+        dataChannel = peerConnection.createDataChannel('messages');
+        dataChannel.onmessage = e => console.log('got message', e.data);
+        dataChannel.onopen = e => console.log('connection opened', e);
+        peerConnection.onicecandidate = e =>
+          console.log('New ICE candidate:', peerConnection.localDescription);
+        peerConnection
+          .createOffer()
+          .then(offer => {
+            peerConnection.setLocalDescription(offer);
+            socket.emit('relay', { type: 'offer', data: offer });
+          })
+          .catch(err => console.log(err));
+
         $events.appendChild(
           newItem('user connected: ' + JSON.stringify(payload))
         );
       });
       socket.on('relay', payload => {
+        switch (payload.type) {
+          case 'offer':
+            console.log('got offer', payload.data);
+            peerConnection.onicecandidate = e => {
+              console.log('ice candidate', e);
+              $events.appendChild(
+                newItem('New ICE candidate:', peerConnection.localDescription)
+              );
+            };
+            peerConnection.ondatachannel = e => {
+              dataChannel = e.channel;
+              console.log('ondatachannel');
+              console.log(e.channel);
+              dataChannel.onmessage = msg => {
+                console.log(msg);
+              };
+              dataChannel.onopen = e => {
+                console.log('connection opened');
+                console.log(e);
+              };
+            };
+            peerConnection.setRemoteDescription(payload.data).then(() => {
+              console.log('offer set');
+              peerConnection.createAnswer().then(answer => {
+                console.log('answer created');
+                peerConnection.setLocalDescription(answer).then(() => {
+                  console.log('answere set');
+                  socket.emit('relay', { type: 'answer', data: answer });
+                });
+              });
+            });
+            break;
+
+          case 'answer':
+            peerConnection.setRemoteDescription(payload.data);
+            break;
+
+          default:
+            break;
+        }
         $events.appendChild(newItem('relay: ' + JSON.stringify(payload)));
       });
     </script>
