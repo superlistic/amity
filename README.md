@@ -1,4 +1,4 @@
-# TOGETHERNESS incorporated
+# Amity incorporated
 
 ## todo:
 
