@@ -106,6 +106,24 @@ const Register = ({ register, isAuthenticated }) => {
             Register
           </AccentButton>
           <p className="register__intro">Or connect directly below.</p>
+          <div className="register__alternative-methods">
+            <GoogleLogin
+              className="register__google"
+              clientId={process.env.REACT_APP_.GOOGLE}
+              buttonText="Login with Google"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              theme="dark"
+            />
+            <FacebookLoginWithButton
+              size="small"
+              appId={process.env.REACT_APP_.FACEBOOK}
+              fields="name,email,picture"
+              onClick={componentClicked}
+              callback={responseFacebook}
+              icon="fa-facebook"
+            />
+          </div>
         </form>
       </motion.div>
     </div>
@@ -117,22 +135,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { register })(Register);
-
-//           <div className="register__alternative-methods">
-//             <GoogleLogin
-//               className="register__google"
-//               clientId={process.env.REACT_APP_.GOOGLE}
-//               buttonText="Login with Google"
-//               onSuccess={responseGoogle}
-//               onFailure={responseGoogle}
-//               theme="dark"
-//             />
-//             <FacebookLoginWithButton
-//               size="small"
-//               appId={process.env.REACT_APP_.FACEBOOK}
-//               fields="name,email,picture"
-//               onClick={componentClicked}
-//               callback={responseFacebook}
-//               icon="fa-facebook"
-//             />
-//           </div>

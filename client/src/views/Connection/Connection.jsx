@@ -29,6 +29,9 @@ const Connection = ({
   const peerRef = useRef();
   const messageRef = useRef();
   const otherMessageRef = useRef();
+  // const localVideo = useRef();
+  // const videoRef = useRef();
+  // const otherVideoRef = useRef();
 
   console.log('RENDER');
   const createPeer = () => {
@@ -155,6 +158,16 @@ const Connection = ({
       }
     });
   }, []);
+
+  // if (isVideo) {
+  //   console.log('video tajm');
+  //   navigator.mediaDevices
+  //     .getUserMedia({ audio: true, video: true })
+  //     .then(stream => {
+  //       localVideo.current.srcObject = stream;
+  //       videoRef.current = stream;
+  //     });
+  // }
 
   return isConnected ? (
     <div className="connection">

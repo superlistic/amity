@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import './ChatMessage.css';
 
 const ChatMessage = ({ message, client }) => {
   return !client ? (
-    <div className="chat-message">
-      <span className="material-icons chat-message__avatar">face</span>
-      <div className="chat-message__box">
-        <p className="chat-message__text">{message.message}</p>
-        <p className="chat-message__text">
-          {new Date(message.date).toLocaleTimeString()}
-        </p>
+    <Fragment>
+      <div className="chat-message">
+        <span className="material-icons chat-message__avatar">face</span>
+        <div className="chat-message__box">
+          <p className="chat-message__text">{message.message}</p>
+        </div>
       </div>
-    </div>
+      <p className="chat-message__time">
+        {new Date(message.date).toLocaleTimeString()}
+      </p>
+    </Fragment>
   ) : (
-    <div className="chat-message--friend">
-      <span className="material-icons chat-message__avatar--friend">face</span>
-      <div className="chat-message__box--friend">
-        <p className="chat-message__text--friend">{message.message}</p>
-        <p className="chat-message__text--friend">
-          {new Date(message.date).toLocaleTimeString()}
-        </p>
+    <Fragment>
+      <div className="chat-message--friend">
+        <span className="material-icons chat-message__avatar--friend">
+          face
+        </span>
+        <div className="chat-message__box--friend">
+          <p className="chat-message__text--friend">{message.message}</p>
+        </div>
       </div>
-    </div>
+      <p className="chat-message__time-friend">
+        {new Date(message.date).toLocaleTimeString()}
+      </p>
+    </Fragment>
   );
 };
 
