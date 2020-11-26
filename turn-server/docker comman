@@ -1,0 +1,5 @@
+docker run -d -p 3478:3478 -p 49160-49200/udp instrumentisto/coturn -n --log-file=stdout --external-ip='${detect-external-ip}' --min-port=49160 --max-port=49200
+
+alt..
+
+docker run -d --network=host --mount type=tmpfs,destination=/var/lib/coturn instrumentisto/coturn
