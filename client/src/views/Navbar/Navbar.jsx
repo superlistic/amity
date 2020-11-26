@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './Navbar.css';
 
-const Navbar = ({ isAuthenticated }) => {
+import './Navbar.css';
+import { logOut } from '../../actions/auth';
+
+const Navbar = ({ isAuthenticated, logOut }) => {
   const NAV_LINKS = {
     true: (
       <div className="navbar__container--authenticated">
@@ -20,9 +22,9 @@ const Navbar = ({ isAuthenticated }) => {
 
         <div className="navbar__actions">
           <NavLink to="/settings" className="navbar__settings">
-            <span class="material-icons">settings</span>
+            <span class="material-icons navbar__settings__span">settings</span>
           </NavLink>
-          <NavLink to="/" className="navbar__link">
+          <NavLink to="/" className="navbar__link" onClick={logOut}>
             Logout
           </NavLink>
         </div>
@@ -63,5 +65,5 @@ const mapStateToProps = state => ({
   loading: state.auth.loading,
 });
 
-export default connect(mapStateToProps, {})(Navbar);
+export default connect(mapStateToProps, { logOut })(Navbar);
 // { logout }

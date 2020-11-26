@@ -1,25 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import './Chat.css';
 import ChatInput from './ChatInput/ChatInput';
 import ChatMessage from './ChatMessage/ChatMessage';
 
-const Chat = ({ sendMessage }) => {
+const Chat = ({ sendMessage, messages }) => {
   return (
     <div className="chat">
       <section className="chat__messages">
-        <ChatMessage
-          text={'Hello everyboddyyy'}
-          client={true}
-          date={Date.now()}
-        />
-        <ChatMessage text={'YOYO'} client={false} date={Date.now()} />
+        {messages.map(message => (
+          <ChatMessage message={message} client={message.client} />
+        ))}
       </section>
       <ChatInput sendMessage={sendMessage} />
     </div>
   );
 };
 
-export default Chat;
+const mapStateToProps = state => ({
+  messages: state.connection.messages,
+});
+
+export default connect(mapStateToProps, {})(Chat);
+
+//  <section className="chat__messages">
+//    {sentMessages.map(message => (
+//      <ChatMessage message={message} client={message.client} />
+//    ))}
+//  </section>;
 
 // USER:
 // {

@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 import './Suggestions.css';
 import { suggestionVariant } from '../../../../animations';
 
-const Suggestions = () => {
+const Suggestions = ({ sendMessage }) => {
   const [queuedElement, setQueuedElement] = useState([]);
-  const onHandleSuggestion = () => {
-    // console.log(suggestion);
+  const onHandleSuggestion = suggestion => {
+    console.log(suggestion);
+    sendMessage(suggestion.text);
     //Send message via WEBRTC here
     //remove from suggestions?/dont show atleast
   };
@@ -39,16 +40,16 @@ const Suggestions = () => {
     },
   ];
 
-  const displaySuggestion = el => {
+  const displaySuggestion = suggestion => {
     return (
       <motion.p
         variants={suggestionVariant}
         initial="initial"
         animate="animate"
         className="suggestion"
-        onClick={() => onHandleSuggestion()}
+        onClick={() => onHandleSuggestion(suggestion)}
       >
-        {el.text}
+        {suggestion.text}
       </motion.p>
     );
   };

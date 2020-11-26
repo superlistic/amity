@@ -1,7 +1,7 @@
 import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  LOGGED_OUT,
+  LOGOUT_SUCCESS,
   AUTH_USER,
 } from '../actions/types';
 
@@ -33,9 +33,12 @@ export default function auth(state = initState, action) {
         loading: false,
         user: null,
       };
-    case LOGGED_OUT:
+    case LOGOUT_SUCCESS:
       return {
         ...state,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
       };
     case AUTH_USER:
       return {

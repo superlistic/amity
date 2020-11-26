@@ -14,9 +14,9 @@ const Video = () => {
   return (
     <div className="video">
       <video
-        autoplay
+        autoPlay
         muted
-        class="local-video"
+        className="local-video"
         id="local-video"
         ref={localVideo}
       />
