@@ -15,8 +15,10 @@ const socket = io('ws://localhost:3001');
 // const socket = io();
 
 const Connection = ({ isConnected, userID }) => {
+  // const [data, setData] = useState(initData);
   const peerRef = useRef();
   const messageRef = useRef();
+  const otherMessageRef = useRef();
 
   const createPeer = () => {
     console.log('2.createPeer invoked');
@@ -34,20 +36,38 @@ const Connection = ({ isConnected, userID }) => {
     };
 
     const peer = new RTCPeerConnection(config);
-
     peer.onicecandidate = handleICECandidateEvent;
     peer.ondatachannel = handleDataChannelEvent;
-    peer.onnegotiationneeded = handleNegotiationNeededEvent;
     peerRef.current = peer;
+
+    console.log(peerRef);
+  };
+
+  //Only initiator
+  const createChannel = () => {
+    console.log('Create CHANNEL');
     messageRef.current = peerRef.current.createDataChannel('messageRef');
+    // peerRef.current = peerRef.current;
     messageRef.current.onopen = e => console.log('open!!!!');
     messageRef.current.onmessage = e =>
       console.log('messsage received!!!' + e.data);
     messageRef.current.onclose = e => console.log('closed!!!!!!');
-
-    console.log(peerRef);
+    console.log('messageRef');
     console.log(messageRef);
   };
+  // const listenChannel = () => {
+  //   console.log('listenChannel invoked');
+  //   peerRef.current.ondatachannel = e => {
+  //     console.log(e);
+  //     peerRef.current.channel = e.channel;
+  //     peerRef.current.channel.onopen = e => console.log('open!!!!');
+  //     peerRef.current.channel.onmessage = e =>
+  //       console.log('messsage received!!!' + e.data);
+  //     peerRef.current.channel.onclose = e => console.log('closed!!!!!!');
+  //   };
+
+  //   console.log(peerRef.current.channel);
+  // };
 
   const handleOffer = async sdp => {
     console.log('handleOffer');
@@ -55,15 +75,19 @@ const Connection = ({ isConnected, userID }) => {
     // peerRef.current = createPeer();
     const description = new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
-    // messageRef.current = peerRef.current.createDataChannel('messageRef');
+    messageRef.current = peerRef.current.createDataChannel('otherMessageRef');
+    // otherMessageRef.current = peerRef.current.createDataChannel(
+    //   'otherMessageRef2'
+    // );
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
     const localDescription = peerRef.current.localDescription;
     socket.emit('relay', { data: localDescription, type: 'answer' });
   };
-  const handleAnswer = sdp => {
+  const handleAnswer = async sdp => {
+    console.log('handleAnswer');
     const description = new RTCSessionDescription(sdp);
-    peerRef.current.setRemoteDescription(description);
+    await peerRef.current.setRemoteDescription(description);
   };
 
   const handleCandidate = data => {
@@ -76,6 +100,7 @@ const Connection = ({ isConnected, userID }) => {
   const handleNegotiationNeededEvent = async () => {
     console.log('5.handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
+    // console.log(offer);
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
     socket.emit('relay', { data: localDescription, type: 'offer' });
@@ -83,7 +108,6 @@ const Connection = ({ isConnected, userID }) => {
 
   const handleICECandidateEvent = e => {
     console.log('3.handleICECandidateEvent');
-    console.log(e);
     const { candidate } = e;
     if (candidate) {
       socket.emit('relay', { data: candidate, type: 'candidate' });
@@ -91,27 +115,37 @@ const Connection = ({ isConnected, userID }) => {
   };
 
   const sendMessage = message => {
+    //store message in state, messageRef is from the other user :)
     console.log(message);
-    peerRef.current.send(message);
+    messageRef.current.send(message);
   };
 
   const handleDataChannelEvent = e => {
     console.log('4.handleDataChannelEvent');
+    otherMessageRef.current = e.channel;
+    otherMessageRef.current.onopen = e => {
+      console.log('open!!!!');
+      // otherMessageRef.current.send('Hi There Creator!');
+      messageRef.current.send('Hi There Listener!');
+    };
+    otherMessageRef.current.onmessage = e =>
+      console.log('message received!!!' + e.data);
     console.log(e);
-    //put on messageRef and send to chat?
+    otherMessageRef.current.onclose = e => console.log('closed!!!!!!');
   };
 
-  //userID as room
   useEffect(() => {
-    // socket.emit('auth', { userID: 1 }); ????
-
-    socket.on('partnerMatch', () => {
-      console.log('1.partnerMatch');
-      createPeer();
+    socket.emit('ready');
+    socket.on('makeOffer', async () => {
+      console.log('1.makeOffer');
+      await createPeer();
+      await createChannel();
+      handleNegotiationNeededEvent();
     });
 
-    socket.on('onTest', payload => {
-      console.log(payload);
+    socket.on('awaitOffer', () => {
+      console.log('1.awaitOffer');
+      createPeer();
     });
 
     socket.on('relay', payload => {
@@ -133,7 +167,7 @@ const Connection = ({ isConnected, userID }) => {
   return isConnected ? (
     <div className="connection">
       <Sidebar />
-      <Chat />
+      <Chat sendMessage={sendMessage} />
       <Helpbar />
     </div>
   ) : (

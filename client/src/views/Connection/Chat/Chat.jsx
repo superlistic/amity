@@ -3,7 +3,7 @@ import './Chat.css';
 import ChatInput from './ChatInput/ChatInput';
 import ChatMessage from './ChatMessage/ChatMessage';
 
-const Chat = () => {
+const Chat = ({ sendMessage }) => {
   return (
     <div className="chat">
       <section className="chat__messages">
@@ -14,7 +14,7 @@ const Chat = () => {
         />
         <ChatMessage text={'YOYO'} client={false} date={Date.now()} />
       </section>
-      <ChatInput />
+      <ChatInput sendMessage={sendMessage} />
     </div>
   );
 };

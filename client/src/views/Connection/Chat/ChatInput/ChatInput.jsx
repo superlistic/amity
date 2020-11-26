@@ -5,16 +5,15 @@ import { RoundButton } from '../../../../components/button';
 // const socket = io('ws://localhost:3000');
 // const socket = io();
 
-const ChatInput = () => {
+const ChatInput = ({ sendMessage }) => {
   const [message, setMessage] = useState('');
-  const sendMessage = e => {
+  const newMessage = e => {
     e.preventDefault();
     const trimmedMessage = message.trim();
     if (trimmedMessage !== '') {
-      console.log(message);
+      // console.log(sendMessage);
+      sendMessage(message);
       //Fix autfocus after sent. Now it disappears.
-      //Send message via WEBRTC here
-      //timestamp when message was sent?
       setMessage('');
     }
   };
@@ -36,7 +35,7 @@ const ChatInput = () => {
         <span className="material-icons chat-input__emoji">
           insert_emoticon
         </span>
-        <RoundButton type="submit" onClick={sendMessage}>
+        <RoundButton type="submit" onClick={newMessage}>
           <span className="material-icons chat-input__send">send</span>
         </RoundButton>
       </form>
