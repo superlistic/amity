@@ -2,7 +2,7 @@ import sha512 from 'crypto-js/sha512';
 import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  LOGGED_OUT,
+  LOGOUT_SUCCESS,
   AUTH_USER,
   AUTH_ERROR,
 } from './types';
@@ -50,4 +50,9 @@ export const register = ({ name, email, password }) => async dispatch => {
       type: AUTH_ERROR,
     });
   }
+};
+export const logOut = () => async dispatch => {
+  dispatch({
+    type: LOGOUT_SUCCESS,
+  });
 };

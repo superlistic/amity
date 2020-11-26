@@ -19,6 +19,7 @@
 }
 .navbar__actions {
   z-index: 2;
+  display: flex;
 }
 
 .navbar__logo {
@@ -30,6 +31,11 @@
 .navbar__settings {
   text-decoration: none;
   z-index: 2;
+}
+.navbar__settings__span {
+  font-size: 1.8rem;
+  margin-right: 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .navbar__link {

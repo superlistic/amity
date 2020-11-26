@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-// import openSocket from 'socket.io-client';
 
 import './Connection.css';
 import Sidebar from '../Sidebar/Sidebar';
@@ -9,17 +8,29 @@ import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
 import Video from './Video/Video';
 import Helpbar from './Helpbar/Helpbar';
-// import { initiateConnection } from '../../webRTC/initiateConnection';
-// import { answeringConnection } from '../../webRTC/answeringConnection';
-const socket = io('ws://localhost:3001');
-// const socket = io();
+import {
+  messageReceived,
+  messageSent,
+  endConnection,
+  joinConnection,
+} from '../../actions/connection';
 
-const Connection = ({ isConnected, userID }) => {
-  // const [data, setData] = useState(initData);
+const socket = io('ws://localhost:3001');
+
+const Connection = ({
+  isConnected,
+  userID,
+  messageReceived,
+  messageSent,
+  endConnection,
+  joinConnection,
+  isVideo,
+}) => {
   const peerRef = useRef();
   const messageRef = useRef();
   const otherMessageRef = useRef();
 
+  console.log('RENDER');
   const createPeer = () => {
     console.log('2.createPeer invoked');
     const config = {
@@ -41,7 +52,6 @@ const Connection = ({ isConnected, userID }) => {
     peerRef.current = peer;
   };
 
-  //Only initiator
   const createChannel = () => {
     console.log('Create CHANNEL');
     messageRef.current = peerRef.current.createDataChannel('messageRef');
@@ -90,27 +100,35 @@ const Connection = ({ isConnected, userID }) => {
   };
 
   const sendMessage = message => {
-    //store this message in state, own message:)
-    console.log(message);
     messageRef.current.send(message);
+    messageSent({ message: message, client: true, date: Date.now() });
   };
 
   const handleDataChannelEvent = e => {
     console.log('4.handleDataChannelEvent');
     otherMessageRef.current = e.channel;
     otherMessageRef.current.onopen = e => {
-      console.log('open!!!!');
-      // otherMessageRef.current.send('Hi There Creator!');
-      messageRef.current.send('Hi There Listener!');
+      console.log('WebRTC DC: open.');
+      joinConnection();
     };
-    otherMessageRef.current.onmessage = e =>
-      console.log('message received!!!' + e.data);
-    console.log(e);
-    otherMessageRef.current.onclose = e => console.log('closed!!!!!!');
+    otherMessageRef.current.onmessage = e => {
+      const messageFromConnection = e.data.toString();
+      console.log('WebRTC DC: message received');
+      messageReceived({
+        message: messageFromConnection,
+        client: false,
+        date: Date.now(),
+      });
+    };
+    otherMessageRef.current.onclose = e => {
+      console.log('WebRTC DC: closed');
+      endConnection();
+    };
   };
 
   useEffect(() => {
     socket.emit('ready');
+
     socket.on('makeOffer', async () => {
       console.log('1.makeOffer');
       await createPeer();
@@ -125,7 +143,6 @@ const Connection = ({ isConnected, userID }) => {
 
     socket.on('relay', payload => {
       const { type, data } = payload;
-      console.log('relay', payload);
       switch (type) {
         case 'offer':
           return handleOffer(data);
@@ -142,8 +159,8 @@ const Connection = ({ isConnected, userID }) => {
   return isConnected ? (
     <div className="connection">
       <Sidebar />
-      <Chat sendMessage={sendMessage} />
-      <Helpbar />
+      {!isVideo ? <Chat sendMessage={sendMessage} /> : <Video />}
+      <Helpbar sendMessage={sendMessage} />
     </div>
   ) : (
     <div className="connection">
@@ -155,66 +172,12 @@ const Connection = ({ isConnected, userID }) => {
 
 const mapStateToProps = state => ({
   isConnected: state.connection.isConnected,
+  isVideo: state.connection.isVideo,
 });
 
-export default connect(mapStateToProps)(Connection);
-
-// const userMedia = () => {
-//   navigator.getUserMedia =
-//     navigator.getUserMedia ||
-//     navigator.webkitGetUserMedia ||
-//     navigator.mozGetUserMedia ||
-//     navigator.msGetUserMedia;
-//   return !!navigator.getUserMedia;
-// };
-
-// if (userMedia()) {
-//   navigator.getUserMedia =
-//     navigator.getUserMedia ||
-//     navigator.webkitGetUserMedia ||
-//     navigator.mozGetUserMedia ||
-//     navigator.msGetUserMedia;
-//   navigator.getUserMedia(
-//     { video: true, audio: true },
-//     function (stream) {
-//       var video = document.querySelector('video');
-
-//       //insert stream into the video tag
-//       video.src = window.URL.createObjectURL(stream);
-//     },
-//     function (err) {}
-//   );
-// } else {
-//   alert('Error. WebRTC is not supported!');
-// }
-// useEffect(() => {
-//   navigator.mediaDevices
-//     .getUserMedia({ audio: true, video: true })
-//     .then(el => console.log(el));
-// }, []);
-
-// useEffect(() => {
-//   const peerConnection = new RTCPeerConnection();
-//   const dataChannel = peerConnection.createDataChannel(
-//     'myChannel',
-//     dataChannelOptions
-//   );
-// }, []);
-
-// socket.on('connect', () => {
-//   console.log('connected with the server');
-//   socket.emit('webRTC_connect', 'HEJ');
-
-//   //mockdata, should be sent from the server upon signaling?
-//   const initiator = true;
-
-//   const connection = new RTCPeerConnection();
-//   // if (initiator) {
-//   //   initiateConnection(connection);
-//   // } else {
-//   //   answeringConnection(connection);
-//   // }
-// });
-
-// RTCPeerConnection.createDataChannel()
-// RTCPeerConnection.close()
+export default connect(mapStateToProps, {
+  messageReceived,
+  messageSent,
+  endConnection,
+  joinConnection,
+})(Connection);
