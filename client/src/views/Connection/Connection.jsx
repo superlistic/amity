@@ -7,6 +7,7 @@ import './Connection.css';
 import Sidebar from '../Sidebar/Sidebar';
 import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
+import Video from './Video/Video';
 import Helpbar from './Helpbar/Helpbar';
 // import { initiateConnection } from '../../webRTC/initiateConnection';
 // import { answeringConnection } from '../../webRTC/answeringConnection';
@@ -19,7 +20,20 @@ const Connection = ({ isConnected, userID }) => {
 
   const createPeer = () => {
     console.log('2.createPeer invoked');
-    const peer = new RTCPeerConnection();
+    const config = {
+      iceServers: [
+        {
+          urls: ['stun:stun.l.google.com:19302'],
+        },
+        {
+          urls: 'turn:numb.viagenie.ca',
+          credential: 'muazkh',
+          username: 'webrtc@live.com',
+        },
+      ],
+    };
+
+    const peer = new RTCPeerConnection(config);
 
     peer.onicecandidate = handleICECandidateEvent;
     peer.ondatachannel = handleDataChannelEvent;
@@ -52,19 +66,19 @@ const Connection = ({ isConnected, userID }) => {
     peerRef.current.setRemoteDescription(description);
   };
 
+  const handleCandidate = data => {
+    console.log('handleCandidate, ICE FOUND?');
+    console.log(data);
+    const candidate = new RTCIceCandidate(data);
+    peerRef.current.addIceCandidate(candidate);
+  };
+
   const handleNegotiationNeededEvent = async () => {
     console.log('5.handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
     socket.emit('relay', { data: localDescription, type: 'offer' });
-  };
-
-  const handleCandidate = data => {
-    console.log('handleCandidate, ICE FOUND?');
-    console.log(data);
-    const candidate = new RTCIceCandidate(data);
-    peerRef.current.addIceCandidate(candidate);
   };
 
   const handleICECandidateEvent = e => {

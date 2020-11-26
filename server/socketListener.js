@@ -1,60 +1,60 @@
 const chalk = require('chalk');
-const user = require('./database/schemas/user');
+const { connection } = require('mongoose');
 const { verifyer } = require('./jwt');
 
 class UserHandler {
   constructor() {
-    this.users = [];
+    this.users = {};
     // TODO haredcoded connection be gone
-    this.connections = [{ id1: 'test-user-id', id2: 'test-user-id2' }];
-    console.log(chalk.magenta('[UserHandler]'), ' created');
+    this.connections = [
+      { id1: 'test-user-id', id2: 'test-user-id2' },
+      { id1: 'test-0', id2: 'test-1' },
+    ];
+    console.log(chalk.magentaBright('[UserHandler]'), 'is created');
   }
-  add(userID, socket) {
-    if (this.users.some(user => user.userID === userID)) {
-      return { userID, socketID: user.socketID };
+  add(userId, socket) {
+    if (this.users[userId]) {
+      console.log(chalk.magentaBright('[UserHandler]'), userId, 'updated');
+    } else {
+      console.log(chalk.magentaBright('[UserHandler]'), userId, 'added');
     }
-    this.users.push({ userID, socketID: socket.id });
-    console.log(chalk.magenta('[UserHandler]'), userID, 'added');
-    console.log(this.users);
-    return { userID, socketID: socket.id };
+    this.users[userId] = { userId, socket };
+    // console.log(this.users);
+    return this.users[userId];
   }
-  remove(socketID) {
-    this.users = this.users.filter(user => {
-      if (user.socketID !== socketID) {
-        return { msg: user.userID + 'removed' };
+  remove(socketId) {
+    for (const key in this.users) {
+      if (this.users.hasOwnProperty(key)) {
+        const element = this.users[socketId];
+        console.log(element);
       }
-      return false;
-    });
-    console.log(chalk.magenta('[UserHandler]'), socketID, 'removed');
+    }
+    console.log(chalk.magentaBright('[UserHandler]'), socketId, 'removed');
   }
-  partnerID(userId) {
-    const connection = this.connections.find(c => {
-      if (c.id1 === userId || c.id2 === userId) {
-        return true;
-      } else false;
-    });
-    if (connection && connection.id1 === userId) {
-      return this.socId(connection.id2);
-    } else if (connection && connection.id2 === userId) {
-      return this.socId(connection.id1);
-    } else return null;
-  }
-  socId(uid) {
-    const user = this.users.find(u => {
-      if (u.userID === uid) return u;
-    });
-    try {
-      return user.socketID;
-    } catch (error) {
-      console.log(chalk.red('socId: no such user'));
+  partnerId(uid) {
+    let conn = this.connections.find(c => c.id1 === uid || c.id2 === uid);
+    if (!conn) {
+      console.log('no partner found');
       return null;
     }
+    if (conn && conn.id1 === uid) {
+      // console.log('1', this.socketId(conn.id2));
+      return this.socketId(conn.id2);
+    }
+    if (conn && conn.id2 === uid) {
+      // console.log('2', this.socketId(conn.id2));
+      return this.socketId(conn.id1);
+    }
+    throw new Error('this should not happen');
   }
-  numUsers() {
-    return this.users.length;
-  }
-  listUsers() {
-    return users;
+
+  socketId(uid) {
+    console.log(uid);
+    if (this.users[uid]) {
+      return this.users[uid].socket.id;
+    } else {
+      console.log(chalk.red('no such user'));
+    }
   }
 }
 
@@ -73,30 +73,25 @@ const websocketListener = server => {
 
   io.on('connection', socket => {
     // console.log(socket);
-    console.log(chalk.bgGreen(chalk.black(handler.numUsers())));
     // TODO this is a HACK
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
-    if (token && token.userID) {
-      const result = handler.add(token.userID, socket);
+    if (token && token.userId) {
+      const result = handler.add(token.userId, socket);
       if (result) {
-        socket.user = result.userID;
-        console.log(chalk.greenBright('Authneticated : ' + token.userID));
+        socket.userId = result.userId;
+        console.log(chalk.greenBright('Authneticated : ' + token.userId));
       } else {
-        console.log(chalk.yellowBright('auth failed: ' + token.userID));
+        console.log(chalk.yellowBright('auth failed: ' + token.userId));
         socket.disconnect();
       }
     }
-    const partnerID = handler.partnerID(socket.user);
-    if (partnerID) {
-      console.log('partner match');
-      io.to(partnerID).emit('partnerMatch', {
-        usersOnline: handler.numUsers,
+    const peerSocketId = handler.partnerId(socket.userId) || null;
+    if (peerSocketId) {
+      console.log('partner matched');
+      io.to(handler.partnerId(socket.userId)).emit('partnerMatch', {
+        msg: 'partner is connected',
       });
     }
-    io.to(handler.socId(socket.user)).emit(
-      'relay',
-      handler.partnerID(socket.user)
-    );
     console.log(
       chalk.blueBright('[socket.io]'),
       chalk.grey(socket.client.id),
@@ -105,12 +100,10 @@ const websocketListener = server => {
     );
 
     socket.on('relay', payload => {
-      console.log('relay from:' + socket.user + ' -> ' + partnerID);
+      const partnerId = handler.partnerId(socket.userId);
+      console.log('relay from:' + socket.userId + ' -> ' + partnerId);
       console.log(payload);
-      io.to(handler.partnerID(socket.user)).emit(
-        'relay',
-        handler.partnerID(socket.user)
-      );
+      io.to(partnerId).emit('relay', payload);
     });
 
     socket.on('disconnect', reason => {
@@ -124,7 +117,6 @@ const websocketListener = server => {
       );
     });
   });
-  return new UserHandler(io);
 };
 
 module.exports = { websocketListener, UserHandler };
