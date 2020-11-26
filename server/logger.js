@@ -21,9 +21,9 @@ const logger = logs => (req, res, next) => {
     chalk.grey(req.id),
     method,
     chalk.green(req.path),
-    // req.body,
-    req.query
-    // req.token.userId || null
+    req.body,
+    req.query,
+    req.token && req.token.userId ? '[uid:' + req.token.userId + ']' : ''
   );
   if (logs) {
     const log = new logs({
@@ -32,8 +32,9 @@ const logger = logs => (req, res, next) => {
         id: req.id,
         method: req.method,
         path: req.path,
-        // body: req.body,
+        body: req.body,
         query: req.query,
+        token: req.token,
         src: req.ip,
       },
     });
