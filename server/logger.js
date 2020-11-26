@@ -22,8 +22,8 @@ const logger = logs => (req, res, next) => {
     method,
     chalk.green(req.path),
     // req.body,
-    req.query,
-    req.token.userId || null
+    req.query
+    // req.token.userId || null
   );
   if (logs) {
     const log = new logs({

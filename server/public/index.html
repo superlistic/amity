@@ -24,33 +24,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io();
-      let peerConnection, dataChannel;
-
-      const relay = () => {
-        const msg = document.querySelector('#username').value;
-        console.log(msg);
-        socket.emit('relay', { msg: msg });
-      };
-      const disconnect = () => {
-        const username = document.querySelector('#username').value;
-        socket.disconnect();
-        $events.appendChild(newItem('disconnected'));
-      };
-      const showDataChannel = () => {
-        const item = document.createElement('li');
-        $events.appendChild(newItem('logged: ' + dataChannel));
-        console.log(dataChannel);
-      };
-      const showlocalConnection = () => {
-        const item = document.createElement('li');
-        $events.appendChild(newItem('logged: ' + peerConnection));
-        console.log(peerConnection);
-      };
-      const sendOnDataChannel = () => {
-        dataChannel.send('imhereMAN!');
-      };
-
+    // HELPER
       const $events = document.getElementById('events');
 
       const newItem = content => {
@@ -58,72 +32,127 @@
         item.innerText = content;
         return item;
       };
+      const log = (msg, data = "") => {
+        $events.appendChild(
+          newItem(msg))
+          console.log(msg,":", data)
+        }
+      const logVerbose = (msg, data = "null") => {
+        $events.appendChild(
+          newItem(msg + data))
+          console.log(msg,":", data)
+        }
 
-      socket.on('connect', () => {
-        $events.appendChild(newItem('connect'));
-        peerConnection = new RTCPeerConnection();
-      });
+      
+      const socket = io();
+      let peerConnection, dataChannel;
 
-      socket.on('partnerMatch', payload => {
+
+      const relay = () => {
+        const msg = document.querySelector('#username').value;
+        socket.emit('relay', {type:"-TEST-", msg: msg });
+        logVerbose("relay: EMIT, ", msg);
+      };
+      
+      const disconnect = () => {
+        const username = document.querySelector('#username').value;
+        socket.disconnect();
+        log("socket.disconnect()")
+      };
+      
+        const showDataChannel = () => {
+        logVerbose('logged:' , dataChannel)
+      };
+      const showlocalConnection = () => {
+        logVerbose('logged:' , peerConnection)
+
+      };
+      const sendOnDataChannel = () => {
+        const msg = document.querySelector('#username').value;
+        dataChannel.send(msg);
+        logVerbose('dataChannel: SEND' , msg)
+
+      };
+
+      const createDataChannel = () =>{
         dataChannel = peerConnection.createDataChannel('messages');
-        dataChannel.onmessage = e => console.log('got message', e.data);
-        dataChannel.onopen = e => console.log('connection opened', e);
-        peerConnection.onicecandidate = e =>
-          console.log('New ICE candidate:', peerConnection.localDescription);
+        dataChannel.onmessage = e => log('got message', e)
+        dataChannel.onopen = e => log('connection opened', e)
+        peerConnection.onicecandidate = e => log('"A"..onicecandidate', e)
+      }
+
+      const setOnDataChannel = () =>{
+        log('setOnDataChannel()')
+        peerConnection.ondatachannel = e => {
+          log('peerConnection: dataChannel',e );
+          dataChannel = e.channel;
+          dataChannel.onmessage = msg => {
+            logVerbose("dataChannel: message",msg);
+          };
+          dataChannel.onopen = e => {
+            log('dataChannel: open',e)
+          };
+        };
+      }
+      socket.on('connect', e => {
+        log('socket: connect', e)
+      });
+      // AWAIT OFFER
+      socket.on('awaitOffer', payload => {
+        $events.innerHTML = "";
+        log('socket: awaitOffer', payload)
+        peerConnection = new RTCPeerConnection()
+        peerConnection.onicecandidate = e => log('"B"..onicecandidate', e);
+        setOnDataChannel(peerConnection);
+      })
+
+      socket.on('makeOffer', payload => {
+        $events.innerHTML = "";
+        log('socket: makeOffer: ', payload)
+        peerConnection = new RTCPeerConnection();
+        setOnDataChannel(peerConnection);
+
         peerConnection
           .createOffer()
           .then(offer => {
-            peerConnection.setLocalDescription(offer);
+            peerConnection.setLocalDescription(offer)
+            .then(()=>{
+            log('offer: SET as local', offer)
             socket.emit('relay', { type: 'offer', data: offer });
+            log('offer: SENT', offer)
           })
-          .catch(err => console.log(err));
-
-        $events.appendChild(
-          newItem('user connected: ' + JSON.stringify(payload))
-        );
+        })
+        .catch(err => log("make offer ERROR",err));
       });
       socket.on('relay', payload => {
         switch (payload.type) {
+          // OFFER
           case 'offer':
-            console.log('got offer', payload.data);
-            peerConnection.onicecandidate = e => {
-              console.log('ice candidate', e);
-              $events.appendChild(
-                newItem('New ICE candidate:', peerConnection.localDescription)
-              );
-            };
-            peerConnection.ondatachannel = e => {
-              dataChannel = e.channel;
-              console.log('ondatachannel');
-              console.log(e.channel);
-              dataChannel.onmessage = msg => {
-                console.log(msg);
-              };
-              dataChannel.onopen = e => {
-                console.log('connection opened');
-                console.log(e);
-              };
-            };
-            peerConnection.setRemoteDescription(payload.data).then(() => {
-              console.log('offer set');
+            log('offer: RECIEVED', payload);
+            peerConnection.setRemoteDescription(payload.data)
+            .then(() => {
+              log('offer: SET as remote', payload.data);
               peerConnection.createAnswer().then(answer => {
-                console.log('answer created');
-                peerConnection.setLocalDescription(answer).then(() => {
-                  console.log('answere set');
+                log('answer: CREATED', answer);
+                peerConnection.setLocalDescription(answer)
+                .then(() => {
+                  log('answere: SET as local', answer);
                   socket.emit('relay', { type: 'answer', data: answer });
+                  log('answere: SENT', answer);
                 });
               });
-            });
+            })
+            .catch(err => log("got offer ERROR",err));
             break;
-
+          // ANSWER
           case 'answer':
-            peerConnection.setRemoteDescription(payload.data);
+            peerConnection.setRemoteDescription(payload.data)
+            .then(()=>log("set answer as remote desc", payload.data));
             break;
 
           default:
             break;
         }
-        $events.appendChild(newItem('relay: ' + JSON.stringify(payload)));
       });
     </script>
   </body>

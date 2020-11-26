@@ -37,19 +37,19 @@ Promise.all([Log(), User()]).then(([logs, users]) => {
   );
 
   // TODO DEBUG
-  // const { signer } = require('./jwt');
-  // let count = 0;
-  // app.get('/jwt/', (req, res) => {
-  //   res.cookie(
-  //     'x-access-token',
-  //     signer({ userId: 'test-' + count++ }, { httpOnly: true })
-  //   );
-  //   res.send('x-access-token');
-  //   console.log(chalk.grey(req.id), chalk.bgGreen('test jwt'), count);
-  // });
+  const { signer } = require('./jwt');
+  let count = 0;
+  app.get('/jwt/', (req, res) => {
+    res.cookie(
+      'x-access-token',
+      signer({ userId: 'test-' + count++ }, { httpOnly: true })
+    );
+    res.send('x-access-token');
+    console.log(chalk.grey(req.id), chalk.bgGreen('test jwt'), count);
+  });
   // TODO DEBUG END
 
-  // app.use(express.static('public'));
+  app.use('/test', express.static('public'));
   app.get('*', (req, res) => {
     // console.log(path.join(__dirname, '../client/build/index.html'));
     res.sendFile(path.join(__dirname, '../client/build/index.html'));

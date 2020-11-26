@@ -9,6 +9,8 @@ class UserHandler {
     this.connections = [
       { id1: 'test-user-id', id2: 'test-user-id2' },
       { id1: 'test-0', id2: 'test-1' },
+      { id1: 'test-2', id2: 'test-3' },
+      { id1: 'test-4', id2: 'test-5' },
     ];
     console.log(
       chalk.yellowBright('[UserHandler]'),
@@ -98,8 +100,11 @@ const websocketListener = server => {
     const peerSocketId = handler.partnerId(socket.userId) || null;
     if (peerSocketId) {
       console.log('partner matched');
-      io.to(handler.partnerId(socket.userId)).emit('partnerMatch', {
-        msg: 'partner is connected',
+      io.to(handler.partnerId(socket.userId)).emit('makeOffer', {
+        msg: 'partner just connected',
+      });
+      socket.emit('awaitOffer', {
+        msg: 'partner asked to send offer',
       });
     }
     console.log(
@@ -112,8 +117,28 @@ const websocketListener = server => {
     socket.on('relay', payload => {
       const partnerId = handler.partnerId(socket.userId);
       console.log('relay from:' + socket.userId + ' -> ' + partnerId);
-      console.log(payload);
+      console.log(payload.type);
       io.to(partnerId).emit('relay', payload);
+    });
+
+    socket.on('ready', payload => {
+      const peerSocketId = handler.partnerId(socket.userId) || null;
+      console.log(chalk.bgRedBright('works'));
+      if (peerSocketId) {
+        console.log('partner matched');
+        io.to(handler.partnerId(socket.userId)).emit('makeOffer', {
+          msg: 'partner just connected',
+        });
+        socket.emit('awaitOffer', {
+          msg: 'partner asked to send offer',
+        });
+      }
+      console.log(
+        chalk.red('[socket.io]'),
+        chalk.grey(socket.client.id),
+        chalk.blue('connected'),
+        chalk.grey(socket.handshake.headers['user-agent'])
+      );
     });
 
     socket.on('disconnect', reason => {
