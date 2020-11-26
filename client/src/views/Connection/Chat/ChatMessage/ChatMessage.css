@@ -38,3 +38,13 @@
   margin-right: 1rem;
   background: var(--color4);
 }
+
+.chat-message__time {
+  color: var(--color2);
+  margin-left: 2rem;
+}
+.chat-message__time-friend {
+  color: var(--color2);
+  align-self: flex-end;
+  margin-right: 2rem;
+}
