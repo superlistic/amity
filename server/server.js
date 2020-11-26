@@ -32,7 +32,7 @@ if (env.DEBUG_NO_MONGO !== '1') {
     app.use('/api/login', loginRouter(users));
   });
 } else {
-  console.log(chalk.bgRed('- DEBUG -'), chalk.red('no mongo db connected'));
+  console.log(chalk.bgRed('- DEBUG -'), chalk.red('mongo db NOT connected'));
   app.use(logger());
 }
 

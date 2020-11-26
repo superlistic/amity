@@ -6,14 +6,20 @@
     <title>be more</title>
   </head>
   <body>
-    <input type="button" value="connect (emit ready)" onClick="connect()" />
-    <input id="username" type="text" />
-    <input type="button" value="emit relay" onClick="relay()" />
-    <input type="button" value="disconnect from socket" onClick="disconnect()" />
+    <input id="username" type="text" value="hello moto" />
+    <input type="button" value="emit ready" onClick="connect()" />
+    <input type="button" value="relay" onClick="relay()" />
+    <input type="button" value="disconnect socket" onClick="disconnect()" />
     <input type="button" value="log dataChannel" onClick="showDataChannel()" />
-    <input type="button" value="log RTCPeerConnection" onClick="showlocalConnection()"/>
-    <input type="button" value="send on datachannel" onClick="sendOnDataChannel()" />
-    <input type="button" value="update rtc stats" onClick="getStats()" />
+    <input type="button" value="add 2:nd channel" onClick="addDataChannel()" />
+    <input
+      type="button"
+      value="rtc connection"
+      onClick="showlocalConnection()"
+    />
+    <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
+    <input type="button" value="2nd-send" onClick="sendOnDataChannel2()" />
+    <input type="button" value="stats" onClick="getStats()" />
     <ul id="events"></ul>
     <div class="stats-box"></div>
 
@@ -36,8 +42,12 @@
         console.log(msg, ' : ', data);
       };
 
+      // GLOBALS
       const socket = io();
-      let peerConnection, dataChannel;
+      let peerConnection;
+      let dataChannel;
+      let dataChannel2;
+
       // RTCPeerConnectionConfig
       const config = {
         iceServers: [
@@ -87,6 +97,11 @@
       const showDataChannel = () => {
         logVerbose('data channel:', dataChannel);
       };
+      const addDataChannel = () => {
+        dataChannel2 = peerConnection.addDataChannel('second channel');
+        attatchDataChannelHandlers(dataChannel2);
+        logVerbose('added dataChannel2:', dataChannel2);
+      };
       const showlocalConnection = () => {
         logVerbose('peer connection:', peerConnection);
       };
@@ -94,6 +109,11 @@
         const msg = document.querySelector('#username').value;
         dataChannel.send(msg);
         logVerbose('webRTC-send: ', msg);
+      };
+      const sendOnDataChannel2 = () => {
+        const msg = document.querySelector('#username').value;
+        dataChannel.send(msg);
+        logVerbose('2nd-send: ', msg);
       };
 
       const attatchDataChannelHandlers = dc => {
@@ -142,7 +162,7 @@
         };
         setOnDataChannel(peerConnection);
       });
-
+      // MAKE OFFER
       socket.on('makeOffer', payload => {
         $events.innerHTML = '';
         log('socket: makeOffer: ', payload);
@@ -164,11 +184,15 @@
             .catch(err => log('make offer ERROR', err));
         });
       });
+      // MATCH UPDATE
+      socket.on('matchUpdate', payload => {
+        logVerbose('match update: ', payload.msg);
+      });
 
+      // RELAY
       socket.on('relay', payload => {
         logVerbose('RELAY: ' + payload.type, payload.data);
         switch (payload.type) {
-          // OFFER
           case 'offer':
             log('offer: RECIEVED', payload);
             peerConnection
@@ -189,7 +213,6 @@
               })
               .catch(err => log('got offer ERROR', err));
             break;
-          // ANSWER
           case 'answer':
             peerConnection.setRemoteDescription(payload.data).then(() => {
               log('answer: SET as remote', payload.data);
