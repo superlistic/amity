@@ -14,9 +14,7 @@ import {
   endConnection,
   joinConnection,
 } from '../../actions/connection';
-
-const socket = io('ws://localhost:3001');
-
+let socket;
 const Connection = ({
   isConnected,
   userID,
@@ -71,13 +69,17 @@ const Connection = ({
     messageRef.current = peerRef.current.createDataChannel('otherMessageRef');
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
-    const localDescription = peerRef.current.localDescription;
-    socket.emit('relay', { data: localDescription, type: 'answer' });
+    socket.emit('relay', { data: answer, type: 'answer' });
   };
+
   const handleAnswer = async sdp => {
     console.log('handleAnswer');
     const description = new RTCSessionDescription(sdp);
+    console.log(sdp);
+    console.log(description);
+    // if (description.candidate !== null) {
     await peerRef.current.setRemoteDescription(description);
+    // }
   };
 
   const handleCandidate = data => {
@@ -130,7 +132,12 @@ const Connection = ({
   };
 
   useEffect(() => {
+    socket = io('ws://localhost:3001');
     socket.emit('ready');
+
+    socket.on('matchUpdate', payload => {
+      console.log(payload);
+    });
 
     socket.on('makeOffer', async () => {
       console.log('1.makeOffer');
@@ -146,6 +153,7 @@ const Connection = ({
 
     socket.on('relay', payload => {
       const { type, data } = payload;
+      console.log('relay', payload);
       switch (type) {
         case 'offer':
           return handleOffer(data);
