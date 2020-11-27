@@ -10,8 +10,10 @@ import {
   DISABLE_AUDIO,
   ENABLE_SOUND,
   DISABLE_SOUND,
+  SET_SUGGESTION,
 } from './types';
 
+//Connection
 export const joinConnection = () => dispatch => {
   dispatch({
     type: CONNECTION_ESTABLISHED,
@@ -25,6 +27,7 @@ export const endConnection = () => dispatch => {
   });
 };
 
+//Message
 export const messageReceived = payload => dispatch => {
   dispatch({
     type: RECEIVED_MESSAGE,
@@ -38,6 +41,16 @@ export const messageSent = payload => dispatch => {
     payload,
   });
 };
+
+//Suggestions
+export const setSuggestion = payload => dispatch => {
+  dispatch({
+    type: SET_SUGGESTION,
+    payload,
+  });
+};
+
+//Video
 export const toggleVideo = payload => dispatch => {
   dispatch({
     type: TOGGLE_VIDEO,

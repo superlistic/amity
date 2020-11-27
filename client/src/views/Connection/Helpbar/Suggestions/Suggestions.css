@@ -15,14 +15,17 @@
 .suggestions__title {
   /* background: var(--color2); */
   color: var(--color2);
+  margin-bottom: 0.5rem;
 }
 .suggestion {
-  height: 2rem;
+  min-height: 2.5rem;
   width: 60%;
   margin: 0 auto;
   background: var(--color2);
-  /* padding-top: 0.5rem; */
+  padding: 0.5rem;
   color: var(--color__white);
   text-align: center;
   cursor: pointer;
+  border-radius: 2rem;
+  word-wrap: break-word;
 }

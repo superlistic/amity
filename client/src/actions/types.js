@@ -17,6 +17,7 @@ export const ENABLE_AUDIO = 'ENABLE_AUDIO';
 export const DISABLE_AUDIO = 'DISABLE_AUDIO';
 export const ENABLE_SOUND = 'ENABLE_SOUND';
 export const DISABLE_SOUND = 'DISABLE_SOUND';
+export const SET_SUGGESTION = 'SET_SUGGESTION';
 
 //User
 export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';

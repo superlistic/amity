@@ -11,7 +11,7 @@ const ChatMessage = ({ message, client }) => {
         </div>
       </div>
       <p className="chat-message__time">
-        {new Date(message.date).toLocaleTimeString()}
+        {`Sent ${new Date(message.date).toLocaleTimeString()}`}
       </p>
     </Fragment>
   ) : (
@@ -25,7 +25,7 @@ const ChatMessage = ({ message, client }) => {
         </div>
       </div>
       <p className="chat-message__time-friend">
-        {new Date(message.date).toLocaleTimeString()}
+        {`Sent ${new Date(message.date).toLocaleTimeString()}`}
       </p>
     </Fragment>
   );
