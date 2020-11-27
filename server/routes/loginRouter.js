@@ -1,24 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const chalk = require('chalk');
+const Jogger = require('../Jogger');
+const log = new Jogger('loginRouter');
 const { signer } = require('../jwt');
 
 const errorHandler = (req, res, err) => {
   res.json({ ok: false, error: err });
-  console.log(
-    chalk.red(req.id),
-    chalk.redBright(err.codeName),
-    chalk.grey(err)
-  );
+  log.err(req.id + err.codeName, err);
 };
 
 const loginRouter = Users => {
-  // state on frontend:
-  // not asked
-  // not logged in
-  // logged in
-  // get: logged in?
-
   // GET
   const getLoggedIn = (req, res) => {
     if (req.token) {
@@ -58,17 +49,16 @@ const loginRouter = Users => {
           res.cookie('x-access-token', signer({ userId: user.userId }), {
             httpOnly: true,
           });
-          console.log(signer({ userId: user.userId }));
           res.status(200);
           res.json({
             ok: true,
             user,
           });
-          console.log(chalk.grey(req.id), chalk.bgGreen('login succeeded'));
+          log.ok('login succeeded', req.id);
         } else {
           res.status(401);
           res.json({ ok: false, message: 'No such user' });
-          console.log(chalk.grey(req.id), chalk.bgRed('login failed'));
+          log.fail('login failed', req.id);
         }
       })
       .catch(err => {

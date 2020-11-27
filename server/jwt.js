@@ -1,32 +1,33 @@
 const secret = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
-const chalk = require('chalk');
 const { env } = process;
 const expiresIn = env.JWT_EXP || '2h';
-console.log(
-  chalk.grey('[jwt verifier] token exp set to', "'" + expiresIn + "'")
-);
+const Jogger = require('./Jogger');
+const log = new Jogger('jwt verifyer');
+
+log.mute('token exp set to ' + expiresIn);
 
 const signer = data => {
-  console.log(data);
   return jwt.sign(data, secret, { expiresIn });
 };
 
+// Return token if valid. otherwise false
 const verifyer = token => {
   if (!token) {
-    console.log(chalk.redBright('[jwt verifier]  -no token- '));
+    log.mute('-no token-');
     return false;
   }
   try {
     const tok = jwt.verify(token, secret);
-    // define required fields here
+    // define required fields below
     if (tok.userId && tok.iat && tok.exp) {
-      console.log(chalk.greenBright('[jwt verifier] -OK- '), tok.userId);
+      log.ok('-OK- ', tok.userId);
       return tok;
     }
-    console.log(chalk.redBright('[jwt verifier]  -malformed token- '));
+    log.err('-malformed token- ');
   } catch (err) {
-    console.log(chalk.redBright('[jwt verifier]', err.name));
+    log.warn(err.name);
+    return false;
   }
 };
 
@@ -34,7 +35,7 @@ const jwtMiddle = (req, res, next) => {
   try {
     req.token = verifyer(req.cookies['x-access-token']);
   } catch (err) {
-    console.log(chalk.redBright('[jwtMiddle]', err.name));
+    log.warn(err.name);
     req.tokenError = err.name;
   }
   next();

@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const chalk = require('chalk');
+const Jogger = require('../Jogger');
+const log = new Jogger('logRoute');
 
 const errorHandler = (req, res, err) => {
-  res.json({ ...err, ok: false }),
-    console.log(
-      chalk.red(req.id),
-      chalk.redBright(err.codeName),
-      chalk.grey(err)
-    );
+  res.json({ ...err, ok: false }), log.err(err.codeName, req.id);
 };
 
 const logRouter = Log => {

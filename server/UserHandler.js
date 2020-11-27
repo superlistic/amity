@@ -1,4 +1,5 @@
-const chalk = require('chalk');
+const Jogger = require('./Jogger');
+const log = new Jogger('UserHandler');
 
 class UserHandler {
   constructor() {
@@ -10,37 +11,25 @@ class UserHandler {
       { id1: 'test-2', id2: 'test-3' },
       { id1: 'test-4', id2: 'test-5' },
     ];
-    console.log(
-      chalk.yellowBright('[UserHandler]'),
-      chalk.yellow('is created')
-    );
+    log.info('is created');
   }
   add(userId, socket) {
-    if (this.users[userId]) {
-      console.log(
-        chalk.yellowBright('[UserHandler]'),
-        userId,
-        chalk.yellow('updated')
-      );
-    } else {
-      console.log(
-        chalk.yellowBright('[UserHandler]'),
-        userId,
-        chalk.yellow('added')
-      );
+    if (!userId || !socket) {
+      throw new Error('add(userId, socket) is missing parameter');
     }
-    this.users[userId] = { userId, socket };
+    if (this.users[userId]) {
+      log.info2('updating', userId);
+    } else {
+      log.info3('adding', userId);
+    }
+    this.users[userId] = { userId, socket, updated: Date.now() };
     return this.users[userId];
   }
   remove(socketId) {
     for (const key in this.users) {
       if (this.users[key].socket.id === socketId) {
         delete this.users[key];
-        console.log(
-          chalk.yellowBright('[UserHandler]'),
-          key,
-          chalk.yellow('removed')
-        );
+        log.info4('removed', key);
       }
     }
   }

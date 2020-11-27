@@ -10,7 +10,9 @@ const { jwtMiddle } = require('./jwt');
 const { logRouter, loginRouter } = require('./routes');
 const { Log, User } = require('./database');
 const { websocketListener } = require('./socketListener');
-const chalk = require('chalk');
+const Jogger = require('./Jogger');
+const debug = new Jogger('DEBUG');
+const elog = new Jogger('express');
 const { env } = process;
 
 // SOCKET.IO
@@ -27,18 +29,11 @@ app.use(jwtMiddle);
 const addStatic = app => {
   // ROUTE FOR OBTAINING SIGNED JWTs
   if (env.DEBUG_JWT_ROUTE === '1') {
-    console.log(
-      chalk.bgRed('- DEBUG -'),
-      chalk.red('../jwt will blindly give verified token')
-    );
+    debug.debug('../jwt will blindly give verified token');
     const { signer } = require('./jwt');
     let count = 0;
     app.get('/jwt/', (req, res) => {
-      console.log(
-        chalk.grey(req.id),
-        chalk.green('given jwt:'),
-        'test-' + count
-      );
+      debug.info(req.id + ' given jwt:', 'test-' + count);
       res.cookie(
         'x-access-token',
         signer({ userId: 'test-' + count++ }, { httpOnly: true })
@@ -48,10 +43,7 @@ const addStatic = app => {
   }
   // ROUTE FOR webRTC TESTING
   if (env.DEBUG_TEST_ROUTE === '1') {
-    console.log(
-      chalk.bgRed('- DEBUG -'),
-      chalk.red('(webRTC-test) is availible at ../test')
-    );
+    debug.debug('(webRTC-test) is availible at ../test');
     app.use('/test', express.static('public'));
   }
 
@@ -62,18 +54,12 @@ const addStatic = app => {
   );
 
   app.get('*', (req, res) => {
-    // console.log(path.join(__dirname, '../client/build/index.html'));
     res.sendFile(path.join(__dirname, env.BUILD_PATH, '/index.html'));
   });
   // SERVER INIT
   server.listen(env.PORT, () => {
-    console.log(
-      chalk.greenBright(`[Express]`),
-      chalk.green('listening to port'),
-      env.PORT + '.',
-      chalk.green('Build path is:'),
-      "'" + env.BUILD_PATH + "'"
-    );
+    elog.ok('listening to port', env.PORT + '.');
+    elog.mute('Build path is: ' + env.BUILD_PATH);
   });
 };
 
@@ -86,11 +72,11 @@ if (env.DEBUG_NO_MONGO !== '1') {
     addStatic(app);
   });
 } else {
-  console.log(chalk.bgRed('- DEBUG -'), chalk.red('mongo db NOT connected'));
+  debug.debug('mongo db NOT connected');
   app.use(logger());
   addStatic(app);
 }
 // HASH
 // const { SHA512 } = require('crypto-js');
 // const sha512 = require('crypto-js/SHA512');
-// console.log(sha512('viktor@styldesign.sepassword').toString());
+// log.info(sha512('viktor@styldesign.sepassword').toString());
