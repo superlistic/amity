@@ -19,10 +19,63 @@ websocketListener(server);
 
 // MIDDLEWARE
 // TODO: REMOVE CORS
-app.use(cors());
+// app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(jwtMiddle);
+
+const addStatic = app => {
+  // ROUTE FOR OBTAINING SIGNED JWTs
+  if (env.DEBUG_JWT_ROUTE === '1') {
+    console.log(
+      chalk.bgRed('- DEBUG -'),
+      chalk.red('../jwt will blindly give verified token')
+    );
+    const { signer } = require('./jwt');
+    let count = 0;
+    app.get('/jwt/', (req, res) => {
+      console.log(
+        chalk.grey(req.id),
+        chalk.green('given jwt:'),
+        'test-' + count
+      );
+      res.cookie(
+        'x-access-token',
+        signer({ userId: 'test-' + count++ }, { httpOnly: true })
+      );
+      res.send('x-access-token');
+    });
+  }
+  // ROUTE FOR webRTC TESTING
+  if (env.DEBUG_TEST_ROUTE === '1') {
+    console.log(
+      chalk.bgRed('- DEBUG -'),
+      chalk.red('(webRTC-test) is availible at ../test')
+    );
+    app.use('/test', express.static('public'));
+  }
+
+  // ROUTES
+  app.use(
+    '/static/',
+    express.static(path.join(__dirname, env.BUILD_PATH, '/static'))
+  );
+
+  app.get('*', (req, res) => {
+    // console.log(path.join(__dirname, '../client/build/index.html'));
+    res.sendFile(path.join(__dirname, env.BUILD_PATH, '/index.html'));
+  });
+  // SERVER INIT
+  server.listen(env.PORT, () => {
+    console.log(
+      chalk.greenBright(`[Express]`),
+      chalk.green('listening to port'),
+      env.PORT + '.',
+      chalk.green('Build path is:'),
+      "'" + env.BUILD_PATH + "'"
+    );
+  });
+};
 
 // INIT
 if (env.DEBUG_NO_MONGO !== '1') {
@@ -30,60 +83,13 @@ if (env.DEBUG_NO_MONGO !== '1') {
     app.use(logger(logs));
     app.use('/api/logs', logRouter(logs));
     app.use('/api/login', loginRouter(users));
+    addStatic(app);
   });
 } else {
   console.log(chalk.bgRed('- DEBUG -'), chalk.red('mongo db NOT connected'));
   app.use(logger());
+  addStatic(app);
 }
-
-// ROUTE FOR OBTAINING SIGNED JWTs
-if (env.DEBUG_JWT_ROUTE === '1') {
-  console.log(
-    chalk.bgRed('- DEBUG -'),
-    chalk.red('../jwt will blindly give verified token')
-  );
-  const { signer } = require('./jwt');
-  let count = 0;
-  app.get('/jwt/', (req, res) => {
-    console.log(chalk.grey(req.id), chalk.green('given jwt:'), 'test-' + count);
-    res.cookie(
-      'x-access-token',
-      signer({ userId: 'test-' + count++ }, { httpOnly: true })
-    );
-    res.send('x-access-token');
-  });
-}
-// ROUTE FOR webRTC TESTING
-if (env.DEBUG_TEST_ROUTE === '1') {
-  console.log(
-    chalk.bgRed('- DEBUG -'),
-    chalk.red('(webRTC-test) is availible at ../test')
-  );
-  app.use('/test', express.static('public'));
-}
-
-// ROUTES
-app.use(
-  '/static/',
-  express.static(path.join(__dirname, env.BUILD_PATH, '/static'))
-);
-
-app.get('*', (req, res) => {
-  // console.log(path.join(__dirname, '../client/build/index.html'));
-  res.sendFile(path.join(__dirname, env.BUILD_PATH, '/index.html'));
-});
-
-// SERVER INIT
-server.listen(env.PORT, () => {
-  console.log(
-    chalk.greenBright(`[Express]`),
-    chalk.green('listening to port'),
-    env.PORT,
-    'build path is ',
-    env.BUILD_PATH
-  );
-});
-
 // HASH
 // const { SHA512 } = require('crypto-js');
 // const sha512 = require('crypto-js/SHA512');

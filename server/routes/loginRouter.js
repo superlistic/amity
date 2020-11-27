@@ -18,7 +18,23 @@ const loginRouter = Users => {
   // not logged in
   // logged in
   // get: logged in?
-  const getLoggedIn = (req, res) => {};
+
+  // GET
+  const getLoggedIn = (req, res) => {
+    if (req.token) {
+      res.status;
+      res.json({
+        status: '200',
+        msg: 'authenticated',
+      });
+    } else {
+      res.status(401);
+      res.json({
+        status: '401',
+        msg: 'NOT authenticated',
+      });
+    }
+  };
   // POST
   const postUser = (req, res) => {
     Users.findOne(
@@ -38,11 +54,12 @@ const loginRouter = Users => {
       }
     )
       .then(user => {
-        if (user) {
+        if (user && user.userId) {
           res.cookie('x-access-token', signer({ userId: user.userId }), {
             httpOnly: true,
           });
           console.log(signer({ userId: user.userId }));
+          res.status(200);
           res.json({
             ok: true,
             user,
@@ -60,8 +77,8 @@ const loginRouter = Users => {
   };
 
   // ROUTES
+  router.get('/', getLoggedIn);
   router.post('/', postUser);
-  router.getLoggedIn('/', getLoggedIn);
   return router;
 };
 module.exports = { loginRouter };

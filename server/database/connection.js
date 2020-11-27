@@ -17,9 +17,7 @@ const connect = async (uri, user, pass, authSource, schemaName, schema) => {
   // console.log(chalk.grey(JSON.stringify(options, null, 2)));
   console.log(
     chalk.yellowBright('[MongoDB]'),
-    chalk.yellow('Connecting to'),
-    uri,
-    chalk.yellow('with'),
+    chalk.yellow('Connecting with'),
     options.user
   );
 

@@ -1,34 +1,38 @@
 const secret = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
 const chalk = require('chalk');
+const expiresIn = 10;
 
-const jwtMiddle = (req, res, next) => {
-  try {
-    req.token = jwt.verify(req.cookies['x-access-token'], secret);
-    // if (req.token.iat) {
-    //   // TODO: check time on jwt
-    // }
-    // console.log(req.token);
-  } catch (err) {
-    console.log(err.name, err.message);
-  }
-  next();
-};
 const signer = data => {
   console.log(data);
-  return jwt.sign(data, secret);
+  return jwt.sign(data, secret, { expiresIn });
 };
 
 const verifyer = token => {
+  if (!token) {
+    console.log(chalk.redBright('[jwt verifier]  -no token- '));
+    return false;
+  }
   try {
     const tok = jwt.verify(token, secret);
-    console.log('-----------------------');
-    console.log(tok);
-    console.log(chalk.greenBright('[jwt verify] -OK- '), tok.userId);
-    return tok;
-  } catch (error) {
-    console.log(chalk.redBright('[jwt verify]  -FAIL- '));
-    // return error;
+    // define required fields here
+    if (tok.userId && tok.iat && tok.exp) {
+      console.log(chalk.greenBright('[jwt verifier] -OK- '), tok.userId);
+      return tok;
+    }
+    console.log(chalk.redBright('[jwt verifier]  -malformed token- '));
+  } catch (err) {
+    console.log(chalk.redBright('[jwt verifier]', err.name));
   }
+};
+
+const jwtMiddle = (req, res, next) => {
+  try {
+    req.token = verifyer(req.cookies['x-access-token']);
+  } catch (err) {
+    console.log(chalk.redBright('[jwtMiddle]', err.name));
+    req.tokenError = err.name;
+  }
+  next();
 };
 module.exports = { jwtMiddle, signer, verifyer };

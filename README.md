@@ -1,17 +1,43 @@
 # Amity incorporated
 
-## Documentation
+## API
 
-### login API
+### login
 
-POST ../api/login
+**POST** /api/login
 
 - expecting body to have 'email' and 'hash'.
 - req.body.email & req.body.hash in 'express speak'.
 - e-mail is normalized to lower case.
 - hash is a SHA512 of email + password (email is salt).
+- if accepted, returns _200, OK_ with body:
+  <pre>{
+    ok:true,
+    user: 
+      {
+        userId: String
+        username: String
+        email: String
+        bio: String
+        tagline: String
+        avatar: String //URL to image
+        callHistory: [Call]
+        settings: Settings //object
+        usedSuggestions: [Suggestion]
+        updated: String //timestamp
+      }
+  }
+  </pre>
+- if not, returns _401, unauthorized_ with body:
+  <pre>{
+    ok: false, 
+    message: 'No such user' 
+  }
+  </pre>
 
-GET ../api/login
+---
+
+**GET** /api/login
 
 - looking for a jwt in cookie 'x-access-token'
 - if _valid_, returns _'200, OK'_ with body:
@@ -24,17 +50,14 @@ GET ../api/login
     'status':'401',
     'msg':'NOT authenticated', 
   }</pre>
-- if _expired_, returns _'401, not authorized'_ with body:
-  <pre>{
-    'status':'401',
-    'msg':'authentication expired', 
-  }</pre>
 
 todo:
 
 - "401 Unauthorized (RFC 7235)
   Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. **The response must include a WWW-Authenticate header field containing a challenge applicable to the requested resource.** See Basic access authentication and Digest access authentication. 401 semantically means "unauthorised", the user does not have valid authentication credentials for the target resource.
   Note: Some sites incorrectly issue HTTP 401 when an IP address is banned from the website (usually the website domain) and that specific address is refused permission to access a website" /wikipedia
+
+---
 
 ## todo:
 

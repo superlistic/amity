@@ -23,7 +23,7 @@ const logger = logs => (req, res, next) => {
     chalk.green(req.path),
     req.body,
     req.query,
-    req.token && req.token.userId ? '[uid:' + req.token.userId + ']' : ''
+    req.token && req.token.userId ? '[userId:' + req.token.userId + ']' : ''
   );
   if (logs) {
     const log = new logs({
