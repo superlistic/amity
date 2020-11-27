@@ -85,14 +85,14 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
   }, []);
 
   const getSuggestion = suggestion => {
-    return <Suggestion suggestion={suggestion[0]} />;
+    return suggestion.map(s => <Suggestion suggestion={suggestion[0]} />);
   };
 
   return (
     <div className="suggestions">
       <hr className="suggestions__divider" />
       <p className="suggestions__title">
-        Click on suggestion to send it in chat
+        Click on a suggestion to send it in chat
       </p>
       {currentSuggestion.length !== 0 ? getSuggestion(currentSuggestion) : ''}
     </div>

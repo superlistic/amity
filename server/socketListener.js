@@ -63,6 +63,8 @@ const websocketListener = server => {
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
+      } else {
+        console.log('ELSE', peerSocketId);
       }
       console.log(
         chalk.red('[sockets]'),

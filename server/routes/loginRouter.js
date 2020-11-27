@@ -33,10 +33,12 @@ const loginRouter = Users => {
     )
       .then(user => {
         if (user) {
-          res.cookie(
-            'x-access-token',
-            signer({ userId: user.userId }, { httpOnly: true })
-          );
+          console.log(user);
+          console.log(user.userId);
+          res.cookie('x-access-token', signer({ userId: user.userId }), {
+            httpOnly: true,
+          });
+          console.log(signer({ userId: user.userId }));
           res.json({
             ok: true,
             user,
