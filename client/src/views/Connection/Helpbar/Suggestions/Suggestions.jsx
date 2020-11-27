@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { connect } from 'react-redux';
 
 import './Suggestions.css';
+import Suggestion from './Suggestion';
 import { suggestionVariant } from '../../../../animations';
+import { setSuggestion } from '../../../../actions/connection';
 
-const Suggestions = ({ sendMessage }) => {
-  const [queuedElement, setQueuedElement] = useState([]);
-  const onHandleSuggestion = suggestion => {
-    console.log(suggestion);
-    sendMessage(suggestion.text);
-    //Send message via WEBRTC here
-    //remove from suggestions?/dont show atleast
-  };
+const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
+  const [queuedElement, setQueuedElement] = useState();
+  console.log(currentSuggestion);
+  // const onHandleSuggestion = suggestion => {
+  //   console.log(suggestion);
+  //   // sendMessage(suggestion.text);
+
+  //   //remove from suggestions?/dont show atleast
+  // };
 
   const listOfSuggestions = [
     {
@@ -32,7 +36,8 @@ const Suggestions = ({ sendMessage }) => {
     },
     {
       id: 5,
-      text: 'What’s your favorite form of social media?',
+      text:
+        'What’s your favorite form of social media (besides Amity ofc ;) )?',
     },
     {
       id: 6,
@@ -40,23 +45,23 @@ const Suggestions = ({ sendMessage }) => {
     },
   ];
 
-  const displaySuggestion = suggestion => {
-    return (
-      <motion.p
-        variants={suggestionVariant}
-        initial="initial"
-        animate="animate"
-        className="suggestion"
-        onClick={() => onHandleSuggestion(suggestion)}
-      >
-        {suggestion.text}
-      </motion.p>
-    );
-  };
+  // const displaySuggestion = suggestion => {
+  //   return (
+  //     <motion.p
+  //       variants={suggestionVariant}
+  //       initial="initial"
+  //       animate="animate"
+  //       className="suggestion"
+  //       onClick={() => onHandleSuggestion(suggestion)}
+  //     >
+  //       {suggestion.text}
+  //     </motion.p>
+  //   );
+  // };
 
-  // function timeout(delay) {
-  //   return new Promise(res => setTimeout(res, delay));
-  // }
+  function timeout(delay) {
+    return new Promise(res => setTimeout(res, delay));
+  }
 
   // const displaySuggestions = async (array) => {
   //   return array.map(el =>  {
@@ -64,26 +69,37 @@ const Suggestions = ({ sendMessage }) => {
   //     displaySuggestion(el)
   //   });
   // }
-  const queue = array => {
-    if (queuedElement.length === 0) {
-      console.log(queuedElement);
-    }
 
-    // return;
+  const queue = async array => {
+    while (array.length > 0) {
+      const suggestion = array.shift();
+      console.log(suggestion);
+      setSuggestion(suggestion.text);
+      // setQueuedElement(<Suggestion suggestion={suggestion.text} />);
+      await timeout(14000);
+    }
   };
 
   useEffect(() => {
-    const element = queue(listOfSuggestions);
+    queue(listOfSuggestions);
   }, []);
+
+  const getSuggestion = suggestion => {
+    return <Suggestion suggestion={suggestion[0]} />;
+  };
 
   return (
     <div className="suggestions">
       <hr className="suggestions__divider" />
-      <h5 className="suggestions__title">Topic Suggestions</h5>
-      <p className="suggestions__title"> Click to send message</p>
-      {displaySuggestion(listOfSuggestions[1])}
+      <p className="suggestions__title">
+        Click on suggestion to send it in chat
+      </p>
+      {currentSuggestion.length !== 0 ? getSuggestion(currentSuggestion) : ''}
     </div>
   );
 };
+const mapStateToProps = state => ({
+  currentSuggestion: state.connection.currentSuggestion,
+});
 
-export default Suggestions;
+export default connect(mapStateToProps, { setSuggestion })(Suggestions);

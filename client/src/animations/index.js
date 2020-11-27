@@ -39,14 +39,15 @@ export const variantLanding = {
 };
 
 export const suggestionVariant = {
-  initial: { opacity: 0, y: '28vh' },
+  initial: { y: '23vh' },
   animate: {
-    opacity: [0, 1, 1, 1, 1, 0],
+    // opacity: [0, 1, 1, 1, 1, 0],
     y: 0,
     transition: {
       // times: [0, 0.2, 1],
       // ease: 'easeInOut',
-      duration: 10,
+      // type:
+      duration: 14,
       when: 'beforeChildren',
       staggerChildren: 0.2,
     },
