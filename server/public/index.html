@@ -6,18 +6,22 @@
     <title>be more</title>
   </head>
   <body>
-    <input id="username" type="text" value="hello moto" />
-    <input type="button" value="emit ready" onClick="connect()" />
-    <input type="button" value="relay" onClick="relay()" />
-    <input type="button" value="disconnect socket" onClick="disconnect()" />
     <input type="button" value="log dataChannel" onClick="showDataChannel()" />
     <input
       type="button"
-      value="rtc connection"
+      value="log peerConnection"
       onClick="showlocalConnection()"
     />
-    <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
     <input type="button" value="stats" onClick="getStats()" />
+    <br />
+    <br />
+    <input id="username" type="text" value="hello moto" />
+    <br />
+    <br />
+    <input type="button" value="emit 'ready'" onClick="connect()" />
+    <input type="button" value="socket relay" onClick="relay()" />
+    <input type="button" value="disconnect socket" onClick="disconnect()" />
+    <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
     <ul id="events"></ul>
     <div class="stats-box"></div>
 
@@ -62,7 +66,7 @@
       const relay = () => {
         const msg = document.querySelector('#username').value;
         socket.emit('relay', { type: '-TEST-', msg: msg });
-        logVerbose('relay: SEND', msg);
+        logVerbose('relay:', msg);
       };
       const connect = () => {
         socket.emit('ready', { type: 'ready', data: null });

@@ -24,9 +24,8 @@ const verifyer = token => {
     console.log(chalk.greenBright('[jwt verify] -OK- '), tok.userId);
     return tok;
   } catch (error) {
-    console.log(chalk.redBright('[jwt verify]  -FAIL- '), tok.userId);
-    console.log(error);
-    return error;
+    console.log(chalk.redBright('[jwt verify]  -FAIL- '));
+    // return error;
   }
 };
 module.exports = { jwtMiddle, signer, verifyer };
