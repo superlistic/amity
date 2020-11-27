@@ -62,7 +62,6 @@ const Connection = ({
   };
 
   const handleOffer = async sdp => {
-    console.log('handleOffer');
     const description = new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
     messageRef.current = peerRef.current.createDataChannel('otherMessageRef');
@@ -72,23 +71,17 @@ const Connection = ({
   };
 
   const handleAnswer = async sdp => {
-    console.log('handleAnswer');
     const description = new RTCSessionDescription(sdp);
-    console.log(sdp);
-    console.log(description);
-    // if (description.candidate !== null) {
     await peerRef.current.setRemoteDescription(description);
-    // }
   };
 
   const handleCandidate = data => {
-    console.log('handleCandidate, ICE FOUND?');
+    console.log('ICE FOUND, RTC successful');
     const candidate = new RTCIceCandidate(data);
     peerRef.current.addIceCandidate(candidate);
   };
 
   const handleNegotiationNeededEvent = async () => {
-    console.log('5.handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
@@ -96,7 +89,6 @@ const Connection = ({
   };
 
   const handleICECandidateEvent = e => {
-    console.log('3.handleICECandidateEvent');
     const { candidate } = e;
     if (candidate) {
       socket.emit('relay', { data: candidate, type: 'candidate' });
@@ -109,7 +101,6 @@ const Connection = ({
   };
 
   const handleDataChannelEvent = e => {
-    console.log('4.handleDataChannelEvent');
     otherMessageRef.current = e.channel;
     otherMessageRef.current.onopen = e => {
       console.log('WebRTC DC: open.');
@@ -140,20 +131,17 @@ const Connection = ({
     });
 
     socket.on('makeOffer', async () => {
-      console.log('1.makeOffer');
       await createPeer();
       await createChannel();
       handleNegotiationNeededEvent();
     });
 
     socket.on('awaitOffer', () => {
-      console.log('1.awaitOffer');
       createPeer();
     });
 
     socket.on('relay', payload => {
       const { type, data } = payload;
-      console.log('relay', payload);
       switch (type) {
         case 'offer':
           return handleOffer(data);
