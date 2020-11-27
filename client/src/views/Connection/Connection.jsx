@@ -31,7 +31,6 @@ const Connection = ({
   // const videoRef = useRef();
   // const otherVideoRef = useRef();
 
-  console.log('RENDER');
   const createPeer = () => {
     console.log('2.createPeer invoked');
     const config = {

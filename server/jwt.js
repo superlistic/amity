@@ -15,12 +15,15 @@ const jwtMiddle = (req, res, next) => {
   next();
 };
 const signer = data => {
+  console.log(data);
   return jwt.sign(data, secret);
 };
 
 const verifyer = token => {
   try {
     const tok = jwt.verify(token, secret);
+    console.log('-----------------------');
+    console.log(tok);
     console.log(chalk.greenBright('[jwt verify] -OK- '), tok.userId);
     return tok;
   } catch (error) {
