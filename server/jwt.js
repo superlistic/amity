@@ -1,7 +1,11 @@
 const secret = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
 const chalk = require('chalk');
-const expiresIn = 10;
+const { env } = process;
+const expiresIn = env.JWT_EXP || '2h';
+console.log(
+  chalk.grey('[jwt verifier] token exp set to', "'" + expiresIn + "'")
+);
 
 const signer = data => {
   console.log(data);
