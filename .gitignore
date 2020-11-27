@@ -105,3 +105,7 @@ dist
 
 # ENV
 .env
+
+# Docker w/ env
+Dockerfile
+server/build/

@@ -23,7 +23,8 @@
     "nodemon": "^2.0.6"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "prod": "node server.js"
   },
   "bugs": {
     "url": "https://github.com/superlistic/togetherness/issues"

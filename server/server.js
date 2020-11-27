@@ -65,12 +65,12 @@ if (env.DEBUG_TEST_ROUTE === '1') {
 // ROUTES
 app.use(
   '/static/',
-  express.static(path.join(__dirname, '../client/build/static'))
+  express.static(path.join(__dirname, env.BUILD_PATH, '/static'))
 );
 
 app.get('*', (req, res) => {
   // console.log(path.join(__dirname, '../client/build/index.html'));
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, env.BUILD_PATH, '/index.html'));
 });
 
 // SERVER INIT
@@ -78,7 +78,9 @@ server.listen(env.PORT, () => {
   console.log(
     chalk.greenBright(`[Express]`),
     chalk.green('listening to port'),
-    env.PORT
+    env.PORT,
+    'build path is ',
+    env.BUILD_PATH
   );
 });
 

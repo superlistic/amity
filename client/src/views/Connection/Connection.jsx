@@ -131,7 +131,8 @@ const Connection = ({
   };
 
   useEffect(() => {
-    socket = io('ws://localhost:3001');
+    // socket = io('ws://localhost:3001');
+    socket = io();
     socket.emit('ready');
 
     socket.on('matchUpdate', payload => {

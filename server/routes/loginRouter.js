@@ -13,6 +13,12 @@ const errorHandler = (req, res, err) => {
 };
 
 const loginRouter = Users => {
+  // state on frontend:
+  // not asked
+  // not logged in
+  // logged in
+  // get: logged in?
+  const getLoggedIn = (req, res) => {};
   // POST
   const postUser = (req, res) => {
     Users.findOne(
@@ -33,8 +39,6 @@ const loginRouter = Users => {
     )
       .then(user => {
         if (user) {
-          console.log(user);
-          console.log(user.userId);
           res.cookie('x-access-token', signer({ userId: user.userId }), {
             httpOnly: true,
           });
@@ -57,6 +61,7 @@ const loginRouter = Users => {
 
   // ROUTES
   router.post('/', postUser);
+  router.getLoggedIn('/', getLoggedIn);
   return router;
 };
 module.exports = { loginRouter };
