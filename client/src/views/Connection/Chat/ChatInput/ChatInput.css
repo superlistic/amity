@@ -2,6 +2,7 @@
   /* margin: 1rem; */
   /* padding-top: 1rem; */
   /* background-color: var(--color2); */
+  position: sticky;
   border-radius: 1rem;
   height: 80%;
   width: 80%;

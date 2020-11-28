@@ -3,6 +3,7 @@ import {
   LOGIN_ERROR,
   LOGOUT_SUCCESS,
   AUTH_USER,
+  AUTH_CHECK,
 } from '../actions/types';
 
 // token:
@@ -15,7 +16,7 @@ const initState = {
 };
 
 export default function auth(state = initState, action) {
-  // console.log(state, action);
+  console.log(state, action);
   const { type, payload } = action;
   switch (type) {
     case LOGIN_SUCCESS:
@@ -23,7 +24,7 @@ export default function auth(state = initState, action) {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload,
+        user: payload.data.user,
       };
 
     case LOGIN_ERROR:
@@ -46,6 +47,13 @@ export default function auth(state = initState, action) {
         isAuthenticated: true,
         loading: false,
         user: payload,
+      };
+    case AUTH_CHECK:
+      return {
+        ...state,
+        isAuthenticated: payload.isAuthenticated,
+        loading: false,
+        user: payload.user,
       };
 
     default:

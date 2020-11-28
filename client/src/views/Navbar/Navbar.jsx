@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import './Navbar.css';
 import { logOut } from '../../actions/auth';
 
-const Navbar = ({ isAuthenticated, logOut }) => {
+const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
+  console.log(user);
   const NAV_LINKS = {
     true: (
       <div className="navbar__container--authenticated">
@@ -21,6 +22,7 @@ const Navbar = ({ isAuthenticated, logOut }) => {
         </NavLink>
 
         <div className="navbar__actions">
+          <p>{user && user.username}</p>
           <NavLink to="/settings" className="navbar__settings">
             <span class="material-icons navbar__settings__span">settings</span>
           </NavLink>
@@ -63,6 +65,7 @@ const Navbar = ({ isAuthenticated, logOut }) => {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, { logOut })(Navbar);

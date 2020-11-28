@@ -9,7 +9,7 @@ import { setSuggestion } from '../../../../actions/connection';
 
 const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
   const [queuedElement, setQueuedElement] = useState();
-  console.log(currentSuggestion);
+  // console.log(currentSuggestion);
   // const onHandleSuggestion = suggestion => {
   //   console.log(suggestion);
   //   // sendMessage(suggestion.text);
@@ -73,7 +73,7 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
   const queue = async array => {
     while (array.length > 0) {
       const suggestion = array.shift();
-      console.log(suggestion);
+      // console.log(suggestion);
       setSuggestion(suggestion.text);
       // setQueuedElement(<Suggestion suggestion={suggestion.text} />);
       await timeout(14000);
@@ -85,7 +85,9 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
   }, []);
 
   const getSuggestion = suggestion => {
-    return suggestion.map(s => <Suggestion suggestion={suggestion[0]} />);
+    return suggestion.map(s => (
+      <Suggestion sendMessage={sendMessage} suggestion={suggestion[0]} />
+    ));
   };
 
   return (

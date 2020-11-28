@@ -9,10 +9,13 @@ import {
   ENABLE_SOUND,
   DISABLE_SOUND,
   SET_SUGGESTION,
+  ACCEPT_COMMUNICATION,
+  DENY_COMMUNICATION,
 } from '../actions/types';
 
 const initState = {
-  isConnected: true,
+  isConnected: false,
+  communicationAccepted: false,
   messages: [],
   isVideo: false,
   currentSuggestion: [],
@@ -28,12 +31,24 @@ export default function connection(state = initState, action) {
         ...state,
         isConnected: true,
       };
+    case DENY_COMMUNICATION:
     case CONNECTION_ENDED:
       return {
         ...state,
         isConnected: false,
+        communicationAccepted: false,
         messages: [],
       };
+    case ACCEPT_COMMUNICATION:
+      return {
+        ...state,
+        communicationAccepted: true,
+      };
+    // case DENY_COMMUNICATION:
+    //   return {
+    //     ...state,
+    //     communicationAccepted: false,
+    //   };
     //Message
     case SENT_MESSAGE:
     case RECEIVED_MESSAGE:

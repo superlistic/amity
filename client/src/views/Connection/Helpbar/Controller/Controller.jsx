@@ -2,14 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import './Controller.css';
-import {
-  endConnection,
-  toggleVideo,
-  disableVideo,
-} from '../../../../actions/connection';
+import { toggleVideo, disableVideo } from '../../../../actions/connection';
 
 const Controller = ({
-  endConnection,
+  disconnectConnection,
   isConnected,
   toggleVideo,
   disableVideo,
@@ -31,7 +27,7 @@ const Controller = ({
   };
   const onExitChat = () => {
     console.log('ExitChat icon clicked!');
-    endConnection();
+    disconnectConnection();
   };
 
   return (
@@ -73,7 +69,6 @@ const mapStateToProps = state => ({
 
 //connect to redux, Get name/profile of other person in connection.
 export default connect(mapStateToProps, {
-  endConnection,
   toggleVideo,
   // disableVideo,
 })(Controller);

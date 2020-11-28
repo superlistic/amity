@@ -11,19 +11,31 @@ import {
   ENABLE_SOUND,
   DISABLE_SOUND,
   SET_SUGGESTION,
+  ACCEPT_COMMUNICATION,
+  DENY_COMMUNICATION,
 } from './types';
 
 //Connection
-export const joinConnection = () => dispatch => {
+export const setConnectionEstablished = () => dispatch => {
   dispatch({
     type: CONNECTION_ESTABLISHED,
-    //   payload: id,
   });
 };
-export const endConnection = () => dispatch => {
+export const setConnectionEnded = () => dispatch => {
+  //Send socket message to BE that connection is ended? For new matches and so forth :)
   dispatch({
     type: CONNECTION_ENDED,
-    //   payload: id,
+  });
+};
+export const acceptConnection = () => dispatch => {
+  dispatch({
+    type: ACCEPT_COMMUNICATION,
+  });
+};
+//Send socket message to BE that connection is denied? For new matches and so forth :)
+export const denyConnection = () => dispatch => {
+  dispatch({
+    type: DENY_COMMUNICATION,
   });
 };
 
