@@ -10,7 +10,7 @@ import {
 const initState = {
   authenticated: '',
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   user: null,
   errorMessage: '',
 };
@@ -51,9 +51,9 @@ export default function auth(state = initState, action) {
     case AUTH_CHECK:
       return {
         ...state,
-        isAuthenticated: payload.isAuthenticated,
+        isAuthenticated: true,
         loading: false,
-        user: payload.user,
+        user: payload.data.user,
       };
 
     default:
