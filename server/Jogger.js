@@ -20,10 +20,10 @@ class Jogger {
     console.log(this.identifier, msg, plain);
   }
   info(msg = '', plain = '') {
-    console.log(this.identifier, msg, plain);
+    console.log(this.identifier, chalk.cyanBright(msg), plain);
   }
   info2(msg = '', plain = '') {
-    console.log(this.identifier, chalk.cyanBright(msg), plain);
+    console.log(chalk.blue(this.identifier), chalk.blueBright(msg), plain);
   }
   info3(msg = '', plain = '') {
     console.log(
@@ -31,9 +31,6 @@ class Jogger {
       chalk.magentaBright(msg),
       plain
     );
-  }
-  info4(msg = '', plain = '') {
-    console.log(chalk.blue(this.identifier), chalk.blueBright(msg), plain);
   }
   debug(msg = '', plain = '') {
     console.log(

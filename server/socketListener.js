@@ -23,12 +23,12 @@ const websocketListener = server => {
   io.on('connection', socket => {
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
     if (!token) {
-      log.warn('unverified connection rejected', socket.id);
+      log.warn('rejected', socket.id);
       socket.disconnect();
       return;
     }
-    log.mute('connect', socket.client.id);
-    // log.mute(socket.handshake.headers['user-agent']);
+    log.ok('connect', socket.client.id);
+    log.mute(socket.handshake.headers['user-agent']);
     const result = handler.addUser(token.userId, socket);
 
     if (result) {
@@ -55,9 +55,9 @@ const websocketListener = server => {
 
     socket.on('ready', () => {
       const match = handler.match(socket.userId) || null;
-      log.mute('"ready" recieved');
+      log.ok('"ready" recieved');
       if (match) {
-        log.mute('partner matched');
+        log.ok('partner matched');
         io.to(handler.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
@@ -75,7 +75,7 @@ const websocketListener = server => {
         msg: '[socket] partner disconnected',
       });
 
-      log.mute('disconnected', socket.id), log.mute(reason);
+      log.info('disconnected', socket.id), log.mute(reason);
     });
   });
 };
