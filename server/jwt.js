@@ -28,7 +28,7 @@ const verifyer = token => {
     log.err('-malformed token- ');
   } catch (err) {
     log.warn(err.name);
-    return false;
+    throw err;
   }
 };
 
@@ -36,7 +36,7 @@ const jwtMiddle = (req, res, next) => {
   try {
     req.token = verifyer(req.cookies['x-access-token']);
   } catch (err) {
-    log.warn(err.name);
+    // log.warn(err.name);
     req.tokenError = err.name;
   }
   next();

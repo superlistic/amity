@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const chalk = require('chalk');
 const Jogger = require('../Jogger');
-const log = new Jogger('loginRouter');
+const log = new Jogger(chalk.magenta('[loginRouter]'));
 const { signer } = require('../jwt');
 
 const errorHandler = (req, res, err) => {
@@ -12,7 +13,6 @@ const errorHandler = (req, res, err) => {
 const loginRouter = Users => {
   // GET
   const getLoggedIn = (req, res) => {
-    log.debug('get login');
     if (req.token) {
       res.status(200);
       Users.findOne(
@@ -32,9 +32,7 @@ const loginRouter = Users => {
         }
       )
         .then(user => {
-          log.debug('findOne.then', user);
           if (user && user.userId) {
-            log.debug('found');
             res.cookie('x-access-token', signer({ userId: user.userId }), {
               httpOnly: true,
             });
@@ -45,8 +43,6 @@ const loginRouter = Users => {
             });
             log.ok('login succeeded', req.id);
           } else {
-            log.debug('not found');
-
             res.status(401);
             res.json({ ok: false, message: 'No such user' });
             log.fail('get user failed', req.id);
@@ -65,6 +61,8 @@ const loginRouter = Users => {
   };
   // POST
   const postUser = (req, res) => {
+    // const normalizedEmail = req.body.email.toLowerCase();
+    // TODO this
     Users.findOne(
       { email: req.body.email, passwordHash: req.body.hash },
       {
