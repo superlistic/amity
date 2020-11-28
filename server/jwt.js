@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const { env } = process;
 const expiresIn = env.JWT_EXP || '2h';
 const Jogger = require('./Jogger');
-const log = new Jogger('jwt verifyer');
+const chalk = require('chalk');
+const log = new Jogger(chalk.green('[jwt verifyer]'));
 
 log.mute('token exp set to ' + expiresIn);
 

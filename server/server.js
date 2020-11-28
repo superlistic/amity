@@ -11,8 +11,9 @@ const { logRouter, loginRouter } = require('./routes');
 const { Log, User } = require('./database');
 const { websocketListener } = require('./socketListener');
 const Jogger = require('./Jogger');
-const debug = new Jogger('DEBUG');
-const elog = new Jogger('express');
+const chalk = require('chalk');
+const debug = new Jogger();
+const elog = new Jogger(chalk.yellow('[express]'));
 const { env } = process;
 
 // SOCKET.IO
