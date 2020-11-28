@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
+// const cors = require('cors');
 const path = require('path');
 const { logger } = require('./logger');
 const { jwtMiddle } = require('./jwt');
@@ -58,8 +58,8 @@ const addStatic = app => {
   });
   // SERVER INIT
   server.listen(env.PORT, () => {
-    elog.ok('listening to port', env.PORT + '.');
     elog.mute('Build path is: ' + env.BUILD_PATH);
+    elog.ok('listening to port', env.PORT + '.');
   });
 };
 
@@ -76,6 +76,13 @@ if (env.DEBUG_NO_MONGO !== '1') {
   app.use(logger());
   addStatic(app);
 }
+class Client {
+  constructor(uid, socket) {
+    this.userId = uid;
+    this.socket = socket;
+  }
+}
+
 // HASH
 // const { SHA512 } = require('crypto-js');
 // const sha512 = require('crypto-js/SHA512');

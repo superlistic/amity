@@ -1,9 +1,9 @@
 const { verifyer } = require('./jwt');
-const UserHandler = require('./UserHandler');
+const { SessionHandler, Session, Client } = require('./SessionHandler');
 const Jogger = require('./Jogger');
 const log = new Jogger('socket');
 
-// TODO - remove filthy hack
+// TODO - make better
 const cookieParse = c => {
   if (typeof c === 'string') {
     let res = c.split('x-access-token=');
@@ -13,7 +13,8 @@ const cookieParse = c => {
 
 const websocketListener = server => {
   const io = require('socket.io')(server);
-  const handler = new UserHandler();
+  const sessionHandler = new SessionHandler();
+  const debugSession = sessionHandler.create(['test-user-id', 'test-user-id2']);
 
   io.on('connection', socket => {
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
@@ -22,18 +23,18 @@ const websocketListener = server => {
       socket.disconnect();
       return;
     }
-    log.info3('connected', socket.client.id);
+    log.info3('connect', socket.client.id);
     log.mute(socket.handshake.headers['user-agent']);
-    const result = handler.add(token.userId, socket);
+    const result = sessionHandler.addClient(new Client(token.userId, socket));
 
     if (result) {
       socket.userId = result.userId;
     }
 
     // check if partner online
-    const peerSocketId = handler.partnerId(socket.userId) || null;
+    const peerSocketId = sessionHandler.match(socket.userId) || null;
     if (peerSocketId) {
-      io.to(handler.partnerId(socket.userId)).emit('matchUpdate', {
+      io.to(sessionHandler.partnerId(socket.userId)).emit('matchUpdate', {
         msg: '[socket] partner just connected',
       });
       socket.emit('matchUpdate', {
@@ -42,7 +43,7 @@ const websocketListener = server => {
     }
 
     socket.on('relay', payload => {
-      const partnerId = handler.partnerId(socket.userId);
+      const partnerId = sessionHandler.partnerId(socket.userId);
       log.mute(
         `relaying ${payload.type} ` + socket.userId + ' -> ' + partnerId
       );
@@ -50,11 +51,11 @@ const websocketListener = server => {
     });
 
     socket.on('ready', payload => {
-      const peerSocketId = handler.partnerId(socket.userId) || null;
+      const peerSocketId = sessionHandler.partnerId(socket.userId) || null;
       log.info2('"ready" recieved');
       if (peerSocketId) {
         log.info3('partner matched');
-        io.to(handler.partnerId(socket.userId)).emit('makeOffer', {
+        io.to(sessionHandler.partnerId(socket.userId)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
         socket.emit('awaitOffer', {
@@ -66,8 +67,8 @@ const websocketListener = server => {
     });
 
     socket.on('disconnect', reason => {
-      handler.remove(socket.id);
-      io.to(handler.partnerId(socket.userId)).emit('matchUpdate', {
+      sessionHandler.remove(socket.id);
+      io.to(sessionHandler.partnerId(socket.userId)).emit('matchUpdate', {
         msg: '[socket] partner disconnected',
       });
 
@@ -76,4 +77,4 @@ const websocketListener = server => {
   });
 };
 
-module.exports = { websocketListener, UserHandler };
+module.exports = { websocketListener, UserHandler: SessionHandler };

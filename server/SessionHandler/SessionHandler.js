@@ -1,31 +1,31 @@
-const Jogger = require('./Jogger');
-const log = new Jogger('UserHandler');
+const Jogger = require('../Jogger');
+const log = new Jogger('SessionHanlder');
+const uuid = require('uuid');
 
-class UserHandler {
+class SessionHandler {
   constructor() {
     this.users = {};
     // TODO haredcoded connection be gone
-    this.connections = [
-      { id1: 'test-user-id', id2: 'test-user-id2' },
-      { id1: 'test-0', id2: 'test-1' },
-      { id1: 'test-2', id2: 'test-3' },
-      { id1: 'test-4', id2: 'test-5' },
+    this.sessions = [
+      ['test-user-id', 'test-user-id2'],
+      ['test-0', 'test-1'],
+      ['test-2', 'test-3'],
+      ['test-4', 'test-5'],
     ];
-    log.info('is created');
   }
-  add(userId, socket) {
+  addUser(userId, socket) {
     if (!userId || !socket) {
-      throw new Error('add(userId, socket) is missing parameter');
+      throw Error('missing parameter');
     }
     if (this.users[userId]) {
       log.info2('updating', userId);
     } else {
       log.info3('adding', userId);
     }
-    this.users[userId] = { userId, socket, updated: Date.now() };
+    this.users[userId] = { userId, socket };
     return this.users[userId];
   }
-  remove(socketId) {
+  removeUserBySocket(socketId) {
     for (const key in this.users) {
       if (this.users[key].socket.id === socketId) {
         delete this.users[key];
@@ -33,8 +33,15 @@ class UserHandler {
       }
     }
   }
+
+  create(listUsers) {
+    log.debug('create');
+    this.sessions.push(listUsers);
+    return session;
+  }
+
   partnerId(uid) {
-    let conn = this.connections.find(c => c.id1 === uid || c.id2 === uid);
+    let conn = this.debugSessions.find(c => c.id1 === uid || c.id2 === uid);
     if (!conn) {
       return null;
     }
@@ -44,7 +51,7 @@ class UserHandler {
     if (conn && conn.id2 === uid) {
       return this.socketId(conn.id1);
     }
-    throw new Error('this should not happen');
+    throw Error('this should not happen');
   }
 
   socketId(uid) {
@@ -55,4 +62,4 @@ class UserHandler {
     }
   }
 }
-module.exports = UserHandler;
+module.exports = SessionHandler;
