@@ -13,6 +13,9 @@ class Jogger {
   warn(msg = '', plain = '') {
     console.log(this.identifier, chalk.yellowBright(msg), plain);
   }
+  fail(msg = '', plain = '') {
+    console.log(this.identifier, chalk.red(msg), plain);
+  }
   mute(msg = '', plain = '') {
     console.log(this.identifier, chalk.grey(msg), plain);
   }

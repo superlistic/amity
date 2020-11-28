@@ -12,12 +12,49 @@ const errorHandler = (req, res, err) => {
 const loginRouter = Users => {
   // GET
   const getLoggedIn = (req, res) => {
+    log.debug('get login');
     if (req.token) {
-      res.status;
-      res.json({
-        status: '200',
-        msg: 'authenticated',
-      });
+      res.status(200);
+      Users.findOne(
+        { userId: req.token.userId },
+        {
+          _id: 0,
+          userId: 1,
+          username: 1,
+          email: 1,
+          bio: 1,
+          tagline: 1,
+          avatar: 1,
+          callHistory: 1,
+          settings: 1,
+          usedSuggestions: 1,
+          updated: 1,
+        }
+      )
+        .then(user => {
+          log.debug('findOne.then', user);
+          if (user && user.userId) {
+            log.debug('found');
+            res.cookie('x-access-token', signer({ userId: user.userId }), {
+              httpOnly: true,
+            });
+            res.status(200);
+            res.json({
+              ok: true,
+              user,
+            });
+            log.ok('login succeeded', req.id);
+          } else {
+            log.debug('not found');
+
+            res.status(401);
+            res.json({ ok: false, message: 'No such user' });
+            log.fail('get user failed', req.id);
+          }
+        })
+        .catch(err => {
+          errorHandler(req, res, err);
+        });
     } else {
       res.status(401);
       res.json({
