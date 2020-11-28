@@ -5,6 +5,8 @@ import {
   LOGOUT_SUCCESS,
   AUTH_USER,
   AUTH_ERROR,
+  AUTH_CHECK,
+  CONNECTION_ENDED,
 } from './types';
 const axios = require('axios');
 
@@ -52,7 +54,32 @@ export const register = ({ name, email, password }) => async dispatch => {
   }
 };
 export const logOut = () => async dispatch => {
+  //skicka info till BE?
+  //Samt se till så att connection avslutas om det finns.
   dispatch({
     type: LOGOUT_SUCCESS,
   });
+  //Behöver ändras till att verkligen stänga ned WebRTC connection, men ska förstå hur jag kan göra det på bästa sätt från sibling components först.
+  dispatch({
+    type: CONNECTION_ENDED,
+  });
+};
+
+export const checkAuth = () => async dispatch => {
+  //api req GET and store response/user in state ;)
+  // dispatch({
+  //   type: AUTH_CHECK,
+  //   payload: { user: null, isAuthenticated: false },
+  // });
+  // try {
+  //   const res = await axios.get('/api/login');
+  //   dispatch({
+  //     type: AUTH_CHECK,
+  //     // payload: res,
+  //     //Ändra sen när vi får user
+  //     payload: { user: null, isAuthenticated: true },
+  //   });
+  // } catch (e) {
+  //   console.log(e);
+  // }
 };

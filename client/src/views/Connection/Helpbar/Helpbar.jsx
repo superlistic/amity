@@ -12,13 +12,13 @@ const friend = {
   img: '',
 };
 
-const Helpbar = ({ sendMessage }) => {
+const Helpbar = ({ sendMessage, disconnectConnection }) => {
   return (
     <div className="helpbar">
       <p className="helpbar__title">You have connected with..</p>
       <FriendProfile friend={friend} />
       <Suggestions sendMessage={sendMessage} />
-      <Controller />
+      <Controller disconnectConnection={disconnectConnection} />
     </div>
   );
 };

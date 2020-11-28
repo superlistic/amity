@@ -1,4 +1,6 @@
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './App.css';
 import AuthOnlyRoute from './routes/AuthOnlyRoute';
@@ -10,8 +12,14 @@ import Login from './views/Auth/Login/Login';
 import Connection from './views/Connection/Connection';
 import ErrorComponent from './views/ErrorComponent/ErrorComponent';
 import Settings from './views/Settings/Settings';
+import { checkAuth } from './actions/auth';
 
-const App = () => {
+const App = ({ checkAuth }) => {
+  useEffect(() => {
+    console.log('APP RENDERING (useEffect)');
+    checkAuth();
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -30,4 +38,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect(null, { checkAuth })(App);

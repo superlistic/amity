@@ -28,7 +28,8 @@
 .chat-message__text {
   text-align: start;
   font-size: 0.9rem;
-  word-wrap: break-word;
+  /* word-wrap: break-word; */
+  word-break: break-all;
   margin: 0.3rem;
   margin-right: 1rem;
 }

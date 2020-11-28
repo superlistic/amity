@@ -13,7 +13,7 @@ const Landing = () => {
         <div className="fullscreen-video-wrap">
           <video
             src="./static/landingVideo.mp4"
-            autoplay="true"
+            autoPlay
             loop
             muted
             height="66vh"

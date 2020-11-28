@@ -8,11 +8,12 @@ import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
 import Video from './Video/Video';
 import Helpbar from './Helpbar/Helpbar';
+import { createPeer } from '../../WebRTC/WebRTC';
 import {
   messageReceived,
   messageSent,
-  endConnection,
-  joinConnection,
+  setConnectionEnded,
+  setConnectionEstablished,
 } from '../../actions/connection';
 let socket;
 const Connection = ({
@@ -20,75 +21,59 @@ const Connection = ({
   userID,
   messageReceived,
   messageSent,
-  endConnection,
-  joinConnection,
+  setConnectionEnded,
+  setConnectionEstablished,
   isVideo,
+  communicationAccepted,
 }) => {
+  // const socket = io();
+
   const peerRef = useRef();
-  const messageRef = useRef();
-  const otherMessageRef = useRef();
+  const sendDataChannel = useRef();
+  const receiveDataChannel = useRef();
   // const localVideo = useRef();
   // const videoRef = useRef();
   // const otherVideoRef = useRef();
 
-  const createPeer = () => {
-    console.log('2.createPeer invoked');
-    const config = {
-      iceServers: [
-        {
-          urls: ['stun:stun.l.google.com:19302'],
-        },
-        {
-          urls: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-      ],
-    };
-
-    const peer = new RTCPeerConnection(config);
-    peer.onicecandidate = handleICECandidateEvent;
-    peer.ondatachannel = handleDataChannelEvent;
-    peerRef.current = peer;
-  };
-
   const createChannel = () => {
     console.log('Create CHANNEL');
-    messageRef.current = peerRef.current.createDataChannel('messageRef');
-    messageRef.current.onopen = e => console.log('open!!!!');
-    messageRef.current.onmessage = e =>
+    sendDataChannel.current = peerRef.current.createDataChannel(
+      'sendDataChannel'
+    );
+    sendDataChannel.current.onopen = e => console.log('open!!!!');
+    sendDataChannel.current.onmessage = e =>
       console.log('messsage received!!!' + e.data);
-    messageRef.current.onclose = e => console.log('closed!!!!!!');
+    sendDataChannel.current.onclose = e => console.log('closed!!!!!!');
   };
 
   const handleOffer = async sdp => {
     console.log('handleOffer');
-    const description = new RTCSessionDescription(sdp);
+    const description = await new RTCSessionDescription(sdp);
+    console.log(sdp);
+    console.log(peerRef.current);
     await peerRef.current.setRemoteDescription(description);
-    messageRef.current = peerRef.current.createDataChannel('otherMessageRef');
+    console.log(peerRef.current);
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
+    sendDataChannel.current = peerRef.current.createDataChannel(
+      'receiveDataChannel'
+    );
     socket.emit('relay', { data: answer, type: 'answer' });
   };
 
   const handleAnswer = async sdp => {
     console.log('handleAnswer');
-    const description = new RTCSessionDescription(sdp);
-    console.log(sdp);
-    console.log(description);
-    // if (description.candidate !== null) {
+    const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
-    // }
   };
 
   const handleCandidate = data => {
-    console.log('handleCandidate, ICE FOUND?');
+    console.log('ICE FOUND, RTC successful');
     const candidate = new RTCIceCandidate(data);
     peerRef.current.addIceCandidate(candidate);
   };
 
   const handleNegotiationNeededEvent = async () => {
-    console.log('5.handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
@@ -96,42 +81,57 @@ const Connection = ({
   };
 
   const handleICECandidateEvent = e => {
-    console.log('3.handleICECandidateEvent');
+    console.log('handleICECandidateEvent');
     const { candidate } = e;
     if (candidate) {
       socket.emit('relay', { data: candidate, type: 'candidate' });
     }
   };
 
+  const disconnectConnection = () => {
+    console.log('disconnectConnection');
+    sendDataChannel.current.close();
+    receiveDataChannel.current.close();
+    peerRef.current.close();
+
+    sendDataChannel.current = null;
+    receiveDataChannel.current = null;
+    peerRef.current = null;
+
+    console.log(sendDataChannel.current);
+    console.log(receiveDataChannel.current);
+    console.log(peerRef.current);
+  };
+
   const sendMessage = message => {
-    messageRef.current.send(message);
+    sendDataChannel.current.send(message);
     messageSent({ message: message, client: true, date: Date.now() });
   };
 
   const handleDataChannelEvent = e => {
-    console.log('4.handleDataChannelEvent');
-    otherMessageRef.current = e.channel;
-    otherMessageRef.current.onopen = e => {
+    console.log('handleDataChannelEvent');
+    receiveDataChannel.current = e.channel;
+    receiveDataChannel.current.onopen = e => {
       console.log('WebRTC DC: open.');
-      joinConnection();
+      setConnectionEstablished();
     };
-    otherMessageRef.current.onmessage = e => {
-      const messageFromConnection = e.data.toString();
+    receiveDataChannel.current.onmessage = e => {
+      const newMessage = e.data.toString();
       console.log('WebRTC DC: message received');
       messageReceived({
-        message: messageFromConnection,
+        message: newMessage,
         client: false,
         date: Date.now(),
       });
     };
-    otherMessageRef.current.onclose = e => {
+    receiveDataChannel.current.onclose = e => {
       console.log('WebRTC DC: closed');
-      endConnection();
+      setConnectionEnded();
     };
   };
 
   useEffect(() => {
-    // socket = io('ws://localhost:3001');
+    console.log('CONNECTION useEffect');
     socket = io();
     socket.emit('ready');
 
@@ -140,15 +140,24 @@ const Connection = ({
     });
 
     socket.on('makeOffer', async () => {
-      console.log('1.makeOffer');
-      await createPeer();
+      console.log('User is making an offer');
+      peerRef.current = await createPeer(
+        handleICECandidateEvent,
+        handleDataChannelEvent
+      );
       await createChannel();
       handleNegotiationNeededEvent();
     });
 
-    socket.on('awaitOffer', () => {
-      console.log('1.awaitOffer');
-      createPeer();
+    socket.on('awaitOffer', async () => {
+      console.log('User waiting for offer');
+      // peerRef.current = await createPeer();
+      // peerRef.current.onicecandidate = await handleICECandidateEvent;
+      // peerRef.current.ondatachannel = await handleDataChannelEvent;
+      peerRef.current = await createPeer(
+        handleICECandidateEvent,
+        handleDataChannelEvent
+      );
     });
 
     socket.on('relay', payload => {
@@ -177,11 +186,17 @@ const Connection = ({
   //     });
   // }
 
-  return isConnected ? (
+  // Kill video stream
+  // stream.getTracks().forEach(track => track.stop());
+
+  return communicationAccepted ? (
     <div className="connection">
       <Sidebar />
       {!isVideo ? <Chat sendMessage={sendMessage} /> : <Video />}
-      <Helpbar sendMessage={sendMessage} />
+      <Helpbar
+        sendMessage={sendMessage}
+        disconnectConnection={disconnectConnection}
+      />
     </div>
   ) : (
     <div className="connection">
@@ -192,6 +207,7 @@ const Connection = ({
 };
 
 const mapStateToProps = state => ({
+  communicationAccepted: state.connection.communicationAccepted,
   isConnected: state.connection.isConnected,
   isVideo: state.connection.isVideo,
 });
@@ -199,6 +215,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   messageReceived,
   messageSent,
-  endConnection,
-  joinConnection,
+  setConnectionEnded,
+  setConnectionEstablished,
 })(Connection);
