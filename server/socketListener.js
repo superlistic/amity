@@ -1,7 +1,8 @@
 const { verifyer } = require('./jwt');
 const { SessionHandler } = require('./SessionHandler');
 const Jogger = require('./Jogger');
-const log = new Jogger('socket');
+const chalk = require('chalk');
+const log = new Jogger(chalk.cyan('[socket]'));
 
 // TODO - make better
 const cookieParse = c => {

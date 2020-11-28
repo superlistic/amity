@@ -1,5 +1,6 @@
 const Jogger = require('../Jogger');
-const log = new Jogger('SessionHanlder');
+const chalk = require('chalk');
+const log = new Jogger(chalk.blue('[SessionHanlder]'));
 const uuid = require('uuid');
 
 class SessionHandler {
