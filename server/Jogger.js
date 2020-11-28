@@ -1,7 +1,9 @@
 const chalk = require('chalk');
 
 class Jogger {
-  constructor(identifier) {
+  constructor(identifier, colorIndex) {
+    colorIndex = colorIndex;
+
     this.identifier = '[' + identifier + ']';
   }
   err(msg = '', plain = '') {
@@ -46,4 +48,5 @@ class Jogger {
     );
   }
 }
+
 module.exports = Jogger;

@@ -5,7 +5,6 @@ const uuid = require('uuid');
 class SessionHandler {
   constructor() {
     this.users = {};
-    // TODO haredcoded connection be gone
     this.sessions = [
       ['test-user-id', 'test-user-id2'],
       ['test-0', 'test-1'],
@@ -18,9 +17,9 @@ class SessionHandler {
       throw Error('missing parameter');
     }
     if (this.users[userId]) {
-      log.info2('updating', userId);
+      log.mute('updating', userId);
     } else {
-      log.info3('adding', userId);
+      log.mute('adding', userId);
     }
     this.users[userId] = { userId, socket };
     return this.users[userId];
@@ -29,29 +28,43 @@ class SessionHandler {
     for (const key in this.users) {
       if (this.users[key].socket.id === socketId) {
         delete this.users[key];
-        log.info4('removed', key);
+        log.mute('removed', key);
       }
     }
   }
-
-  create(listUsers) {
-    log.debug('create');
-    this.sessions.push(listUsers);
-    return session;
+  create(users) {
+    log.mute('create', users);
+    this.sessions.push(users);
   }
-
-  partnerId(uid) {
-    let conn = this.debugSessions.find(c => c.id1 === uid || c.id2 === uid);
-    if (!conn) {
+  match(uid) {
+    let session = this.sessions.find(s => s.includes(uid));
+    if (!session) {
       return null;
     }
-    if (conn && conn.id1 === uid) {
-      return this.socketId(conn.id2);
+    if (session[0] === uid) {
+      return session[1];
     }
-    if (conn && conn.id2 === uid) {
-      return this.socketId(conn.id1);
+    if (session[1] === uid) {
+      return session[0];
     }
-    throw Error('this should not happen');
+    throw Error('logic error or session malformed');
+  }
+  isOnline(uid) {
+    if (this.users[uid]) {
+      return this.users[uid];
+    } else {
+      false;
+    }
+  }
+  remove(uid) {
+    for (const id in this.Users) {
+      if (this.Users[uid]) {
+        delete this.Users[id];
+        log.debug('user deleted', id);
+      } else {
+        log.err('no such user');
+      }
+    }
   }
 
   socketId(uid) {
