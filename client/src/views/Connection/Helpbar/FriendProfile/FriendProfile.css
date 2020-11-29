@@ -6,11 +6,15 @@
 .friend-profile__avatar {
   font-size: 9rem;
   color: var(--color2);
+  cursor: pointer;
 }
 .friend-profile__bio,
 .friend-profile__name {
   margin-top: 0.5rem;
   color: var(--color2);
+}
+.friend-profile__name {
+  cursor: pointer;
 }
 
 /* <div className="friend-profile">

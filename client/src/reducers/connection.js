@@ -23,7 +23,6 @@ const initState = {
 
 export default function connection(state = initState, action) {
   const { type, payload } = action;
-  console.log(type, payload);
   switch (type) {
     //Connection
     case CONNECTION_ESTABLISHED:

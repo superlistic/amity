@@ -8,7 +8,6 @@ import {
 
 // token:
 const initState = {
-  authenticated: '',
   isAuthenticated: false,
   loading: true,
   user: null,
@@ -16,7 +15,6 @@ const initState = {
 };
 
 export default function auth(state = initState, action) {
-  console.log(state, action);
   const { type, payload } = action;
   switch (type) {
     case LOGIN_SUCCESS:
@@ -33,6 +31,7 @@ export default function auth(state = initState, action) {
         isAuthenticated: false,
         loading: false,
         user: null,
+        // errorMessage: '',
       };
     case LOGOUT_SUCCESS:
       return {

@@ -31,9 +31,9 @@ const Connection = ({
   const peerRef = useRef();
   const sendDataChannel = useRef();
   const receiveDataChannel = useRef();
-  // const localVideo = useRef();
-  // const videoRef = useRef();
-  // const otherVideoRef = useRef();
+  const localVideo = useRef();
+  const remoteVideo = useRef();
+  const userStream = useRef();
 
   const createChannel = () => {
     console.log('Create CHANNEL');
@@ -127,6 +127,12 @@ const Connection = ({
     };
   };
 
+  const handleTrackEvent = e => {
+    console.log('handleTrackEvent');
+    console.log(e);
+    remoteVideo.current.srcObject = e.streams[0];
+  };
+
   useEffect(() => {
     console.log('CONNECTION useEffect');
     socket = io();
@@ -140,7 +146,8 @@ const Connection = ({
       console.log('User is making an offer');
       peerRef.current = await createPeer(
         handleICECandidateEvent,
-        handleDataChannelEvent
+        handleDataChannelEvent,
+        handleTrackEvent
       );
       await createChannel();
       handleNegotiationNeededEvent();
@@ -148,12 +155,10 @@ const Connection = ({
 
     socket.on('awaitOffer', async () => {
       console.log('User waiting for offer');
-      // peerRef.current = await createPeer();
-      // peerRef.current.onicecandidate = await handleICECandidateEvent;
-      // peerRef.current.ondatachannel = await handleDataChannelEvent;
       peerRef.current = await createPeer(
         handleICECandidateEvent,
-        handleDataChannelEvent
+        handleDataChannelEvent,
+        handleTrackEvent
       );
     });
 
@@ -173,14 +178,28 @@ const Connection = ({
     });
   }, []);
 
-  // if (isVideo) {
-  //   console.log('video tajm');
-  //   navigator.mediaDevices
-  //     .getUserMedia({ audio: true, video: true })
-  //     .then(stream => {
-  //       localVideo.current.srcObject = stream;
-  //       videoRef.current = stream;
-  //     });
+  useEffect(() => {
+    if (isVideo) {
+      console.log('video tajm');
+
+      const videoCall = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        localVideo.current.srcObject = stream;
+        userStream.current = stream;
+
+        userStream.current
+          .getTracks()
+          .forEach(track => peerRef.current.addTrack(track));
+        console.log(userStream.current);
+        console.log(stream);
+      };
+
+      videoCall();
+    }
+  }, [isVideo]);
   // }
 
   // Kill video stream
@@ -189,7 +208,14 @@ const Connection = ({
   return communicationAccepted ? (
     <div className="connection">
       <Sidebar />
-      {!isVideo ? <Chat sendMessage={sendMessage} /> : <Video />}
+      {!isVideo ? (
+        <Chat sendMessage={sendMessage} />
+      ) : (
+        <div>
+          <video autoPlay muted ref={localVideo} />
+          <video autoPlay ref={remoteVideo} />
+        </div>
+      )}
       <Helpbar
         sendMessage={sendMessage}
         disconnectConnection={disconnectConnection}

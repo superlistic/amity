@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import './Video.css';
 
-const Video = () => {
-  const localVideo = useRef();
-  useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then(stream => {
-        localVideo.current.srcObject = stream;
-      });
-  }, []);
+const Video = ({ localVideo }) => {
+  // const localVideo = useRef();
+  // useEffect(() => {
+  //   navigator.mediaDevices
+  //     .getUserMedia({ video: true, audio: true })
+  //     .then(stream => {
+  //       localVideo.current.srcObject = stream;
+  //     });
+  // }, []);
 
   return (
     <div className="video">

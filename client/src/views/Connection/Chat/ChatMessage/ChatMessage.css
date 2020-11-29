@@ -42,7 +42,7 @@
 }
 .chat-message--friend {
   align-self: flex-end;
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
   background: var(--color4);
 }
 
@@ -54,6 +54,6 @@
 .chat-message__time-friend {
   color: var(--color2);
   align-self: flex-end;
-  margin-right: 2rem;
+  margin-right: 1rem;
   font-size: 0.6rem;
 }

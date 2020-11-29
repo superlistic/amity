@@ -1,12 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+// import io from 'socket.io-client';
 
 import './Navbar.css';
 import { logOut } from '../../actions/auth';
 
 const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
+  // let socket = io();
   console.log(user);
+
+  // socket.emit('test', { data: 'test', type: 'TEST' });
   const NAV_LINKS = {
     true: (
       <div className="navbar__container--authenticated">
@@ -22,11 +26,18 @@ const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
         </NavLink>
 
         <div className="navbar__actions">
-          <p>{user && user.username}</p>
-          <NavLink to="/settings" className="navbar__settings">
-            <span class="material-icons navbar__settings__span">settings</span>
+          <NavLink
+            to={user ? `/profile/${user.username}` : '/connection'}
+            className="navbar__link--auth"
+          >
+            {user && user.username}
           </NavLink>
-          <NavLink to="/" className="navbar__link" onClick={logOut}>
+          <NavLink to="/settings" className="navbar__settings">
+            <span className="material-icons navbar__settings__span">
+              settings
+            </span>
+          </NavLink>
+          <NavLink to="/" className="navbar__link--auth" onClick={logOut}>
             Logout
           </NavLink>
         </div>
@@ -69,4 +80,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { logOut })(Navbar);
-// { logout }

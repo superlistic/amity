@@ -8,7 +8,7 @@ import Controller from './Controller/Controller';
 
 const friend = {
   name: 'Bengan',
-  bio: 'Love coding in C++ ofc..',
+  // bio: 'Love coding in C++ ofc..',
   img: '',
 };
 
@@ -24,5 +24,3 @@ const Helpbar = ({ sendMessage, disconnectConnection }) => {
 };
 
 export default Helpbar;
-
-//   <HelpbarInput />;

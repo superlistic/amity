@@ -10,7 +10,7 @@ const FriendProfile = ({ friend }) => {
         <span className="material-icons friend-profile__avatar">face</span>
       )}
       <p className="friend-profile__name">{friend.name}</p>
-      <p className="friend-profile__bio">{friend.bio}</p>
+      {friend.bio ? <p className="friend-profile__bio">{friend.bio}</p> : ''}
     </div>
   );
 };
