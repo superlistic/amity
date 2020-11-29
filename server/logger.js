@@ -20,10 +20,10 @@ const logger = logs => (req, res, next) => {
   console.log(
     chalk.grey(req.id),
     method,
-    chalk.green(req.path)
+    chalk.green(req.path),
     // req.body,
     // req.query,
-    // req.token && req.token.userId ? '[userId:' + req.token.userId + ']' : ''
+    req.token && req.token.userId ? '[userId:' + req.token.userId + ']' : ''
   );
   if (logs) {
     const log = new logs({
