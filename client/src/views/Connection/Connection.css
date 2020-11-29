@@ -1,5 +1,6 @@
 .connection {
-  height: calc(100vh - 4.2rem);
+  height: 95vh;
+  /* height: calc(100vh - 4.2rem); */
   display: grid;
   grid-template-columns: 0.5fr 8.5fr 3fr;
 }

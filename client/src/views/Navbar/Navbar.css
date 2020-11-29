@@ -38,13 +38,17 @@
   margin-top: 0.3rem;
   color: white;
 }
-
-.navbar__link {
+.navbar__link,
+.navbar__link--auth {
   text-align: center;
   justify-self: center;
   align-self: center;
   text-decoration: none;
   z-index: 2;
+  cursor: pointer;
+}
+.navbar__link--auth {
+  margin: 0 0.5rem;
 }
 
 .navbar__register {

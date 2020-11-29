@@ -8,11 +8,13 @@ import ChatMessage from './ChatMessage/ChatMessage';
 const Chat = ({ sendMessage, messages }) => {
   return (
     <div className="chat">
-      <section className="chat__messages">
-        {messages.map(message => (
-          <ChatMessage message={message} client={message.client} />
-        ))}
-      </section>
+      <div className="chat__container">
+        <section className="chat__messages">
+          {messages.map(message => (
+            <ChatMessage message={message} client={message.client} />
+          ))}
+        </section>
+      </div>
       <ChatInput sendMessage={sendMessage} />
     </div>
   );

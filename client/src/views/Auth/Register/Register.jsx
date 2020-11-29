@@ -87,7 +87,7 @@ const Register = ({ register, isAuthenticated }) => {
             name="password"
             type="password"
             value={password}
-            onChange={e => onChange(e)}
+            onChange={onChange}
             required
           ></FormInput>
           <FormInput

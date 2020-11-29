@@ -41,20 +41,19 @@ export const StyledGrayOutlinedButton = styled(StyledButton)`
 export const StyledRoundButton = styled(StyledButton)`
   border-radius: 50%;
   width: 3rem;
-  background: ${theme.main};
+  background: ${theme.gray};
+  &:hover {
+    // background: ${theme.main};
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    background: ${theme.main};
+    box-shadow: 0 0 0 2px ${theme.main}, 0 0 0 4px ${theme.main};
+    transition: box-shadow 0.05s ease-in-out;
+  }
 `;
-
-// &:hover {
-//     background: ${theme.bg.border};
-//   }
 
 //   &:focus {
 //     box-shadow: 0 0 0 2px ${theme.bg.default}, 0 0 0 4px ${theme.bg.border};
-//     transition: box-shadow 0.2s ease-in-out;
-//   }
-
-//   &:active {
-//     box-shadow: 0 0 0 2px ${theme.bg.default},
-//       0 0 0 4px ${tint(theme.bg.border, -24)};
 //     transition: box-shadow 0.2s ease-in-out;
 //   }
