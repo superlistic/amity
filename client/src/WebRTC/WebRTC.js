@@ -36,7 +36,5 @@ export const createPeer = (handleICECandidateEvent, handleDataChannelEvent) => {
   const peer = new RTCPeerConnection(config);
   peer.onicecandidate = handleICECandidateEvent;
   peer.ondatachannel = handleDataChannelEvent;
-  console.log('peer');
-  console.log(peer);
   return peer;
 };

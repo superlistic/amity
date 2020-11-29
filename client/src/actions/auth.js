@@ -71,15 +71,15 @@ export const checkAuth = () => async dispatch => {
   //   type: AUTH_CHECK,
   //   payload: { user: null, isAuthenticated: false },
   // });
-  // try {
-  //   const res = await axios.get('/api/login');
-  //   dispatch({
-  //     type: AUTH_CHECK,
-  //     // payload: res,
-  //     //Ändra sen när vi får user
-  //     payload: { user: null, isAuthenticated: true },
-  //   });
-  // } catch (e) {
-  //   console.log(e);
-  // }
+  try {
+    const res = await axios.get('/api/login');
+    dispatch({
+      type: AUTH_CHECK,
+      payload: res,
+      //Ändra sen när vi får user
+      // payload: { user: null, isAuthenticated: true },
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };

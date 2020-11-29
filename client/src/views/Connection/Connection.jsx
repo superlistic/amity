@@ -67,9 +67,11 @@ const Connection = ({
     await peerRef.current.setRemoteDescription(description);
   };
 
-  const handleCandidate = data => {
+  const handleCandidate = async data => {
     console.log('ICE FOUND, RTC successful');
-    const candidate = new RTCIceCandidate(data);
+    const candidate = await new RTCIceCandidate(data);
+    console.log(peerRef.current);
+    console.log(candidate);
     peerRef.current.addIceCandidate(candidate);
   };
 
@@ -93,14 +95,9 @@ const Connection = ({
     sendDataChannel.current.close();
     receiveDataChannel.current.close();
     peerRef.current.close();
-
     sendDataChannel.current = null;
     receiveDataChannel.current = null;
     peerRef.current = null;
-
-    console.log(sendDataChannel.current);
-    console.log(receiveDataChannel.current);
-    console.log(peerRef.current);
   };
 
   const sendMessage = message => {
