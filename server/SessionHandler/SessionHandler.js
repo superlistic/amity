@@ -3,10 +3,10 @@ const chalk = require('chalk');
 const log = new Jogger(chalk.blue('[SessionHanlder]'));
 const uuid = require('uuid');
 
-class SessionHandler {
+class MeetingHandler {
   constructor() {
     this.users = {};
-    this.sessions = [
+    this.meetings = [
       ['test-user-id', 'test-user-id2'],
       ['test-0', 'test-1'],
       ['test-2', 'test-3'],
@@ -34,21 +34,21 @@ class SessionHandler {
     }
   }
   create(users) {
-    log.mute('create', users);
-    this.sessions.push(users);
+    log.mute('create meeting between', users);
+    this.meetings.push(users);
   }
   match(uid) {
-    let session = this.sessions.find(s => s.includes(uid));
-    if (!session) {
+    let meeting = this.meetings.find(s => s.includes(uid));
+    if (!meeting) {
       return null;
     }
-    if (session[0] === uid) {
-      return session[1];
+    if (meeting[0] === uid) {
+      return meeting[1];
     }
-    if (session[1] === uid) {
-      return session[0];
+    if (meeting[1] === uid) {
+      return meeting[0];
     }
-    throw Error('logic error or session malformed');
+    throw Error('logic error or meeting malformed');
   }
   isOnline(uid) {
     if (this.users[uid]) {
@@ -76,4 +76,4 @@ class SessionHandler {
     }
   }
 }
-module.exports = SessionHandler;
+module.exports = MeetingHandler;

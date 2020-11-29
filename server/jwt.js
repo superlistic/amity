@@ -28,7 +28,7 @@ const verifyer = token => {
     log.err('-malformed token- ');
   } catch (err) {
     log.warn(err.name);
-    throw err;
+    // throw err;
   }
 };
 
