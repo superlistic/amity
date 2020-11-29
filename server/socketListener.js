@@ -55,9 +55,9 @@ const websocketListener = server => {
 
     socket.on('ready', () => {
       const match = handler.match(socket.userId) || null;
-      log.ok('"ready" recieved');
+      log.mute('"ready" recieved');
       if (match) {
-        log.ok('partner matched');
+        log.mute('meeting exists');
         io.to(handler.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });

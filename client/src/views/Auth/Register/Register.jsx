@@ -107,7 +107,7 @@ const Register = ({ register, isAuthenticated }) => {
           </AccentButton>
           <p className="register__intro">Or connect directly below.</p>
           <div className="register__alternative-methods">
-            <GoogleLogin
+            {/* <GoogleLogin
               className="register__google"
               clientId={process.env.REACT_APP_.GOOGLE}
               buttonText="Login with Google"
@@ -122,7 +122,7 @@ const Register = ({ register, isAuthenticated }) => {
               onClick={componentClicked}
               callback={responseFacebook}
               icon="fa-facebook"
-            />
+            /> */}
           </div>
         </form>
       </motion.div>

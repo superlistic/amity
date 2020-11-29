@@ -1,5 +1,6 @@
+const chalk = require('chalk');
 const Jogger = require('../Jogger');
-const log = new Jogger('MongoDB');
+const log = new Jogger(chalk.magenta('[MongoDB]'));
 const mongoose = require('mongoose');
 
 const connect = async (uri, user, pass, authSource, schemaName, schema) => {
@@ -14,7 +15,6 @@ const connect = async (uri, user, pass, authSource, schemaName, schema) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
-  log.debug('check logging');
   log.info('Connecting with', options.user);
   const connection = await mongoose
     .createConnection(uri, options)
