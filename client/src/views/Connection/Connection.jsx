@@ -44,20 +44,29 @@ const Connection = ({
     sendDataChannel.current.onmessage = e =>
       console.log('messsage received!!!' + e.data);
     sendDataChannel.current.onclose = e => console.log('closed!!!!!!');
+    //Redo to work with either DC or Track?
   };
 
-  const handleOffer = async sdp => {
+  const handleOffer = async (sdp, method) => {
     console.log('handleOffer');
     const description = await new RTCSessionDescription(sdp);
     console.log(sdp);
+    console.log(method);
     console.log(peerRef.current);
     await peerRef.current.setRemoteDescription(description);
     console.log(peerRef.current);
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
-    sendDataChannel.current = peerRef.current.createDataChannel(
-      'receiveDataChannel'
-    );
+    if (method === 'video') {
+      userStream.current
+        .getTracks()
+        .forEach(track => peerRef.current.addTrack(track));
+    } else {
+      sendDataChannel.current = peerRef.current.createDataChannel(
+        'receiveDataChannel'
+      );
+    }
+    //OR TRACK?
     socket.emit('relay', { data: answer, type: 'answer' });
   };
 
@@ -75,11 +84,15 @@ const Connection = ({
     peerRef.current.addIceCandidate(candidate);
   };
 
-  const handleNegotiationNeededEvent = async () => {
+  const handleNegotiationNeededEvent = async type => {
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
-    socket.emit('relay', { data: localDescription, type: 'offer' });
+    socket.emit('relay', {
+      data: localDescription,
+      type: 'offer',
+      method: type,
+    });
   };
 
   const handleICECandidateEvent = e => {
@@ -131,6 +144,12 @@ const Connection = ({
     console.log('handleTrackEvent');
     console.log(e);
     remoteVideo.current.srcObject = e.streams[0];
+    // if (e.streams && e.streams[0]) {
+    //   //  videoElem.srcObject = ev.streams[0];
+    // } else {
+    //   let inboundStream = new MediaStream(e.track);
+    //   remoteVideo.current.srcObject = inboundStream;
+    // }
   };
 
   useEffect(() => {
@@ -163,13 +182,13 @@ const Connection = ({
     });
 
     socket.on('relay', payload => {
-      const { type, data } = payload;
+      const { type, data, method } = payload;
       console.log('relay', payload);
       switch (type) {
         case 'offer':
-          return handleOffer(data);
+          return handleOffer(data, method);
         case 'answer':
-          return handleAnswer(data);
+          return handleAnswer(data, method);
         case 'candidate':
           return handleCandidate(data);
         default:
@@ -181,7 +200,8 @@ const Connection = ({
   useEffect(() => {
     if (isVideo) {
       console.log('video tajm');
-
+      //Nedan behöver även den som svarar få tag i, antagligen m.ha socket eller smart lösning?
+      //--------------------------------------------------------------
       const videoCall = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
@@ -193,8 +213,11 @@ const Connection = ({
         userStream.current
           .getTracks()
           .forEach(track => peerRef.current.addTrack(track));
+        //--------------------------------------------------------------
+
         console.log(userStream.current);
         console.log(stream);
+        handleNegotiationNeededEvent('video');
       };
 
       videoCall();
