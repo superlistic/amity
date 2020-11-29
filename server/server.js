@@ -12,7 +12,7 @@ const { Log, User } = require('./database');
 const { websocketListener } = require('./socketListener');
 const Jogger = require('./Jogger');
 const chalk = require('chalk');
-const debug = new Jogger();
+const log = new Jogger();
 const elog = new Jogger(chalk.yellow('[express]'));
 const { env } = process;
 
@@ -30,21 +30,23 @@ app.use(jwtMiddle);
 const addStatic = app => {
   // ROUTE FOR OBTAINING SIGNED JWTs
   if (env.DEBUG_JWT_ROUTE === '1') {
-    debug.debug('../jwt will blindly give verified token');
+    log.debug('../jwt will blindly give verified token');
     const { signer } = require('./jwt');
     let count = 0;
     app.get('/jwt/', (req, res) => {
-      debug.info(req.id + ' given jwt:', 'test-' + count);
-      res.cookie(
-        'x-access-token',
-        signer({ userId: 'test-' + count++ }, { httpOnly: true })
-      );
+      log.info(req.id + ' given jwt:', 'test-' + count);
+      const jwt = signer({ userId: 'test-' + count++ });
+      res.cookie('x-access-token', jwt, {
+        httpOnly: true,
+        sameSite: 'strict',
+      });
+      log.debug('jwt is', jwt);
       res.send('x-access-token');
     });
   }
   // ROUTE FOR webRTC TESTING
   if (env.DEBUG_TEST_ROUTE === '1') {
-    debug.debug('(webRTC-test) is availible at ../test');
+    log.debug('(webRTC-test) is availible at ../test');
     app.use('/test', express.static('public'));
   }
 
@@ -73,7 +75,7 @@ if (env.DEBUG_NO_MONGO !== '1') {
     addStatic(app);
   });
 } else {
-  debug.debug('mongo db NOT connected');
+  log.debug('mongo db NOT connected');
   app.use(logger());
   addStatic(app);
 }

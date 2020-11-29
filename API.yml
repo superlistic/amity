@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  description: amity authentication is mainly handled through a small token in the headers. The server validates and authorizes on a per request basis.
+  version: '1.0.0'
+  title: Amity login API
+servers:
+  - url: 'http://127.0.0.1:3001/api/'
+    description: localhost
+  - url: 'http:/salt.styl.services/api/'
+    description: prod
+
+  
+paths:
+  /login:
+    post:
+      summary: authenticate user by email and hash
+      requestBody:
+        description: users password and hash
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthCredentials'
+      responses:
+        200:
+          description: auth successful
+          headers:
+            Set-Cookie:
+              description: access-token
+              schema: 
+                type: string
+                pattern: ^[^\W]+.[^\W]+.[^\W]+$
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: auth failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: "get user info associated with the requests 'x-access-token'"
+      security:
+        - x-access-token: []
+      responses:
+        200:
+          description: token is valid. response contains associated user info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: 'no valid token found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      description: describes user incl. settings
+      type: object
+      additionalProperties: false
+      properties:
+        userId:
+          $ref: '#/components/schemas/UUID'
+        username:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        bio:
+          type: string
+          maxLength: 2500
+        tagline:
+          type: string
+          maxLength: 100
+        avatar:
+          type: string
+          format: URI
+          minItems: 10
+          maxLength: 100
+          pattern: ^http.?\/\/\S+\.\S+$
+        settings:
+          type: object
+        updated:
+          type: integer
+          minimum: 1600000000
+          maximum: 2000000000 
+          format: unix epoch
+    Error:
+      description: general error
+      type: object
+      properties:
+        error:
+          type: string
+          format: type
+          maxLength: 30
+        reason:
+          type: string
+          maxLength: 100
+          format: user-friendly
+    AuthCredentials:
+      description: login request object
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          pattern: /^.+@.+\..+/
+          maxLength: 30
+          format: lowercase email
+        hash:
+          type: string
+          maxLength: 128 
+          minLength: 128
+          pattern: ^[0-9a-f]+$
+          format: SHA512
+    UUID:
+      description: UUIDv4. guaranteed (practically) unique identifier. 
+      type: string
+      pattern: ^[0-9a-e]{8}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{12}$
+      maxLength: 36
+      minLength: 36
+    Email:
+      description: email
+      type: string
+      pattern: ^.+@.+\..+
+      maxLength: 30
+      format: email
+
+  securitySchemes:
+    x-access-token:
+      type: apiKey
+      name: x-access-token
+      in: cookie
+

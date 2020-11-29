@@ -24,7 +24,8 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "prod": "node server.js"
+    "prod": "node server.js",
+    "push": "docker build -t johanstyl/amity . && docker push johanstyl/amity"
   },
   "bugs": {
     "url": "https://github.com/superlistic/togetherness/issues"
