@@ -33,9 +33,6 @@ const loginRouter = Users => {
       )
         .then(user => {
           if (user && user.userId) {
-            res.cookie('x-access-token', signer({ userId: user.userId }), {
-              httpOnly: true,
-            });
             res.status(200);
             res.json({
               ok: true,
@@ -54,8 +51,8 @@ const loginRouter = Users => {
     } else {
       res.status(401);
       res.json({
-        status: '401',
-        msg: 'NOT authenticated',
+        error: '401',
+        reason: 'authorization failed',
       });
     }
   };
@@ -83,6 +80,7 @@ const loginRouter = Users => {
         if (user && user.userId) {
           res.cookie('x-access-token', signer({ userId: user.userId }), {
             httpOnly: true,
+            sameSite: strict,
           });
           res.status(200);
           res.json({
