@@ -1,7 +1,6 @@
 openapi: 3.0.0
 info:
-  description: amity authentication is mainly handled through a small token in the headers.
-    The server validates and authorizes on a per request basis.
+  description: amity authentication is mainly handled through a small token in the headers. The server validates and authorizes on a per request basis.
   version: '1.0.0'
   title: Amity login API
 servers:
@@ -27,11 +26,10 @@ paths:
           description: auth successful
           headers:
             Set-Cookie:
-              description: >
-                Contains the session cookie named `COOKIE-NAME`.
-                Pass this cookie back in subsequent requests.
+              description: access-token
               schema: 
                 type: string
+                pattern: ^[^\W]+.[^\W]+.[^\W]+$
           content:
             application/json:
               schema:
@@ -59,10 +57,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-security:
-    - x-access-token: []
-
 components:
   schemas:
     User:
@@ -71,16 +65,17 @@ components:
       additionalProperties: false
       properties:
         userId:
-          type: string
-          format: uuidv4
+          $ref: '#/components/schemas/UUID'
         username:
           type: string
+        email:
           $ref: '#/components/schemas/Email'
         bio:
           type: string
           maxLength: 2500
         tagline:
           type: string
+          maxLength: 100
         avatar:
           type: string
           format: URI
@@ -105,7 +100,7 @@ components:
         reason:
           type: string
           maxLength: 100
-          format: userfriendly
+          format: user-friendly
     AuthCredentials:
       description: login request object
       type: object
@@ -120,12 +115,18 @@ components:
           type: string
           maxLength: 128 
           minLength: 128
-          pattern: /^[0-9a-f]+$/
+          pattern: ^[0-9a-f]+$
           format: SHA512
+    UUID:
+      description: UUIDv4. guaranteed (practically) unique identifier. 
+      type: string
+      pattern: ^[0-9a-e]{8}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{12}$
+      maxLength: 36
+      minLength: 36
     Email:
       description: email
       type: string
-      pattern: /^.+@.+\..+/
+      pattern: ^.+@.+\..+
       maxLength: 30
       format: email
 
