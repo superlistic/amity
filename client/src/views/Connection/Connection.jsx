@@ -14,59 +14,58 @@ import {
   messageSent,
   setConnectionEnded,
   setConnectionEstablished,
+  handleOtherVideo,
 } from '../../actions/connection';
 let socket;
 const Connection = ({
-  isConnected,
-  userID,
   messageReceived,
   messageSent,
   setConnectionEnded,
   setConnectionEstablished,
   isVideo,
   communicationAccepted,
+  isOtherVideo,
+  handleOtherVideo,
 }) => {
-  // const socket = io();
-
   const peerRef = useRef();
-  const sendDataChannel = useRef();
+  const dataChannel = useRef();
   const receiveDataChannel = useRef();
   const localVideo = useRef();
   const remoteVideo = useRef();
   const userStream = useRef();
+  const isInitiator = useRef(true);
 
   const createChannel = () => {
     console.log('Create CHANNEL');
-    sendDataChannel.current = peerRef.current.createDataChannel(
-      'sendDataChannel'
-    );
-    sendDataChannel.current.onopen = e => console.log('open!!!!');
-    sendDataChannel.current.onmessage = e =>
+    dataChannel.current = peerRef.current.createDataChannel('dataChannel');
+    dataChannel.current.onopen = e => {
+      setConnectionEstablished();
+      console.log('open!!!!');
+    };
+    dataChannel.current.onmessage = e => {
+      const newMessage = e.data.toString();
+      messageReceived({
+        message: newMessage,
+        client: false,
+        date: Date.now(),
+      });
       console.log('messsage received!!!' + e.data);
-    sendDataChannel.current.onclose = e => console.log('closed!!!!!!');
-    //Redo to work with either DC or Track?
+    };
+    dataChannel.current.onclose = e => {
+      setConnectionEnded();
+      console.log('closed!!!!!!');
+    };
   };
 
   const handleOffer = async (sdp, method) => {
     console.log('handleOffer');
     const description = await new RTCSessionDescription(sdp);
-    console.log(sdp);
-    console.log(method);
-    console.log(peerRef.current);
     await peerRef.current.setRemoteDescription(description);
-    console.log(peerRef.current);
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
     if (method === 'video') {
-      userStream.current
-        .getTracks()
-        .forEach(track => peerRef.current.addTrack(track, userStream.current));
-    } else {
-      sendDataChannel.current = peerRef.current.createDataChannel(
-        'receiveDataChannel'
-      );
+      handleOtherVideo();
     }
-    //OR TRACK?
     socket.emit('relay', { data: answer, type: 'answer' });
   };
 
@@ -79,12 +78,11 @@ const Connection = ({
   const handleCandidate = async data => {
     console.log('ICE FOUND, RTC successful');
     const candidate = await new RTCIceCandidate(data);
-    console.log(peerRef.current);
-    console.log(candidate);
     peerRef.current.addIceCandidate(candidate);
   };
 
   const handleNegotiationNeededEvent = async type => {
+    console.log('handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
@@ -105,27 +103,32 @@ const Connection = ({
 
   const disconnectConnection = () => {
     console.log('disconnectConnection');
-    sendDataChannel.current.close();
+    dataChannel.current.close();
     receiveDataChannel.current.close();
+    //stäng ned track också
+    userStream.current.stop();
+    localVideo.current = null;
+    remoteVideo.current = null;
+    userStream.current = null;
     peerRef.current.close();
-    sendDataChannel.current = null;
+    dataChannel.current = null;
     receiveDataChannel.current = null;
     peerRef.current = null;
   };
 
   const sendMessage = message => {
-    sendDataChannel.current.send(message);
+    dataChannel.current.send(message);
     messageSent({ message: message, client: true, date: Date.now() });
   };
 
   const handleDataChannelEvent = e => {
     console.log('handleDataChannelEvent');
-    receiveDataChannel.current = e.channel;
-    receiveDataChannel.current.onopen = e => {
+    dataChannel.current = e.channel;
+    dataChannel.current.onopen = e => {
       console.log('WebRTC DC: open.');
       setConnectionEstablished();
     };
-    receiveDataChannel.current.onmessage = e => {
+    dataChannel.current.onmessage = e => {
       const newMessage = e.data.toString();
       console.log('WebRTC DC: message received');
       messageReceived({
@@ -134,26 +137,18 @@ const Connection = ({
         date: Date.now(),
       });
     };
-    receiveDataChannel.current.onclose = e => {
+    dataChannel.current.onclose = e => {
       console.log('WebRTC DC: closed');
       setConnectionEnded();
     };
   };
 
-  const handleTrackEvent = e => {
+  const handleTrackEvent = async e => {
     console.log('handleTrackEvent');
-    console.log(e);
     remoteVideo.current.srcObject = e.streams[0];
-    // if (e.streams && e.streams[0]) {
-    //   //  videoElem.srcObject = ev.streams[0];
-    // } else {
-    //   let inboundStream = new MediaStream(e.track);
-    //   remoteVideo.current.srcObject = inboundStream;
-    // }
   };
 
   useEffect(() => {
-    console.log('CONNECTION useEffect');
     socket = io();
     socket.emit('ready');
 
@@ -183,7 +178,6 @@ const Connection = ({
 
     socket.on('relay', payload => {
       const { type, data, method } = payload;
-      console.log('relay', payload);
       switch (type) {
         case 'offer':
           return handleOffer(data, method);
@@ -191,6 +185,8 @@ const Connection = ({
           return handleAnswer(data, method);
         case 'candidate':
           return handleCandidate(data);
+        case 'offerVideo':
+          return handleOtherVideo();
         default:
           return 'error';
       }
@@ -199,46 +195,142 @@ const Connection = ({
 
   useEffect(() => {
     if (isVideo) {
+      // socket.emit('relay', { data: 'video', type: 'offerVideo' });
       console.log('video tajm');
       //Nedan behöver även den som svarar få tag i, antagligen m.ha socket eller smart lösning?
       //--------------------------------------------------------------
       const videoCall = async () => {
+        console.log(remoteVideo.current);
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
         });
         localVideo.current.srcObject = stream;
-        userStream.current = stream;
+        // localVideo.current.srcObject = stream;
+        console.log(localVideo.current);
+        // remoteVideo.current.srcObject = stream;
+        console.log('userStream.current--------------------------');
+        console.log(isInitiator.current === true);
 
-        userStream.current
-          .getTracks()
-          .forEach(track =>
-            peerRef.current.addTrack(track, userStream.current)
-          );
+        if (isInitiator.current === true) {
+          userStream.current = stream;
+          userStream.current
+            .getTracks()
+            .forEach(track =>
+              peerRef.current.addTrack(track, userStream.current)
+            );
+          handleNegotiationNeededEvent('video');
+          isInitiator.current = false;
+        }
         //--------------------------------------------------------------
 
         console.log(userStream.current);
         console.log(stream);
-        handleNegotiationNeededEvent('video');
       };
 
       videoCall();
     }
   }, [isVideo]);
+
+  useEffect(() => {
+    console.log('isOtherVideo');
+    const receiveVideoCall = async () => {
+      // remoteVideo.current = await new MediaStream();
+      console.log(remoteVideo.current);
+    };
+    receiveVideoCall();
+  }, [isOtherVideo]);
   // }
 
   // Kill video stream
   // stream.getTracks().forEach(track => track.stop());
 
+  //isVideo, isOtherVideo, communicationAccepted
+
+  // const chatMethod = () => {
+  //   const key = `${isVideo}-${isOtherVideo}`;
+
+  //   return (
+  //     <div>
+  //       {
+  //         {
+  //           'true-true': (
+  //             <div>
+  //               <div>
+  //                 <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+  //               </div>
+  //               <video
+  //                 autoPlay
+  //                 muted
+  //                 ref={localVideo}
+  //                 height="30%"
+  //                 width="20%"
+  //               />
+  //             </div>
+  //           ),
+  //           'false-true': (
+  //             <div>
+  //               <div>
+  //                 <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+  //                 <Chat sendMessage={sendMessage} />
+  //               </div>
+  //             </div>
+  //           ),
+  //           'true-false': (
+  //             <div>
+  //               <div>
+  //                 <Chat sendMessage={sendMessage} />
+  //               </div>
+  //               <video
+  //                 autoPlay
+  //                 muted
+  //                 ref={localVideo}
+  //                 height="30%"
+  //                 width="20%"
+  //               />
+  //             </div>
+  //           ),
+
+  //           'false-false': <Chat sendMessage={sendMessage} />,
+  //         }[key]
+  //       }
+  //     </div>
+  //   );
+  // };
+
+  // communicationAccepted false
+
+  // communicationAccepted true
+  //    isVideo true isOtherVideo true == Båda ska se varandra i storskärm
+  //    isVideo true isOtherVideo false == Chat + lite bild för client, chat + stor för other?
+  //    isVideo false isOtherVideo true == Chat + stor bild för client, chat + liten för other?
+  //    isVideo false isOtherVideo false == Chat för client, chat för other
+
+  // <div>
+  //       <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+  //     </div>
+  //     {!isVideo ? (
+  //       <Chat sendMessage={sendMessage} />
+  //     ) : (
+  //       <div>
+  //         <div>
+  //           <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+  //         </div>
+  //         <video autoPlay muted ref={localVideo} height="30%" width="20%" />
+  //       </div>
   return communicationAccepted ? (
     <div className="connection">
-      <Sidebar />
+      <div>
+        <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+      </div>
       {!isVideo ? (
         <Chat sendMessage={sendMessage} />
       ) : (
         <div>
-          <video autoPlay muted ref={localVideo} />
-          <video autoPlay ref={remoteVideo} />
+          <div>
+            <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+          </div>
+          <video autoPlay muted ref={localVideo} height="30%" width="20%" />
         </div>
       )}
       <Helpbar
@@ -258,6 +350,7 @@ const mapStateToProps = state => ({
   communicationAccepted: state.connection.communicationAccepted,
   isConnected: state.connection.isConnected,
   isVideo: state.connection.isVideo,
+  isOtherVideo: state.connection.isOtherVideo,
 });
 
 export default connect(mapStateToProps, {
@@ -265,4 +358,5 @@ export default connect(mapStateToProps, {
   messageSent,
   setConnectionEnded,
   setConnectionEstablished,
+  handleOtherVideo,
 })(Connection);

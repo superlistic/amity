@@ -13,6 +13,7 @@ import {
   SET_SUGGESTION,
   ACCEPT_COMMUNICATION,
   DENY_COMMUNICATION,
+  OTHER_VIDEO,
 } from './types';
 
 //Connection
@@ -72,5 +73,10 @@ export const toggleVideo = payload => dispatch => {
 export const disableVideo = payload => dispatch => {
   dispatch({
     type: DISABLE_VIDEO,
+  });
+};
+export const handleOtherVideo = () => dispatch => {
+  dispatch({
+    type: OTHER_VIDEO,
   });
 };

@@ -11,6 +11,7 @@ import {
   SET_SUGGESTION,
   ACCEPT_COMMUNICATION,
   DENY_COMMUNICATION,
+  OTHER_VIDEO,
 } from '../actions/types';
 
 const initState = {
@@ -19,6 +20,7 @@ const initState = {
   messages: [],
   isVideo: false,
   currentSuggestion: [],
+  isOtherVideo: false,
 };
 
 export default function connection(state = initState, action) {
@@ -66,6 +68,11 @@ export default function connection(state = initState, action) {
       return {
         ...state,
         isVideo: payload,
+      };
+    case OTHER_VIDEO:
+      return {
+        ...state,
+        isOtherVideo: true,
       };
 
     default:
