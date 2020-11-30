@@ -1,55 +1,5 @@
 # Amity incorporated
 
-## API
-
-### login
-
-**POST** /api/login
-
-- expecting body to have 'email' and 'hash'.
-- req.body.email & req.body.hash in 'express speak'.
-- e-mail is normalized to lower case.
-- hash is a SHA512 of email + password (email is salt).
-- if accepted, returns _200, OK_ with body:
-  <pre>{
-    ok:true,
-    user: 
-      {
-        userId: String
-        username: String
-        email: String
-        bio: String
-        tagline: String
-        avatar: String //URL to image
-        callHistory: [Call]
-        settings: Settings //object
-        usedSuggestions: [Suggestion]
-        updated: String //timestamp
-      }
-  }
-  </pre>
-- if not, returns _401, unauthorized_ with body:
-  <pre>{
-    ok: false, 
-    message: 'No such user' 
-  }
-  </pre>
-
----
-
-**GET** /api/login
-
-- looking for a jwt in cookie 'x-access-token'
-- if _valid_, returns _'200, OK'_ with body:
-  <pre>{
-    'status':'200',
-    'msg':'authenticated',
-  }</pre>
-- if _invalid_, returns _'401, not authorized'_ with body:
-  <pre>{
-    'status':'401',
-    'msg':'NOT authenticated', 
-  }</pre>
 
 todo:
 
