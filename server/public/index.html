@@ -6,6 +6,7 @@
     <title>be more</title>
   </head>
   <body>
+    <input type="button" value="log streama" onClick="showStream()" />
     <input type="button" value="log dataChannel" onClick="showDataChannel()" />
     <input
       type="button"
@@ -22,12 +23,12 @@
     <input type="button" value="socket relay" onClick="relay()" />
     <input type="button" value="disconnect socket" onClick="disconnect()" />
     <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
-    <input type="button" value="rtc-media" onClick="media()" />
-    <input type="button" value="rtc-stream" onClick="newStream()" />
-    <input type="button" value="rtc-track" onClick="addTrack()" />
-    <video id="localVideo" autoplay playsinline controls="false" />
+    <input type="button" value="local stream" onClick="newLocalStream()" />
+    <input type="button" value="remote stream" onClick="newRemoteStream()" />
     <ul id="events"></ul>
     <div class="stats-box"></div>
+    <!-- <video id="localVideo" autoplay playsinline controls="false" /> -->
+    <video id="remoteVideo" autoplay playsinline controls="false" />
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -52,7 +53,8 @@
       const socket = io();
       let peerConnection;
       let dataChannel;
-      let stream;
+      let localStream;
+      let remoteStream;
 
       // RTCPeerConnectionConfig
       const config = {
@@ -103,6 +105,10 @@
       const showDataChannel = () => {
         logVerbose('data channel:', dataChannel);
       };
+      const showStream = () => {
+        logVerbose('local stream:', localStream);
+        logVerbose('remote stream:', remoteStream);
+      };
 
       const showlocalConnection = () => {
         logVerbose('peer connection:', peerConnection);
@@ -126,52 +132,85 @@
         attatchDataChannelHandlers(dataChannel);
       };
 
-      const setOnDataChannel = () => {
-        log('setOnDataChannel()');
-        peerConnection.ondatachannel = e => {
+      const setOnEvent = peer => {
+        log('setOnEvent()');
+        peer.onicecandidate = e => {
+          socket.emit('relay', {
+            type: 'candidate',
+            data: e.candidate ? e.candidate : null,
+          });
+          log('candidate: SENT', e);
+        };
+        peer.ontrack = event => {
+          log('on track');
+          remoteStream.addTrack(event.track, remoteStream);
+        };
+        peer.ondatachannel = e => {
           log('peerConnection: dataChannel', e);
           dataChannel = e.channel;
           attatchDataChannelHandlers(dataChannel);
         };
+        peer.onaddstream = e => {
+          log('addstream');
+        };
+        peer.onaddtrack = e => {
+          log('addtrack');
+        };
+        peer.addEventListener('track', async event => {
+          log('addevntlistener');
+          remoteStream.addTrack(event.track, remoteStream);
+        });
       };
 
+      const addStreamEventListeners = s => {
+        s.onactive = e => log('active', e);
+        s.onaddtrack = e => log('add track', e);
+        s.oninactive = e => log('inactive', e);
+        s.onremovetrack = e => log('removetrack', e);
+        log('ADD STREAM EVENT LISTENERS:', s);
+      };
       // STREAMS
-      const media = () => {
+      const newLocalStream = () => {
         const constraints = {
-          video: false,
+          video: true,
           audio: true,
         };
         navigator.mediaDevices
           .getUserMedia(constraints)
           .then(s => {
-            stream = s;
-            stream.onactive = e => log('active', e);
-            stream.onaddtrack = e => log('add track', e);
-            stream.oninactive = e => log('inactive', e);
-            stream.onremovetrack = e => log('removetrack', e);
-            log('Got MediaStream:', stream);
+            addStreamEventListeners(s);
+            // const localElemeent = document.querySelector('video#localVideo');
+            // localElemeent.srcObject = s;
+            s.getTracks().forEach(track => {
+              peerConnection.addTrack(track, s);
+              console.log(track);
+              localStream = s;
+            });
           })
           .catch(error => {
             console.error('Error accessing media devices.', error);
           });
+        peerConnection.createOffer().then(offer => {
+          peerConnection
+            .setLocalDescription(offer)
+            .then(() => {
+              log('offer: SET as local', offer);
+              socket.emit('relay', {
+                type: 'offer',
+                data: offer,
+              });
+              log('offer: SENT', offer);
+            })
+            .catch(err => log('make offer ERROR', err));
+        });
       };
-
-      const newStream = async () => {
-        try {
-          const constraints = { video: false, audio: true };
-          const stream = await navigator.mediaDevices.getUserMedia(constraints);
-          const videoElement = document.querySelector('video#localVideo');
-          videoElement.srcObject = stream;
-        } catch (error) {
-          console.error('Error opening video camera.', error);
-        }
-
-        log('newStream()');
+      const newRemoteStream = async () => {
+        remoteStream = new MediaStream();
+        addStreamEventListeners(remoteStream);
+        const remoteElement = document.querySelector('video#remoteVideo');
+        remoteElement.srcObject = remoteStream;
+        log('remote stream', remoteStream);
       };
-      const addTrack = () => {
-        log('addTrack()');
-      };
-
       // SOCKET LISTENERS
       socket.on('connect', e => {
         log('socket: connect', e);
@@ -181,14 +220,7 @@
         $events.innerHTML = '';
         log('socket: awaitOffer');
         peerConnection = new RTCPeerConnection(config);
-        peerConnection.onicecandidate = e => {
-          socket.emit('relay', {
-            type: 'candidate',
-            data: e.candidate ? e.candidate : null,
-          });
-          log('candidate: SENT', e);
-        };
-        setOnDataChannel(peerConnection);
+        setOnEvent(peerConnection);
       });
       // make offer
       socket.on('makeOffer', payload => {
@@ -196,7 +228,7 @@
         log('socket: makeOffer: ', payload);
         peerConnection = new RTCPeerConnection(config);
         createDataChannel();
-        setOnDataChannel(peerConnection);
+        setOnEvent(peerConnection);
 
         peerConnection.createOffer().then(offer => {
           peerConnection
