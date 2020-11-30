@@ -60,7 +60,7 @@ const Connection = ({
     if (method === 'video') {
       userStream.current
         .getTracks()
-        .forEach(track => peerRef.current.addTrack(track));
+        .forEach(track => peerRef.current.addTrack(track, userStream.current));
     } else {
       sendDataChannel.current = peerRef.current.createDataChannel(
         'receiveDataChannel'
@@ -212,7 +212,9 @@ const Connection = ({
 
         userStream.current
           .getTracks()
-          .forEach(track => peerRef.current.addTrack(track));
+          .forEach(track =>
+            peerRef.current.addTrack(track, userStream.current)
+          );
         //--------------------------------------------------------------
 
         console.log(userStream.current);
