@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  description: amity authentication is mainly handled through a small token in the headers. The server validates and authorizes on a per request basis.
+  description: Authentication is mainly handled through a small token in the headers. The server validates and authorizes on a per request basis.
   version: '1.0.0'
-  title: Amity login API
+  title: Amity API
 servers:
   - url: 'http://127.0.0.1:3001/api/'
     description: localhost
@@ -57,6 +57,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /settings:
+    put:
+      summary: update user settings by passing settings object
+      security:
+        - x-access-token: []
+      requestBody:
+        description: complete settings object with new info.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Settings'
+      
 components:
   schemas:
     User:
@@ -68,27 +81,42 @@ components:
           $ref: '#/components/schemas/UUID'
         username:
           type: string
+          example: Allan888
         email:
           $ref: '#/components/schemas/Email'
         bio:
           type: string
           maxLength: 2500
+          example: skatebording nucleor physicist wiot a degree in spelling misstakes
+
         tagline:
           type: string
           maxLength: 100
+          example: first man on the baloon
+
         avatar:
           type: string
           format: URI
           minItems: 10
           maxLength: 100
           pattern: ^http.?\/\/\S+\.\S+$
+          example: https://url.domain.com/image.jpg
+
         settings:
-          type: object
+          $ref: '#/components/schemas/Settings'
         updated:
           type: integer
           minimum: 1600000000
           maximum: 2000000000 
           format: unix epoch
+          example: 1606727487
+    Settings:
+      type: object
+      properties:
+        profileVisible:
+          type: boolean
+          description: indicates wether the user can be seen by other users
+          example: true
     Error:
       description: general error
       type: object
@@ -101,34 +129,35 @@ components:
           type: string
           maxLength: 100
           format: user-friendly
+
     AuthCredentials:
       description: login request object
       type: object
       additionalProperties: false
       properties:
         email:
-          type: string
-          pattern: /^.+@.+\..+/
-          maxLength: 30
-          format: lowercase email
+          $ref: '#/components/schemas/Email'
         hash:
           type: string
           maxLength: 128 
           minLength: 128
           pattern: ^[0-9a-f]+$
           format: SHA512
+          example: 0a50261ebd1a390fed2bf326f2673c145582a6342d523204973d0219337f81616a8069b012587cf5635f6925f1b56c360230c19b273500ee013e030601bf2425
     UUID:
-      description: UUIDv4. guaranteed (practically) unique identifier. 
+      description: UUID v4. guaranteed (practically) unique identifier. 
       type: string
       pattern: ^[0-9a-e]{8}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{12}$
       maxLength: 36
       minLength: 36
+      example: a1a07302-3fac-443b-ab6c-d90327cdf784
     Email:
-      description: email
+      description: users email all in lowercase
       type: string
       pattern: ^.+@.+\..+
       maxLength: 30
       format: email
+      example: user@example.com
 
   securitySchemes:
     x-access-token:
