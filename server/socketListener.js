@@ -49,15 +49,14 @@ const websocketListener = server => {
 
     socket.on('relay', payload => {
       const peerId = handler.match(socket.userId);
-      log.mute(`relaying ${payload.type} ` + socket.userId + ' -> ' + peerId);
+      // log.mute(`relaying ${payload.type} ` + socket.userId + ' -> ' + peerId);
       io.to(handler.socketId(peerId)).emit('relay', payload);
     });
 
     socket.on('ready', () => {
       const match = handler.match(socket.userId) || null;
-      log.mute('"ready" recieved');
+      log.mute('"ready" recieved from ', socket.userId);
       if (match) {
-        log.mute('meeting exists');
         io.to(handler.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });

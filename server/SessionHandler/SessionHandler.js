@@ -1,16 +1,16 @@
 const Jogger = require('../Jogger');
 const chalk = require('chalk');
 const log = new Jogger(chalk.blue('[SessionHanlder]'));
-const uuid = require('uuid');
+// const uuid = require('uuid');
 
 class MeetingHandler {
   constructor() {
     this.users = {};
     this.meetings = [
-      ['test-user-id', 'test-user-id2'],
       ['test-0', 'test-1'],
       ['test-2', 'test-3'],
       ['test-4', 'test-5'],
+      ['test-user-id', 'test-user-id2'],
     ];
   }
   addUser(userId, socket) {
@@ -40,6 +40,7 @@ class MeetingHandler {
   match(uid) {
     let meeting = this.meetings.find(s => s.includes(uid));
     if (!meeting) {
+      log.warn('no match found');
       return null;
     }
     if (meeting[0] === uid) {

@@ -17,14 +17,14 @@ const logger = logs => (req, res, next) => {
       break;
   }
 
-  console.log(
-    chalk.grey(req.id),
-    method,
-    chalk.green(req.path),
-    // req.body,
-    // req.query,
-    req.token && req.token.userId ? '[userId:' + req.token.userId + ']' : ''
-  );
+  // console.log(
+  //   chalk.grey(req.id),
+  //   method,
+  //   chalk.green(req.path),
+  //   // req.body,
+  //   // req.query,
+  //   req.token && req.token.userId ? '[userId:' + req.token.userId + ']' : ''
+  // );
   if (logs) {
     const log = new logs({
       logType: 'HTTP_request',

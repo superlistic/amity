@@ -47,7 +47,7 @@ const addStatic = app => {
   // ROUTE FOR webRTC TESTING
   if (env.DEBUG_TEST_ROUTE === '1') {
     log.debug('(webRTC-test) is availible at ../test');
-    app.use('/test', express.static('public'));
+    app.use('/test', express.static('test'));
   }
 
   // ROUTES

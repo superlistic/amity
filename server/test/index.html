@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>be more</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script defer type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <input type="button" value="log dataCh." onClick="logDC()" />
+    <input type="button" value="log pConn" onClick="logPC()" />
+    <input type="button" value="clear" onClick="clearEvents()" />
+    <br />
+    <input id="username" type="text" value="hello moto" />
+    <br />
+    <input type="button" value="send 'ready'-signal" onClick="readyConn()" />
+    <input type="button" value="sendOnDataChannel" onClick="sendOnDC()" />
+    <input type="button" value="stream" onClick="openStream()" />
+    <p id="latest"></p>
+    <ul id="events"></ul>
+    <video id="localVideo" autoplay playsinline controls="false" />
+    <video id="remoteVideo" autoplay playsinline controls="false" />
+  </body>
+</html>
