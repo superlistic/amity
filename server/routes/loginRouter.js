@@ -80,7 +80,7 @@ const loginRouter = Users => {
         if (user && user.userId) {
           res.cookie('x-access-token', signer({ userId: user.userId }), {
             httpOnly: true,
-            sameSite: strict,
+            sameSite: 'strict',
           });
           res.status(200);
           res.json({
