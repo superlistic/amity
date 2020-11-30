@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { suggestionVariant } from '../../../../animations';
 
-const Suggestion = ({ suggestion, sendMessage }) => {
+const Suggestion = ({ suggestion, sendMessage, id }) => {
   const onHandleSuggestion = suggestion => {
     // console.log(suggestion.text);
     sendMessage(suggestion);
@@ -13,9 +13,10 @@ const Suggestion = ({ suggestion, sendMessage }) => {
   };
 
   return (
-    <div>
+    <>
       <motion.p
         variants={suggestionVariant}
+        custom={id}
         initial="initial"
         animate="animate"
         className="suggestion"
@@ -23,7 +24,7 @@ const Suggestion = ({ suggestion, sendMessage }) => {
       >
         {suggestion}
       </motion.p>
-    </div>
+    </>
   );
 };
 

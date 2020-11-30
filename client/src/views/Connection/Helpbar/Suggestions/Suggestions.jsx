@@ -74,7 +74,7 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
     while (array.length > 0) {
       const suggestion = array.shift();
       // console.log(suggestion);
-      setSuggestion(suggestion.text);
+      setSuggestion(suggestion);
       // setQueuedElement(<Suggestion suggestion={suggestion.text} />);
       await timeout(14000);
     }
@@ -86,7 +86,12 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
 
   const getSuggestion = suggestion => {
     return suggestion.map(s => (
-      <Suggestion sendMessage={sendMessage} suggestion={suggestion[0]} />
+      <Suggestion
+        sendMessage={sendMessage}
+        suggestion={s.text}
+        key={s.id}
+        id={s.id}
+      />
     ));
   };
 
