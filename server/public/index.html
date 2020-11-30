@@ -22,6 +22,10 @@
     <input type="button" value="socket relay" onClick="relay()" />
     <input type="button" value="disconnect socket" onClick="disconnect()" />
     <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
+    <input type="button" value="rtc-media" onClick="media()" />
+    <input type="button" value="rtc-stream" onClick="newStream()" />
+    <input type="button" value="rtc-track" onClick="addTrack()" />
+    <video id="localVideo" autoplay playsinline controls="false" />
     <ul id="events"></ul>
     <div class="stats-box"></div>
 
@@ -48,6 +52,7 @@
       const socket = io();
       let peerConnection;
       let dataChannel;
+      let stream;
 
       // RTCPeerConnectionConfig
       const config = {
@@ -116,16 +121,9 @@
         dc.onerror = e => log(id + ' connection error', e);
       };
 
-      const createDataChannel = () => {
-        dataChannel = peerConnection.createDataChannel(1);
+      const createDataChannel = (label = 'data') => {
+        dataChannel = peerConnection.createDataChannel(label);
         attatchDataChannelHandlers(dataChannel);
-        peerConnection.onicecandidate = e => {
-          socket.emit('relay', {
-            type: 'candidate',
-            data: e.candidate ? e.candidate : null,
-          });
-          log(1 + ' candidate: SENT', e.candidate ? e.candidate : null);
-        };
       };
 
       const setOnDataChannel = () => {
@@ -135,6 +133,43 @@
           dataChannel = e.channel;
           attatchDataChannelHandlers(dataChannel);
         };
+      };
+
+      // STREAMS
+      const media = () => {
+        const constraints = {
+          video: false,
+          audio: true,
+        };
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(s => {
+            stream = s;
+            stream.onactive = e => log('active', e);
+            stream.onaddtrack = e => log('add track', e);
+            stream.oninactive = e => log('inactive', e);
+            stream.onremovetrack = e => log('removetrack', e);
+            log('Got MediaStream:', stream);
+          })
+          .catch(error => {
+            console.error('Error accessing media devices.', error);
+          });
+      };
+
+      const newStream = async () => {
+        try {
+          const constraints = { video: false, audio: true };
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          const videoElement = document.querySelector('video#localVideo');
+          videoElement.srcObject = stream;
+        } catch (error) {
+          console.error('Error opening video camera.', error);
+        }
+
+        log('newStream()');
+      };
+      const addTrack = () => {
+        log('addTrack()');
       };
 
       // SOCKET LISTENERS
