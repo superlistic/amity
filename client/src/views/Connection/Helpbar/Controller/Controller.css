@@ -1,4 +1,5 @@
 .controller {
+  align-self: center;
   margin: 1rem;
   background-color: var(--color__white);
   border-radius: 15px;

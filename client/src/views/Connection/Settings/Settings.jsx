@@ -107,19 +107,8 @@ const Settings = ({ user, loading }) => {
 };
 
 const mapStateToProps = state => ({
-  // isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
   user: state.auth.user,
 });
 
 export default connect(mapStateToProps, {})(Settings);
-
-//  <FormInput
-//    className="settings__input"
-//    placeholder="Change email"
-//    name="email"
-//    type="email"
-//    value={''}
-//    onChange={''}
-//    required
-//  ></FormInput>;
