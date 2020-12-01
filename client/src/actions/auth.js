@@ -37,7 +37,7 @@ export const login = payload => async dispatch => {
   }
 };
 
-export const register = ({ name, email, password }) => async dispatch => {
+export const register = ({ username, email, password }) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -45,11 +45,12 @@ export const register = ({ name, email, password }) => async dispatch => {
   };
 
   try {
-    const body = JSON.stringify({ name, email, password });
-    // const res = await axios.post('/api/users', body, config);
+    password = sha512(email + password).toString();
+    const body = JSON.stringify({ username, email, password });
+    const res = await axios.post('/api/register', body, config);
     dispatch({
       type: AUTH_USER,
-      payload: { name, email, password },
+      payload: res,
     });
   } catch (err) {
     dispatch({

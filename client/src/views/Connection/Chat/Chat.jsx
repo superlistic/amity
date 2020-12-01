@@ -11,7 +11,11 @@ const Chat = ({ sendMessage, messages }) => {
       <div className="chat__container">
         <section className="chat__messages">
           {messages.map(message => (
-            <ChatMessage message={message} client={message.client} />
+            <ChatMessage
+              message={message}
+              client={message.client}
+              key={`${message.client}-${message.date}`}
+            />
           ))}
         </section>
       </div>

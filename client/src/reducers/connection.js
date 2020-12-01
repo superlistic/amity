@@ -9,6 +9,7 @@ import {
   ENABLE_SOUND,
   DISABLE_SOUND,
   SET_SUGGESTION,
+  CLICKED_SUGGESTION,
   ACCEPT_COMMUNICATION,
   DENY_COMMUNICATION,
   OTHER_VIDEO,
@@ -46,12 +47,6 @@ export default function connection(state = initState, action) {
         ...state,
         communicationAccepted: true,
       };
-    // case DENY_COMMUNICATION:
-    //   return {
-    //     ...state,
-    //     communicationAccepted: false,
-    //   };
-    //Message
     case SENT_MESSAGE:
     case RECEIVED_MESSAGE:
       return {
@@ -63,6 +58,11 @@ export default function connection(state = initState, action) {
       return {
         ...state,
         currentSuggestion: [payload],
+      };
+    case CLICKED_SUGGESTION:
+      return {
+        ...state,
+        currentSuggestion: [],
       };
     //Video
     case TOGGLE_VIDEO:
