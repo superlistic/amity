@@ -7,7 +7,10 @@ class MeetingHandler {
   constructor() {
     this.users = {};
     this.meetings = [
-      ['test-user-id', 'test-user-id2'],
+      [
+        'dc79214a-25f5-441c-a527-02a2ba38c4f4',
+        '52edd659-8161-401b-905b-173dd48d0cc5',
+      ],
       ['test-0', 'test-1'],
       ['test-2', 'test-3'],
       ['test-4', 'test-5'],

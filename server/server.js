@@ -72,7 +72,7 @@ if (env.DEBUG_NO_MONGO !== '1') {
     app.use(logger(logs));
     app.use('/api/logs', logRouter(logs));
     app.use('/api/login', loginRouter(users));
-    // app.use('/api/register', registerRouter(users));
+    app.use('/api/register', registerRouter(users));
     addStatic(app);
   });
 } else {
