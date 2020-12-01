@@ -1,5 +1,6 @@
 .suggestions {
   color: var(--color2);
+  user-select: none;
 }
 
 .suggestions__divider {
@@ -25,7 +26,6 @@
   cursor: pointer;
   border-radius: 2rem;
   word-wrap: break-word;
-  user-select: none;
 }
 
 .suggestion:hover {

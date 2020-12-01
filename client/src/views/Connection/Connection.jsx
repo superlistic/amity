@@ -279,14 +279,16 @@ const Connection = ({
       <div className="connection">
         <Sidebar />
         <div className="connection__main">
-          <video
-            autoPlay
-            ref={remoteVideo}
-            height="70%"
-            width="50%"
-            className="remote-video"
-          />
-          <Chat sendMessage={sendMessage} />
+          <div className="remote-video-wrap">
+            <video
+              autoPlay
+              ref={remoteVideo}
+              height="100%"
+              width="100%"
+              className="remote-video"
+            />
+            <Chat sendMessage={sendMessage} />
+          </div>
         </div>
         <Helpbar
           sendMessage={sendMessage}
@@ -301,7 +303,7 @@ const Connection = ({
       <div className="connection">
         <Sidebar />
         <div className="connection__main">
-          <div className="local-video-wrap">
+          <div className="remote-video-wrap">
             <video
               autoPlay
               muted
@@ -325,25 +327,27 @@ const Connection = ({
     <div className="connection">
       <Sidebar />
       <div className="connection__main">
-        <video
-          autoPlay
-          ref={remoteVideo}
-          height="70%"
-          width="50%"
-          className="remote-video"
-        />
-
-        <div className="local-video-wrap">
+        <div className="remote-video-wrap">
           <video
             autoPlay
-            muted
-            ref={localVideo}
-            height="25%"
-            width="20%"
-            className="local-video"
+            ref={remoteVideo}
+            height="50%"
+            width="100%"
+            className="remote-video"
           />
+          <Chat sendMessage={sendMessage} />
         </div>
+
+        <video
+          autoPlay
+          muted
+          ref={localVideo}
+          height="25%"
+          width="20%"
+          className="local-video"
+        />
       </div>
+
       <Helpbar
         sendMessage={sendMessage}
         disconnectConnection={disconnectConnection}
