@@ -30,15 +30,15 @@ class MeetingHandler {
     }
   }
   // TODO guard against "different order of users but otherwise the same"-meetings
-  create(users) {
-    log.mute('create meeting between', users);
-    this.meetings.includes(users);
-    this.meetings.push(users);
+  create(meeting) {
+    log.mute('create meeting', meeting);
+    this.meetings.includes(meeting);
+    this.meetings.push(meeting);
   }
   instantMeeting(uid) {
     if (this.instaQue && this.instaQue !== uid) {
       const uid2 = this.instaQue;
-      this.create([uid, uid2]);
+      this.create({ time: Date.now(), meeting: [uid, uid2] });
       this.instaQue = null;
       return this.match(uid);
     } else {

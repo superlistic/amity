@@ -13,13 +13,13 @@ const errorHandler = (req, res, err) => {
 
 const meetingsRouter = meetings => {
   // TEST MEETING
-  meetings.create({
-    time: Date.now(),
-    users: [
-      '52edd659-8161-401b-905b-173dd48d0cc5',
-      'dc79214a-25f5-441c-a527-02a2ba38c4f4',
-    ],
-  });
+  // meetings.create({
+  //   time: Date.now(),
+  //   users: [
+  //     '52edd659-8161-401b-905b-173dd48d0cc5',
+  //     'dc79214a-25f5-441c-a527-02a2ba38c4f4',
+  //   ],
+  // });
   // GET
   const getNewMeeting = (req, res) => {
     if (req.token.userId) {
