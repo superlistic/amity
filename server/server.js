@@ -7,7 +7,6 @@ const path = require('path');
 const { logger } = require('./logger');
 const { jwtMiddle } = require('./jwt');
 const { MeetingHandler } = require('./MeetingHandler');
-
 const {
   logRouter,
   loginRouter,
@@ -22,10 +21,7 @@ const log = new Jogger();
 const elog = new Jogger(chalk.yellow('[express]'));
 const { env } = process;
 const meetings = new MeetingHandler();
-
-// SOCKET.IO
 const server = require('http').createServer(app);
-websocketListener(server, meetings);
 
 // MIDDLEWARE
 app.use(cookieParser());
@@ -72,17 +68,14 @@ const addStatic = app => {
 };
 
 // INIT
-if (env.DEBUG_NO_MONGO !== '1') {
-  Promise.all([Log(), User()]).then(([logs, users]) => {
-    app.use(logger(logs));
-    app.use('/api/logs', logRouter(logs));
-    app.use('/api/login', loginRouter(users));
-    app.use('/api/register', registerRouter(users));
-    app.use('/api/meetings', meetingsRouter(meetings));
-    addStatic(app);
-  });
-} else {
-  log.debug('mongo db NOT connected');
-  app.use(logger());
+Promise.all([Log(), User()]).then(([logs, users]) => {
+  // SOCKET.IO
+  websocketListener(server, meetings, users);
+
+  app.use(logger(logs));
+  app.use('/api/logs', logRouter(logs));
+  app.use('/api/login', loginRouter(users));
+  app.use('/api/register', registerRouter(users));
+  app.use('/api/meetings', meetingsRouter(meetings));
   addStatic(app);
-}
+});
