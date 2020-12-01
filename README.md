@@ -2,7 +2,7 @@
 
 todo-backend:
 
-- register
+X register 
 - simple matchmaking
 - simple scheduling
 
