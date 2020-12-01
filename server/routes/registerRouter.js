@@ -43,7 +43,7 @@ const registerRouter = Users => {
               passwordHash: regPassword,
               bio: '',
               tagline: '',
-              avatar: '',
+              avatar: `https://avatars.dicebear.com/4.1/api/initials/${regUsername}.svg`,
               callHistory: {},
               settings: {
                 profileVisible: true,
