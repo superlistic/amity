@@ -18,6 +18,7 @@ import Connection from './views/Connection/Connection';
 import Profile from './views/Connection/Profile/Profile';
 import ErrorComponent from './views/ErrorComponent/ErrorComponent';
 import Settings from './views/Connection/Settings/Settings';
+import Scheduler from './views/Connection/Scheduler/Scheduler';
 import { checkAuth } from './actions/auth';
 
 const App = ({ checkAuth, loading, isAuthenticated }) => {
@@ -33,9 +34,10 @@ const App = ({ checkAuth, loading, isAuthenticated }) => {
         <Switch>
           <AuthOnlyRoute path="/profile/:username" component={Profile} />
           <AuthOnlyRoute path="/connection" component={Connection} />
+          <AuthOnlyRoute path="/settings" exact component={Settings} />
+          <AuthOnlyRoute path="/schedule" exact component={Scheduler} />
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
-          <Route path="/settings" exact component={Settings} />
           {isAuthenticated ? (
             <Redirect to="/login" />
           ) : (
@@ -44,7 +46,6 @@ const App = ({ checkAuth, loading, isAuthenticated }) => {
               <Route path="/" exact component={Landing} />
             </>
           )}
-
           <Route path="/*" component={ErrorComponent} />
         </Switch>
       </div>

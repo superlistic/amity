@@ -32,6 +32,9 @@ const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
           >
             {user && user.username}
           </NavLink>
+          <NavLink to="/schedule" className="navbar__settings">
+            <span className="material-icons navbar__settings__span">today</span>
+          </NavLink>
           <NavLink to="/settings" className="navbar__settings">
             <span className="material-icons navbar__settings__span">
               settings

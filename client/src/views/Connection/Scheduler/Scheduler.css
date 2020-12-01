@@ -1,0 +1,20 @@
+.scheduler {
+  display: flex;
+  flex-direction: column;
+  color: var(--color2);
+  align-items: center;
+}
+
+.schedule__picker {
+  color: var(--color2);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  height: 3rem;
+  width: 15rem;
+  text-align: center;
+  outline: none;
+}
+.react-datepicker__time-list-item {
+  color: var(--color__black);
+}

@@ -18,6 +18,10 @@ export const login = payload => async dispatch => {
     },
   };
   try {
+    //AFTER MERGED WITH BE
+    // change hash to password as below
+    // const password = sha512(email + password).toString();
+    // const body = JSON.stringify({ email, password });
     const hash = sha512(email + password).toString();
     const body = JSON.stringify({ email, hash });
     const res = await axios.post('/api/login', body, config);

@@ -75,8 +75,9 @@ export const disableVideo = payload => dispatch => {
     type: DISABLE_VIDEO,
   });
 };
-export const handleOtherVideo = () => dispatch => {
+export const handleOtherVideo = payload => dispatch => {
   dispatch({
     type: OTHER_VIDEO,
+    payload,
   });
 };

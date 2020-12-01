@@ -13,6 +13,7 @@
     "framer-motion": "^2.9.4",
     "immer": "^7.0.14",
     "react": "^17.0.1",
+    "react-datepicker": "^3.3.0",
     "react-dom": "^17.0.1",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.1.22",
@@ -50,6 +51,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:3001"
+  }
 }

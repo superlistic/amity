@@ -59,13 +59,13 @@ const Connection = ({
 
   const handleOffer = async (sdp, method) => {
     console.log('handleOffer');
+    if (method === 'video') {
+      handleOtherVideo(true);
+    }
     const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
     const answer = await peerRef.current.createAnswer();
     peerRef.current.setLocalDescription(answer);
-    if (method === 'video') {
-      handleOtherVideo();
-    }
     socket.emit('relay', { data: answer, type: 'answer' });
   };
 
@@ -185,8 +185,8 @@ const Connection = ({
           return handleAnswer(data, method);
         case 'candidate':
           return handleCandidate(data);
-        case 'offerVideo':
-          return handleOtherVideo();
+        // case 'offerVideo':
+        //   return handleOtherVideo();
         default:
           return 'error';
       }
@@ -232,71 +232,15 @@ const Connection = ({
     }
   }, [isVideo]);
 
-  useEffect(() => {
-    console.log('isOtherVideo');
-    const receiveVideoCall = async () => {
-      // remoteVideo.current = await new MediaStream();
-      console.log(remoteVideo.current);
-    };
-    receiveVideoCall();
-  }, [isOtherVideo]);
+  // useEffect(() => {
+  //   console.log('isOtherVideo');
+  //   const receiveVideoCall = async () => {
+  //     // remoteVideo.current = await new MediaStream();
+  //     console.log(remoteVideo.current);
+  //   };
+  //   receiveVideoCall();
+  // }, [isOtherVideo]);
   // }
-
-  // Kill video stream
-  // stream.getTracks().forEach(track => track.stop());
-
-  //isVideo, isOtherVideo, communicationAccepted
-
-  // const chatMethod = () => {
-  //   const key = `${isVideo}-${isOtherVideo}`;
-
-  //   return (
-  //     <div>
-  //       {
-  //         {
-  //           'true-true': (
-  //             <div>
-  //               <div>
-  //                 <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-  //               </div>
-  //               <video
-  //                 autoPlay
-  //                 muted
-  //                 ref={localVideo}
-  //                 height="30%"
-  //                 width="20%"
-  //               />
-  //             </div>
-  //           ),
-  //           'false-true': (
-  //             <div>
-  //               <div>
-  //                 <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-  //                 <Chat sendMessage={sendMessage} />
-  //               </div>
-  //             </div>
-  //           ),
-  //           'true-false': (
-  //             <div>
-  //               <div>
-  //                 <Chat sendMessage={sendMessage} />
-  //               </div>
-  //               <video
-  //                 autoPlay
-  //                 muted
-  //                 ref={localVideo}
-  //                 height="30%"
-  //                 width="20%"
-  //               />
-  //             </div>
-  //           ),
-
-  //           'false-false': <Chat sendMessage={sendMessage} />,
-  //         }[key]
-  //       }
-  //     </div>
-  //   );
-  // };
 
   // communicationAccepted false
 
@@ -306,42 +250,104 @@ const Connection = ({
   //    isVideo false isOtherVideo true == Chat + stor bild för client, chat + liten för other?
   //    isVideo false isOtherVideo false == Chat för client, chat för other
 
-  // <div>
-  //       <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-  //     </div>
-  //     {!isVideo ? (
-  //       <Chat sendMessage={sendMessage} />
-  //     ) : (
-  //       <div>
-  //         <div>
-  //           <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-  //         </div>
-  //         <video autoPlay muted ref={localVideo} height="30%" width="20%" />
-  //       </div>
-  return communicationAccepted ? (
-    <div className="connection">
-      <div>
-        <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-      </div>
-      {!isVideo ? (
-        <Chat sendMessage={sendMessage} />
-      ) : (
-        <div>
-          <div>
-            <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-          </div>
-          <video autoPlay muted ref={localVideo} height="30%" width="20%" />
+  if (!communicationAccepted) return <ConnectionLobby socket={socket} />;
+
+  if (!isVideo && !isOtherVideo) {
+    console.log('!isVideo && !isOtherVideo');
+    return (
+      <div className="connection">
+        <Sidebar />
+        <div className="connection__main">
+          <Chat sendMessage={sendMessage} />
+          <video
+            autoPlay
+            ref={remoteVideo}
+            className="remote-video--disabled"
+          />
         </div>
-      )}
+        <Helpbar
+          sendMessage={sendMessage}
+          disconnectConnection={disconnectConnection}
+        />
+      </div>
+    );
+  }
+
+  if (!isVideo && isOtherVideo) {
+    console.log('!isVideo && isOtherVideo');
+    return (
+      <div className="connection">
+        <Sidebar />
+        <div className="connection__main">
+          <video
+            autoPlay
+            ref={remoteVideo}
+            height="70%"
+            width="50%"
+            className="remote-video"
+          />
+          <Chat sendMessage={sendMessage} />
+        </div>
+        <Helpbar
+          sendMessage={sendMessage}
+          disconnectConnection={disconnectConnection}
+        />
+      </div>
+    );
+  }
+  if (isVideo && !isOtherVideo) {
+    console.log('isVideo && !isOtherVideo');
+    return (
+      <div className="connection">
+        <Sidebar />
+        <div className="connection__main">
+          <div className="local-video-wrap">
+            <video
+              autoPlay
+              muted
+              ref={localVideo}
+              height="25%"
+              width="20%"
+              className="local-video"
+            />
+            <Chat sendMessage={sendMessage} />
+          </div>
+        </div>
+        <Helpbar
+          sendMessage={sendMessage}
+          disconnectConnection={disconnectConnection}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="connection">
+      <Sidebar />
+      <div className="connection__main">
+        <video
+          autoPlay
+          ref={remoteVideo}
+          height="70%"
+          width="50%"
+          className="remote-video"
+        />
+
+        <div className="local-video-wrap">
+          <video
+            autoPlay
+            muted
+            ref={localVideo}
+            height="25%"
+            width="20%"
+            className="local-video"
+          />
+        </div>
+      </div>
       <Helpbar
         sendMessage={sendMessage}
         disconnectConnection={disconnectConnection}
       />
-    </div>
-  ) : (
-    <div className="connection">
-      <Sidebar />
-      <ConnectionLobby />
     </div>
   );
 };
@@ -360,3 +366,16 @@ export default connect(mapStateToProps, {
   setConnectionEstablished,
   handleOtherVideo,
 })(Connection);
+
+// {
+//   !isVideo ? (
+//     <Chat sendMessage={sendMessage} />
+//   ) : (
+//     <div>
+//       <div>
+//         <video autoPlay ref={remoteVideo} height="70%" width="50%" />
+//       </div>
+//       <video autoPlay muted ref={localVideo} height="30%" width="20%" />
+//     </div>
+//   );
+// }
