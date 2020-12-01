@@ -6,11 +6,44 @@ info:
 servers:
   - url: 'http://127.0.0.1:3001/api/'
     description: localhost
-  - url: 'http:/salt.styl.services/api/'
+  - url: 'http://salt.styl.services/api/'
     description: prod
+
 
   
 paths:
+  /register:
+    post:
+      summary: register new user
+      description: check if the email is registered. If not, register the email
+      requestBody:
+        description: all thats needed for a new user
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/RegistrationObj"
+
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example: 
+                error: DuplicateEmailError
+                user-reason: email is already registered.
+        
+                
+
   /login:
     post:
       summary: authenticate user by email and hash
@@ -69,9 +102,41 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Settings'
+      responses:
+        200:
+          description: settings object valid. returning settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        400:
+          description: settings object invalid
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+              example: 
+                error: ValidationError
+                user-reason: error saving new settings
+
+
+
+security:
+  - key: []
+
       
 components:
   schemas:
+    RegistrationObj:
+      type: object
+      additionalProperties: false
+      properties:
+        username: 
+          $ref:  "#/components/schemas/Username"
+        email:
+          $ref:  "#/components/schemas/Email"
+        password:
+          $ref:  "#/components/schemas/PasswordHash"
     User:
       description: describes user incl. settings
       type: object
@@ -80,8 +145,7 @@ components:
         userId:
           $ref: '#/components/schemas/UUID'
         username:
-          type: string
-          example: Allan888
+          $ref: '#/components/schemas/Username'
         email:
           $ref: '#/components/schemas/Email'
         bio:
@@ -123,13 +187,12 @@ components:
       properties:
         error:
           type: string
-          format: type
+          format: ErrorType
           maxLength: 30
-        reason:
+        user-reason:
           type: string
           maxLength: 100
           format: user-friendly
-
     AuthCredentials:
       description: login request object
       type: object
@@ -137,13 +200,9 @@ components:
       properties:
         email:
           $ref: '#/components/schemas/Email'
-        hash:
-          type: string
-          maxLength: 128 
-          minLength: 128
-          pattern: ^[0-9a-f]+$
-          format: SHA512
-          example: 0a50261ebd1a390fed2bf326f2673c145582a6342d523204973d0219337f81616a8069b012587cf5635f6925f1b56c360230c19b273500ee013e030601bf2425
+        password:
+          $ref: '#/components/schemas/PasswordHash'
+          
     UUID:
       description: UUID v4. guaranteed (practically) unique identifier. 
       type: string
@@ -158,8 +217,28 @@ components:
       maxLength: 30
       format: email
       example: user@example.com
+    Username:
+      description: userselected display-name
+      type: string
+      example: Allan888 
+      maxLength: 30
+      minLength: 1
+      pattern: ^\S+$
+    PasswordHash:
+      description: sha512 hash of <email><password>
+      type: string
+      maxLength: 128 
+      minLength: 128
+      pattern: ^[0-9a-f]+$
+      format: SHA512
+      example: 0a50261ebd1a390fed2bf326f2673c145582a6342d523204973d0219337f81616a8069b012587cf5635f6925f1b56c360230c19b273500ee013e030601bf2425
+
 
   securitySchemes:
+    key:
+      type: apiKey
+      name: x-api-key
+      in: header
     x-access-token:
       type: apiKey
       name: x-access-token
