@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import './Settings.css';
 import { FormInput } from '../../../components/formInput/style';
+import { AccentButton } from '../../../components/button';
 
 const Settings = ({ user, loading }) => {
   const initUser = {
@@ -101,6 +102,7 @@ const Settings = ({ user, loading }) => {
             ></FormInput>
           </section>
         </article>
+        <AccentButton className="settings__button"> Update</AccentButton>
       </div>
     )
   );

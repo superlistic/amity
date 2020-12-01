@@ -27,7 +27,12 @@ export const StyledAccentButton = styled(StyledButton)`
 `;
 export const StyledAccentOutlinedButton = styled(StyledButton)`
   border: 2px solid ${theme.secondary};
-  width: 6rem;
+  width: ${props => (props.inputWidth ? props.inputWidth : '6rem')};
+  background: transparent;
+`;
+export const StyledWideAccentOutlinedButton = styled(StyledButton)`
+  border: 2px solid ${theme.secondary};
+  width: ${props => (props.inputWidth ? props.inputWidth : '8rem')};
   background: transparent;
 `;
 export const StyledGrayButton = styled(StyledButton)`

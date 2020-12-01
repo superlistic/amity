@@ -1,0 +1,17 @@
+.connection-lobby {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 1rem; */
+}
+
+.connection-lobby__actions {
+  display: flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.connection-lobby__text {
+  width: 33%;
+  margin-top: 1rem;
+}
