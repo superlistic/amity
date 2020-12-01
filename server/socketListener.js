@@ -1,5 +1,5 @@
 const { verifyer } = require('./jwt');
-const { SessionHandler } = require('./SessionHandler');
+const { MeetingHandler } = require('./MeetingHandler');
 const Jogger = require('./Jogger');
 const chalk = require('chalk');
 const log = new Jogger(chalk.cyan('[socket]'));
@@ -14,64 +14,76 @@ const cookieParse = c => {
 
 const websocketListener = server => {
   const io = require('socket.io')(server);
-  const handler = new SessionHandler();
-  handler.create(['test-user-id', 'test-user-id2']);
-  handler.create(['test-0', 'test-1']);
-  handler.create(['test-2', 'test-3']);
-  handler.create(['test-4', 'test-5']);
-
+  const meetings = new MeetingHandler();
   io.on('connection', socket => {
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
     if (!token) {
-      log.warn('rejected', socket.id);
+      log.warn('rejected socket id', socket.id);
       socket.disconnect();
       return;
     }
-    log.ok('connect', socket.client.id);
-    log.mute(socket.handshake.headers['user-agent']);
-    const result = handler.addUser(token.userId, socket);
+    const result = meetings.addUser(token.userId, socket);
+    socket.userId = result.userId;
+    log.debug('meetings');
+    console.log(meetings);
 
-    if (result) {
-      socket.userId = result.userId;
-    }
+    log.ok('connect socket', socket.id);
+    log.mute(socket.handshake.headers['user-agent']);
 
     // check if partner online
-    const peerId = handler.match(socket.userId) || null;
-
-    if (handler.isOnline(peerId)) {
-      io.to(handler.socketId(peerId)).emit('matchUpdate', {
-        msg: '[socket] partner just connected',
-      });
-      socket.emit('matchUpdate', {
-        msg: '[socket] partner is online',
-      });
+    const peerId = meetings.match(socket.userId) || null;
+    if (peerId) {
+      if (meetings.isOnline(peerId)) {
+        io.to(meetings.socketId(peerId)).emit('matchUpdate', {
+          msg: '[socket] partner just connected',
+        });
+        socket.emit('matchUpdate', {
+          msg: '[socket] partner is online',
+        });
+      }
     }
 
-    socket.on('relay', payload => {
-      const peerId = handler.match(socket.userId);
-      log.mute(`relaying ${payload.type} ` + socket.userId + ' -> ' + peerId);
-      io.to(handler.socketId(peerId)).emit('relay', payload);
-    });
-
-    socket.on('ready', () => {
-      const match = handler.match(socket.userId) || null;
-      log.mute('"ready" recieved');
+    socket.on('instantConnection', () => {
+      const match = meetings.instantMeeting(socket.userId) || null;
+      log.debug('"instantConnection" recieved from', socket.userId);
       if (match) {
         log.mute('meeting exists');
-        io.to(handler.socketId(match)).emit('makeOffer', {
+        io.to(meetings.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
       } else {
-        log.warn('no peer found for', socket.userId);
+        log.warn('no meeting found for', socket.userId);
+      }
+    });
+
+    socket.on('relay', payload => {
+      const peerId = meetings.match(socket.userId);
+      log.mute(`relaying ${payload.type} ` + socket.userId + ' -> ' + peerId);
+      io.to(meetings.socketId(peerId)).emit('relay', payload);
+    });
+
+    socket.on('ready', () => {
+      const match = meetings.match(socket.userId) || null;
+      log.mute('"ready" recieved from', socket.userId);
+      if (match) {
+        log.mute('meeting exists');
+        io.to(meetings.socketId(match)).emit('makeOffer', {
+          msg: '[socket] partner just connected',
+        });
+        socket.emit('awaitOffer', {
+          msg: '[socket] partner asked to send offer',
+        });
+      } else {
+        log.warn('no meeting found for', socket.userId);
       }
     });
 
     socket.on('disconnect', reason => {
-      handler.remove(socket.id);
-      io.to(handler.match(socket.userId)).emit('matchUpdate', {
+      meetings.remove(socket.id);
+      io.to(meetings.match(socket.userId)).emit('matchUpdate', {
         msg: '[socket] partner disconnected',
       });
 
@@ -80,4 +92,4 @@ const websocketListener = server => {
   });
 };
 
-module.exports = { websocketListener, UserHandler: SessionHandler };
+module.exports = { websocketListener };

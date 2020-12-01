@@ -1,20 +1,12 @@
 const Jogger = require('../Jogger');
 const chalk = require('chalk');
 const log = new Jogger(chalk.blue('[SessionHanlder]'));
-const uuid = require('uuid');
 
 class MeetingHandler {
   constructor() {
+    this.instaQue = null;
     this.users = {};
-    this.meetings = [
-      [
-        'dc79214a-25f5-441c-a527-02a2ba38c4f4',
-        '52edd659-8161-401b-905b-173dd48d0cc5',
-      ],
-      ['test-0', 'test-1'],
-      ['test-2', 'test-3'],
-      ['test-4', 'test-5'],
-    ];
+    this.meetings = [];
   }
   addUser(userId, socket) {
     if (!userId || !socket) {
@@ -36,9 +28,21 @@ class MeetingHandler {
       }
     }
   }
+  // TODO guard against "different order of users but otherwise the same"-meetings
   create(users) {
     log.mute('create meeting between', users);
+    this.meetings.includes(users);
     this.meetings.push(users);
+  }
+  instantMeeting(uid) {
+    if (this.instaQue && this.instaQue !== uid) {
+      const uid2 = this.instaQue;
+      this.create([uid, uid2]);
+      this.instaQue = null;
+      return this.match(uid);
+    } else {
+      this.instaQue = uid;
+    }
   }
   match(uid) {
     let meeting = this.meetings.find(s => s.includes(uid));
@@ -52,6 +56,15 @@ class MeetingHandler {
       return meeting[0];
     }
     throw Error('logic error or meeting malformed');
+  }
+  matchAll(uid) {
+    log.debug('new - matchAll');
+    let meetings = this.meetings.findAll(s => s.includes(uid));
+    if (!meetings) {
+      return null;
+    }
+    console.log(meetings);
+    return meetings;
   }
   isOnline(uid) {
     if (this.users[uid]) {

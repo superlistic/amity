@@ -2,8 +2,9 @@
 
 todo-backend:
 
-- X register 
-- simple matchmaking
+- <strike>register</strike>
+- <strike>simple matchmaking</strike>
+
 - simple scheduling
 
 todo:
