@@ -38,6 +38,7 @@ export default function connection(state = initState, action) {
         ...state,
         isConnected: false,
         communicationAccepted: false,
+        isOtherVideo: false,
         messages: [],
       };
     case ACCEPT_COMMUNICATION:
@@ -72,7 +73,7 @@ export default function connection(state = initState, action) {
     case OTHER_VIDEO:
       return {
         ...state,
-        isOtherVideo: true,
+        isOtherVideo: payload,
       };
 
     default:
