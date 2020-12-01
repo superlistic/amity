@@ -1,5 +1,10 @@
 # Amity incorporated
 
+todo-backend:
+
+- register
+- simple matchmaking
+- simple scheduling
 
 todo:
 

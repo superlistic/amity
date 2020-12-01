@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const { logger } = require('./logger');
 const { jwtMiddle } = require('./jwt');
-const { logRouter, loginRouter } = require('./routes');
+const { logRouter, loginRouter, registerRouter } = require('./routes');
 const { Log, User } = require('./database');
 const { websocketListener } = require('./socketListener');
 const Jogger = require('./Jogger');
@@ -72,6 +72,7 @@ if (env.DEBUG_NO_MONGO !== '1') {
     app.use(logger(logs));
     app.use('/api/logs', logRouter(logs));
     app.use('/api/login', loginRouter(users));
+    app.use('/api/register', registerRouter(users));
     addStatic(app);
   });
 } else {

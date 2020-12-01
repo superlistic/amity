@@ -12,6 +12,6 @@ module.exports = new Schema({
   avatar: String,
   callHistory: {},
   settings: {},
-  usedSuggestions: {},
-  updated: { type: Date, default: Date.now },
+  suggestions: {},
+  updated: { type: Number, default: Date.now() },
 });
