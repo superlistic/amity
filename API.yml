@@ -8,9 +8,6 @@ servers:
     description: localhost
   - url: 'http://salt.styl.services/api/'
     description: prod
-
-
-  
 paths:
   /meetings:
     post:
@@ -37,8 +34,21 @@ paths:
               example: 
                 error: DuplicateMeetingError
                 user-reason: meeting is already scheduled.
-          
-
+    get:
+      summary: list all metting in which you are attending
+      security:
+        - x-access-token: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  meetings:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Meeting'
   /register:
     post:
       summary: register new user
@@ -50,8 +60,6 @@ paths:
           application/json:
             schema: 
               $ref: "#/components/schemas/RegistrationObj"
-
-
       responses:
         '200':
           description: OK
@@ -68,9 +76,6 @@ paths:
               example: 
                 error: DuplicateEmailError
                 user-reason: email is already registered.
-        
-                
-
   /login:
     post:
       summary: authenticate user by email and hash
@@ -145,13 +150,8 @@ paths:
               example: 
                 error: ValidationError
                 user-reason: error saving new settings
-
-
-
 security:
   - key: []
-
-      
 components:
   schemas:
     Meeting:
@@ -272,14 +272,11 @@ components:
       format: SHA512
       example: 0a50261ebd1a390fed2bf326f2673c145582a6342d523204973d0219337f81616a8069b012587cf5635f6925f1b56c360230c19b273500ee013e030601bf2425
     UnixEpoch:
-      type: integer
-      minimum: 1600000000
-      maximum: 2000000000 
-      format: unix epoch
-      example: 1606727487
-
-
-
+      type: number
+      description: UNIX time w/ millis
+      minimum: 1600000000000
+      maximum: 2000000000000 
+      example: 1606727487134
   securitySchemes:
     key:
       type: apiKey

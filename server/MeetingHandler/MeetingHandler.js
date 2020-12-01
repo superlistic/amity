@@ -1,7 +1,8 @@
 const Jogger = require('../Jogger');
 const chalk = require('chalk');
-const log = new Jogger(chalk.blue('[SessionHanlder]'));
+const log = new Jogger(chalk.blue('[MeetingsHanlder]'));
 
+// TODO: remove meeting mechanism
 class MeetingHandler {
   constructor() {
     this.instaQue = null;
@@ -45,25 +46,25 @@ class MeetingHandler {
     }
   }
   match(uid) {
-    let meeting = this.meetings.find(s => s.includes(uid));
+    let meeting = this.meetings.find(m => m.users.includes(uid));
     if (!meeting) {
       return null;
     }
-    if (meeting[0] === uid) {
-      return meeting[1];
+    if (meeting.users[0] === uid) {
+      return meeting.users[1];
     }
-    if (meeting[1] === uid) {
-      return meeting[0];
+    if (meeting.users[1] === uid) {
+      return meeting.users[0];
     }
     throw Error('logic error or meeting malformed');
   }
   matchAll(uid) {
-    log.debug('new - matchAll');
-    let meetings = this.meetings.findAll(s => s.includes(uid));
+    const meetings = this.meetings.filter(m => {
+      return m.users.includes(uid);
+    });
     if (!meetings) {
       return null;
     }
-    console.log(meetings);
     return meetings;
   }
   isOnline(uid) {

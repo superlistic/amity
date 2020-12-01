@@ -1,5 +1,4 @@
 const { verifyer } = require('./jwt');
-const { MeetingHandler } = require('./MeetingHandler');
 const Jogger = require('./Jogger');
 const chalk = require('chalk');
 const log = new Jogger(chalk.cyan('[socket]'));
@@ -12,9 +11,8 @@ const cookieParse = c => {
   }
 };
 
-const websocketListener = server => {
+const websocketListener = (server, meetings) => {
   const io = require('socket.io')(server);
-  const meetings = new MeetingHandler();
   io.on('connection', socket => {
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
     if (!token) {

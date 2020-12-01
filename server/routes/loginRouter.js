@@ -61,7 +61,7 @@ const loginRouter = Users => {
     // const normalizedEmail = req.body.email.toLowerCase();
     // TODO this
     Users.findOne(
-      { email: req.body.email, passwordHash: req.body.hash },
+      { email: req.body.email, password: req.body.hash },
       {
         _id: 0,
         userId: 1,

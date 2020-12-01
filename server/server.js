@@ -3,11 +3,17 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
 const path = require('path');
 const { logger } = require('./logger');
 const { jwtMiddle } = require('./jwt');
-const { logRouter, loginRouter, registerRouter } = require('./routes');
+const { MeetingHandler } = require('./MeetingHandler');
+
+const {
+  logRouter,
+  loginRouter,
+  registerRouter,
+  meetingsRouter,
+} = require('./routes');
 const { Log, User } = require('./database');
 const { websocketListener } = require('./socketListener');
 const Jogger = require('./Jogger');
@@ -15,14 +21,13 @@ const chalk = require('chalk');
 const log = new Jogger();
 const elog = new Jogger(chalk.yellow('[express]'));
 const { env } = process;
+const meetings = new MeetingHandler();
 
 // SOCKET.IO
 const server = require('http').createServer(app);
-websocketListener(server);
+websocketListener(server, meetings);
 
 // MIDDLEWARE
-// TODO: REMOVE CORS
-// app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(jwtMiddle);
@@ -73,6 +78,7 @@ if (env.DEBUG_NO_MONGO !== '1') {
     app.use('/api/logs', logRouter(logs));
     app.use('/api/login', loginRouter(users));
     app.use('/api/register', registerRouter(users));
+    app.use('/api/meetings', meetingsRouter(meetings));
     addStatic(app);
   });
 } else {
@@ -80,14 +86,3 @@ if (env.DEBUG_NO_MONGO !== '1') {
   app.use(logger());
   addStatic(app);
 }
-class Client {
-  constructor(uid, socket) {
-    this.userId = uid;
-    this.socket = socket;
-  }
-}
-
-// HASH
-// const { SHA512 } = require('crypto-js');
-// const sha512 = require('crypto-js/SHA512');
-// log.info(sha512('viktor@styldesign.sepassword').toString());
