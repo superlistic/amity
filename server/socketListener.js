@@ -78,12 +78,8 @@ const websocketListener = (server, meetings, users) => {
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
-        log.debug();
-        console.log(meetings);
       } else {
         log.warn('no instant meeting found for', socket.userId);
-        log.debug();
-        console.log(meetings);
       }
     });
 
@@ -117,9 +113,6 @@ const websocketListener = (server, meetings, users) => {
 
       log.info('disconnected', socket.id), log.mute(reason);
     });
-
-    log.debug();
-    console.log(meetings);
   });
 };
 

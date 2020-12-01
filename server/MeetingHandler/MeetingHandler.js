@@ -1,6 +1,7 @@
 const Jogger = require('../Jogger');
 const chalk = require('chalk');
 const log = new Jogger(chalk.blue('[MeetingsHanlder]'));
+const uuid = require('uuid');
 
 // TODO: remove meeting mechanism
 class MeetingHandler {
@@ -29,18 +30,27 @@ class MeetingHandler {
       }
     }
   }
-  // TODO guard against "different order of users but otherwise the same"-meetings
   create(meeting) {
-    log.debug('create meeting', meeting);
     if (!meeting.time || !meeting.users) {
       log.err('Malformed meeting');
-      throw Error('malformed meeting');
+      throw Error('MalformedMeetingError');
     }
-    if (!this.meetings.includes(meeting)) {
-      this.meetings.push(meeting);
+    const duplicate = this.meetings.find(m => {
+      if (
+        m.users.includes(meeting.users[0]) &&
+        m.users.includes(meeting.users[1]) &&
+        m.time === meeting.time
+      ) {
+        return m;
+      }
+    });
+    if (!duplicate) {
+      const m = { ...meeting, id: uuid.v4() };
+      this.meetings.push(m);
+      return m;
     } else {
-      log.warn('Duplicate meetings');
-      throw Error('DuplicateMeetingError');
+      log.warn('asked to add Duplicate. returning original');
+      return duplicate;
     }
   }
   instantMeeting(uid) {
