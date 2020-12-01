@@ -12,6 +12,33 @@ servers:
 
   
 paths:
+  /meetings:
+    post:
+      summary: Add a meeting to the schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Meeting'
+        '400':
+          description: duplicate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example: 
+                error: DuplicateMeetingError
+                user-reason: meeting is already scheduled.
+          
+
   /register:
     post:
       summary: register new user
@@ -26,13 +53,13 @@ paths:
 
 
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        400:
+        '400':
           description: Email already registered
           content:
             application/json:
@@ -55,7 +82,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AuthCredentials'
       responses:
-        200:
+        '200':
           description: auth successful
           headers:
             Set-Cookie:
@@ -78,7 +105,7 @@ paths:
       security:
         - x-access-token: []
       responses:
-        200:
+        '200':
           description: token is valid. response contains associated user info.
           content:
             application/json:
@@ -103,13 +130,13 @@ paths:
             schema:
               $ref: '#/components/schemas/Settings'
       responses:
-        200:
+        '200':
           description: settings object valid. returning settings
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Settings'
-        400:
+        '400':
           description: settings object invalid
           content:
             application/json:
@@ -127,6 +154,22 @@ security:
       
 components:
   schemas:
+    Meeting:
+      description: represents a scheduled meeting
+      type: object
+      additionalProperties: false
+      properties:
+        time: 
+          $ref: "#/components/schemas/UnixEpoch"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UUID"
+          minItems: 2
+          uniqueItems: true
+          example:
+            - a1a07302-3fac-443b-ab6c-d90327cdf784
+            - 3353efd3-a5e5-40e5-aa5a-91eca1979221
     RegistrationObj:
       type: object
       additionalProperties: false
@@ -169,11 +212,7 @@ components:
         settings:
           $ref: '#/components/schemas/Settings'
         updated:
-          type: integer
-          minimum: 1600000000
-          maximum: 2000000000 
-          format: unix epoch
-          example: 1606727487
+          $ref: '#/components/schemas/UnixEpoch'
     Settings:
       type: object
       properties:
@@ -232,6 +271,13 @@ components:
       pattern: ^[0-9a-f]+$
       format: SHA512
       example: 0a50261ebd1a390fed2bf326f2673c145582a6342d523204973d0219337f81616a8069b012587cf5635f6925f1b56c360230c19b273500ee013e030601bf2425
+    UnixEpoch:
+      type: integer
+      minimum: 1600000000
+      maximum: 2000000000 
+      format: unix epoch
+      example: 1606727487
+
 
 
   securitySchemes:
