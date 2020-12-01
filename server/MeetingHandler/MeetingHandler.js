@@ -63,7 +63,6 @@ class MeetingHandler {
     if (!meetings) {
       return null;
     }
-    log.debug('meetings');
     console.log(meetings);
     return meetings;
   }
