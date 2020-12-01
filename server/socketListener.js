@@ -58,11 +58,11 @@ const websocketListener = (server, meetings, users) => {
         Promise.all([prom1, prom2]).then(([peer1, peer2]) => {
           io.to(meetings.socketId(peerId)).emit('matchUpdate', {
             msg: 'peer just connected',
-            peer1,
+            peer: peer1,
           });
           socket.emit('matchUpdate', {
             msg: 'peer is already online',
-            peer2,
+            peer: peer2,
           });
         });
       }
