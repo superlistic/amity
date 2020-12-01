@@ -38,7 +38,7 @@ class MeetingHandler {
   instantMeeting(uid) {
     if (this.instaQue && this.instaQue !== uid) {
       const uid2 = this.instaQue;
-      this.create([uid, uid2]);
+      this.create({ time: Date.now(), meeting: [uid, uid2] });
       this.instaQue = null;
       return this.match(uid);
     } else {
