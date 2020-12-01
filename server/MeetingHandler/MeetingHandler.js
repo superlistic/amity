@@ -31,14 +31,22 @@ class MeetingHandler {
   }
   // TODO guard against "different order of users but otherwise the same"-meetings
   create(meeting) {
-    log.mute('create meeting', meeting);
-    this.meetings.includes(meeting);
-    this.meetings.push(meeting);
+    log.debug('create meeting', meeting);
+    if (!meeting.time || !meeting.users) {
+      log.err('Malformed meeting');
+      throw Error('malformed meeting');
+    }
+    if (!this.meetings.includes(meeting)) {
+      this.meetings.push(meeting);
+    } else {
+      log.warn('Duplicate meetings');
+      throw Error('DuplicateMeetingError');
+    }
   }
   instantMeeting(uid) {
     if (this.instaQue && this.instaQue !== uid) {
       const uid2 = this.instaQue;
-      this.create({ time: Date.now(), meeting: [uid, uid2] });
+      this.create({ time: Date.now(), users: [uid, uid2] });
       this.instaQue = null;
       return this.match(uid);
     } else {
