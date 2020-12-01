@@ -11,6 +11,7 @@ import {
   ENABLE_SOUND,
   DISABLE_SOUND,
   SET_SUGGESTION,
+  CLICKED_SUGGESTION,
   ACCEPT_COMMUNICATION,
   DENY_COMMUNICATION,
   OTHER_VIDEO,
@@ -60,6 +61,11 @@ export const setSuggestion = payload => dispatch => {
   dispatch({
     type: SET_SUGGESTION,
     payload,
+  });
+};
+export const clickedSuggestion = () => dispatch => {
+  dispatch({
+    type: CLICKED_SUGGESTION,
   });
 };
 

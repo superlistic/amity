@@ -45,7 +45,7 @@ export default function auth(state = initState, action) {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload,
+        user: payload.data,
       };
     case AUTH_CHECK:
       return {

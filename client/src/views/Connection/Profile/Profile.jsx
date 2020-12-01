@@ -8,11 +8,11 @@ const Profile = ({ user, loading }) => {
 
   return (
     <div className="profile">
+      <img className="profile__avatar" src={user.avatar} alt={user.avatar} />
       <p className="profile__title">{user.username}</p>
-      <p className="profile__text">{user.avatar}</p>
-      <img src={user.avatar} alt={user.avatar} />
-      <p className="profile__text">{user.tagline}</p>
-      <p className="profile__text">{user.bio}</p>
+      <hr className="profile__divider" />
+      <p className="profile__text">{`Tagline: ${user.tagline}`}</p>
+      <p className="profile__text">{`Bio: ${user.bio}`}</p>
       <p className="profile__text">{user.username}</p>
     </div>
   );

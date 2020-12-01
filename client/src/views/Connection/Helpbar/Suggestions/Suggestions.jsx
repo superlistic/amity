@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import './Suggestions.css';
 import Suggestion from './Suggestion';
-import { suggestionVariant } from '../../../../animations';
 import { setSuggestion } from '../../../../actions/connection';
 
 const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
-  const [queuedElement, setQueuedElement] = useState();
-  // console.log(currentSuggestion);
-  // const onHandleSuggestion = suggestion => {
-  //   console.log(suggestion);
-  //   // sendMessage(suggestion.text);
-
-  //   //remove from suggestions?/dont show atleast
-  // };
-
   const listOfSuggestions = [
     {
       id: 1,
@@ -32,12 +21,11 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
     },
     {
       id: 4,
-      text: 'How did you meet the host?',
+      text: 'How did you meet your boss?',
     },
     {
       id: 5,
-      text:
-        'What’s your favorite form of social media (besides Amity ofc ;) )?',
+      text: 'What’s your favorite form of social media (besides Amity ;) )?',
     },
     {
       id: 6,
@@ -45,44 +33,25 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
     },
   ];
 
-  // const displaySuggestion = suggestion => {
-  //   return (
-  //     <motion.p
-  //       variants={suggestionVariant}
-  //       initial="initial"
-  //       animate="animate"
-  //       className="suggestion"
-  //       onClick={() => onHandleSuggestion(suggestion)}
-  //     >
-  //       {suggestion.text}
-  //     </motion.p>
-  //   );
-  // };
-
   function timeout(delay) {
     return new Promise(res => setTimeout(res, delay));
   }
 
-  // const displaySuggestions = async (array) => {
-  //   return array.map(el =>  {
-  //     await timeout(1000);
-  //     displaySuggestion(el)
-  //   });
-  // }
-
   const queue = async array => {
     while (array.length > 0) {
       const suggestion = array.shift();
-      // console.log(suggestion);
-      setSuggestion(suggestion);
-      // setQueuedElement(<Suggestion suggestion={suggestion.text} />);
-      await timeout(14000);
+      await setSuggestion(suggestion);
+      if (currentSuggestion.length !== 0) {
+        await timeout(14000);
+      }
     }
   };
 
   useEffect(() => {
     queue(listOfSuggestions);
   }, []);
+
+  // const removeSuggestion = () => {};
 
   const getSuggestion = suggestion => {
     return suggestion.map(s => (
@@ -99,7 +68,7 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
     <div className="suggestions">
       <hr className="suggestions__divider" />
       <p className="suggestions__title">
-        Click on a suggestion to send it in chat
+        Click on a suggestion to send it in chat.
       </p>
       {currentSuggestion.length !== 0 ? getSuggestion(currentSuggestion) : ''}
     </div>

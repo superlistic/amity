@@ -2,14 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
 
+import { clickedSuggestion } from '../../../../actions/connection';
 import { suggestionVariant } from '../../../../animations';
 
-const Suggestion = ({ suggestion, sendMessage, id }) => {
+const Suggestion = ({ suggestion, sendMessage, id, clickedSuggestion }) => {
   const onHandleSuggestion = suggestion => {
-    // console.log(suggestion.text);
     sendMessage(suggestion);
-
-    //remove from suggestions?/dont show atleast
+    clickedSuggestion();
   };
 
   return (
@@ -28,4 +27,4 @@ const Suggestion = ({ suggestion, sendMessage, id }) => {
   );
 };
 
-export default connect(null, {})(Suggestion);
+export default connect(null, { clickedSuggestion })(Suggestion);
