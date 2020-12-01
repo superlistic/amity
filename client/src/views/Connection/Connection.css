@@ -6,26 +6,82 @@
 }
 
 .connection__main {
-  /* border: 2px solid black; */
-  /* display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  grid-template-areas: 'main'; */
+  /* display: flex;
+  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
+  /* height: 99%; */
+  background: var(--color__white);
+}
+
+.local-video-wrap {
+  /* flex: 1;
+  position: relative; */
+}
+.video-container {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: repeat(8, 1fr);
+}
+
+.local-video {
+  justify-self: center;
+  align-self: center;
+  grid-column: 7/9;
+  grid-row: 6/9;
+  object-fit: cover;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color1);
+  border-radius: 5px;
+}
+.remote-video {
+  /* grid-column: 1/3;
+  grid-row: 1/3; */
+  grid-column: 1/9;
+  grid-row: 1/9;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+  /* border: 1px solid var(--color2); */
+  /* border: 1px solid var(--color1); */
+  border-radius: 5px;
+  object-fit: contain;
+  /* align-self: center;
+  object-fit: contain;
+  height: 50%;
+  width: 100%;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2); */
+}
+
+.remote-video-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.remote-video--disabled {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/*  */
+/*  */
+/* .connection {
+  height: 95vh;
+  height: calc(100vh - 4.2rem);
+  display: grid;
+  grid-template-columns: 0.5fr 8.5fr 3fr;
+}
+
+.connection__main {
+
   display: flex;
   flex-direction: column;
   background: var(--color__white);
 }
 
-/* .local-video-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  /* z-index: -1; */
-/* display: flex; */
-/* }  */
+
 
 .local-video-wrap {
   flex: 1;
@@ -49,18 +105,6 @@
   width: 100%;
 }
 
-/* .local-video {
-  position: relative;
-  object-fit: cover;
-  z-index: 2;
-  align-self: center;
-  justify-self: flex-start;
-  border: 1px solid var(--color1);
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  width: 20%;
-  height: 18%;
-} */
 .remote-video-wrap {
   display: flex;
   flex-direction: column;
@@ -69,23 +113,16 @@
 }
 
 .remote-video {
-  /* grid-column: 1;
-  grid-row: 1; */
-  /* grid-area: main; */
-  /* position: absolute;
-  top: 0;
-  left: 0; */
+
   align-self: center;
-  /* justify-self: flex-start; */
-  /* border: 1px solid var(--color1); */
   object-fit: contain;
   height: 50%;
   width: 100%;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-  /* border-radius: 2px; */
+
 }
 .remote-video--disabled {
   width: 0;
   height: 0;
   display: none;
-}
+} */

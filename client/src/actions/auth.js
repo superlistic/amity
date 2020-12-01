@@ -11,19 +11,15 @@ import {
 const axios = require('axios');
 
 export const login = payload => async dispatch => {
-  const { email, password } = payload;
+  let { email, password } = payload;
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
   try {
-    //AFTER MERGED WITH BE
-    // change hash to password as below
-    // const password = sha512(email + password).toString();
-    // const body = JSON.stringify({ email, password });
-    const hash = sha512(email + password).toString();
-    const body = JSON.stringify({ email, hash });
+    password = sha512(email + password).toString();
+    const body = JSON.stringify({ email, password });
     const res = await axios.post('/api/login', body, config);
     dispatch({
       type: LOGIN_SUCCESS,
@@ -71,18 +67,11 @@ export const logOut = () => async dispatch => {
 };
 
 export const checkAuth = () => async dispatch => {
-  //api req GET and store response/user in state ;)
-  // dispatch({
-  //   type: AUTH_CHECK,
-  //   payload: { user: null, isAuthenticated: false },
-  // });
   try {
     const res = await axios.get('/api/login');
     dispatch({
       type: AUTH_CHECK,
       payload: res,
-      //Ändra sen när vi får user
-      // payload: { user: null, isAuthenticated: true },
     });
   } catch (e) {
     console.log(e);

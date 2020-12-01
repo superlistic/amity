@@ -35,6 +35,8 @@ const Connection = ({
   const userStream = useRef();
   const isInitiator = useRef(true);
 
+  console.log('RENDER');
+
   const createChannel = () => {
     console.log('Create CHANNEL');
     dataChannel.current = peerRef.current.createDataChannel('dataChannel');
@@ -60,7 +62,7 @@ const Connection = ({
   const handleOffer = async (sdp, method) => {
     console.log('handleOffer');
     if (method === 'video') {
-      handleOtherVideo(true);
+      await handleOtherVideo(true);
     }
     const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
@@ -185,8 +187,6 @@ const Connection = ({
           return handleAnswer(data, method);
         case 'candidate':
           return handleCandidate(data);
-        // case 'offerVideo':
-        //   return handleOtherVideo();
         default:
           return 'error';
       }
@@ -195,20 +195,14 @@ const Connection = ({
 
   useEffect(() => {
     if (isVideo) {
-      // socket.emit('relay', { data: 'video', type: 'offerVideo' });
       console.log('video tajm');
-      //Nedan behöver även den som svarar få tag i, antagligen m.ha socket eller smart lösning?
-      //--------------------------------------------------------------
       const videoCall = async () => {
-        console.log(remoteVideo.current);
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
         });
         localVideo.current.srcObject = stream;
-        // localVideo.current.srcObject = stream;
         console.log(localVideo.current);
-        // remoteVideo.current.srcObject = stream;
         console.log('userStream.current--------------------------');
         console.log(isInitiator.current === true);
 
@@ -222,15 +216,13 @@ const Connection = ({
           handleNegotiationNeededEvent('video');
           isInitiator.current = false;
         }
-        //--------------------------------------------------------------
-
         console.log(userStream.current);
         console.log(stream);
       };
 
       videoCall();
     }
-  }, [isVideo]);
+  }, [isVideo, isOtherVideo]);
 
   // useEffect(() => {
   //   console.log('isOtherVideo');
@@ -279,7 +271,7 @@ const Connection = ({
       <div className="connection">
         <Sidebar />
         <div className="connection__main">
-          <div className="remote-video-wrap">
+          <div className="video-container">
             <video
               autoPlay
               ref={remoteVideo}
@@ -287,8 +279,8 @@ const Connection = ({
               width="100%"
               className="remote-video"
             />
-            <Chat sendMessage={sendMessage} />
           </div>
+          <Chat sendMessage={sendMessage} />
         </div>
         <Helpbar
           sendMessage={sendMessage}
@@ -303,17 +295,17 @@ const Connection = ({
       <div className="connection">
         <Sidebar />
         <div className="connection__main">
-          <div className="remote-video-wrap">
+          <div className="video-container">
             <video
               autoPlay
               muted
               ref={localVideo}
-              height="25%"
-              width="20%"
+              height="100%"
+              width="100%"
               className="local-video"
             />
-            <Chat sendMessage={sendMessage} />
           </div>
+          <Chat sendMessage={sendMessage} />
         </div>
         <Helpbar
           sendMessage={sendMessage}
@@ -327,27 +319,25 @@ const Connection = ({
     <div className="connection">
       <Sidebar />
       <div className="connection__main">
-        <div className="remote-video-wrap">
+        <div className="video-container">
           <video
             autoPlay
             ref={remoteVideo}
-            height="50%"
+            height="100%"
             width="100%"
             className="remote-video"
           />
-          <Chat sendMessage={sendMessage} />
+          <video
+            autoPlay
+            muted
+            ref={localVideo}
+            height="100%"
+            width="100%"
+            className="local-video"
+          />
         </div>
-
-        <video
-          autoPlay
-          muted
-          ref={localVideo}
-          height="25%"
-          width="20%"
-          className="local-video"
-        />
+        <Chat sendMessage={sendMessage} />
       </div>
-
       <Helpbar
         sendMessage={sendMessage}
         disconnectConnection={disconnectConnection}

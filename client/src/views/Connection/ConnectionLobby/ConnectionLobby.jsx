@@ -15,6 +15,7 @@ const ConnectionLobby = ({
   loading,
 }) => {
   const findConnection = () => {
+    console.log(socket);
     socket.emit('instantConnection');
   };
 
