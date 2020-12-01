@@ -4,3 +4,7 @@
   display: grid;
   grid-template-columns: 0.5fr 8.5fr 3fr;
 }
+
+.remote__video--disabled {
+  display: none;
+}
