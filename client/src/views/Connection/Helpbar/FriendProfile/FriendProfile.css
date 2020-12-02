@@ -1,14 +1,14 @@
 .friend-profile {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   user-select: none;
 }
 .friend-profile__avatar {
   font-size: 9rem;
   color: var(--color2);
   cursor: pointer;
-  height: 15rem;
+  height: 11rem;
 }
 .friend-profile__bio,
 .friend-profile__name {
