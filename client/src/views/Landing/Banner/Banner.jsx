@@ -19,7 +19,7 @@ const Banner = () => {
       <div className="banner__container">
         <p className="banner__intro">
           We are putting the <span className="banner__secondary">social</span>{' '}
-          back in social media.
+          back into your worklife.
         </p>
       </div>
       <motion.section
@@ -42,10 +42,11 @@ const Banner = () => {
         animate="animate"
       >
         <p className="banner__text">
-          We are social beings living in a digital era, somehow we are more
-          disconnected from each other than ever before. Put aside some
-          scheduled time or join a social pairing freely. Let us be more social
-          together!
+          We are social beings living in a digital era, why should working
+          remotely stop us from beeing social with our colleges? It should not!
+        </p>
+        <p>
+          Amity is here to give the remote workplace the social spark it needs.
         </p>
       </motion.div>
     </div>
