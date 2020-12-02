@@ -8,6 +8,7 @@ const logoutRouter = () => {
   const logout = (req, res) => {
     log.debug('logging out user.', req.token.userId);
     res.clearCookie('x-access-token');
+    res.redirect(302, '/');
   };
 
   router.get('/', logout);
