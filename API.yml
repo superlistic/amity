@@ -69,6 +69,12 @@ paths:
               example: 
                 error: DuplicateEmailError
                 user-reason: email is already registered.
+  /logout:
+    get:
+      summary: clear x-access-token cookie
+      responses:
+        "200":
+          description: clearing client cookie
   /login:
     post:
       summary: authenticate user by email and hash
