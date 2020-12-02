@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 import './Controller.css';
 import { toggleVideo } from '../../../../actions/connection';
 
-const Controller = ({ disconnectConnection, toggleVideo, isVideo }) => {
+const Controller = ({
+  disconnectConnection,
+  toggleVideo,
+  isVideo,
+  removeSharingVideo,
+}) => {
   const onChat = () => {
     //get chat component instead of video?
     console.log('Chat icon clicked!');
@@ -19,6 +24,7 @@ const Controller = ({ disconnectConnection, toggleVideo, isVideo }) => {
       toggleVideo(true);
     } else {
       toggleVideo(false);
+      removeSharingVideo();
       //stop sending track to other user.
     }
   };

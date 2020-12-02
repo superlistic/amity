@@ -1,7 +1,8 @@
 export const createPeer = (
   handleICECandidateEvent,
   handleDataChannelEvent,
-  handleTrackEvent
+  handleTrackEvent,
+  handleRemoveTrackEvent
 ) => {
   console.log('2.createPeer invoked');
   const config = {
@@ -21,5 +22,6 @@ export const createPeer = (
   peer.onicecandidate = handleICECandidateEvent;
   peer.ondatachannel = handleDataChannelEvent;
   peer.ontrack = handleTrackEvent;
+  peer.onremovetrack = handleRemoveTrackEvent;
   return peer;
 };

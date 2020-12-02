@@ -38,6 +38,7 @@ const Connection = ({
   const isInitiator = useRef(true);
 
   console.log('RENDER');
+  // socket = io();
 
   const createChannel = () => {
     console.log('Create CHANNEL');
@@ -106,6 +107,39 @@ const Connection = ({
     }
   };
 
+  const removeSharingVideo = () => {
+    console.log('removeSharingVideo');
+    console.log(peerRef.current);
+    console.log(userStream.current);
+
+    // const x = new RTCRtpSender();
+    // console.log(x);
+    // console.log(RTCRtpSender);
+    // console.log(RTCRtpSender.track);
+
+    const videoTrack = userStream.current.getVideoTracks()[0];
+    // const videoTrackPeer = peerRef.current.getTracks();
+
+    console.log(videoTrack);
+    console.log(peerRef.current.getSenders());
+
+    const x = peerRef.current.getSenders()[1];
+
+    console.log(x);
+    // console.log(RTCRtpSender);
+    // console.log(RTCRtpSender.getStats());
+
+    if (videoTrack) {
+      // userStream.current.removeTrack(videoTrack);
+      peerRef.current.removeTrack(x);
+      // userStream.current.stop();
+      // var video = document.querySelector('video');
+      // video.src = window.URL.createObjectURL(userStream);
+    }
+
+    localVideo.current = null;
+  };
+
   const disconnectConnection = () => {
     console.log('disconnectConnection');
     dataChannel.current.close();
@@ -157,12 +191,18 @@ const Connection = ({
   const handleTrackEvent = async e => {
     console.log('handleTrackEvent');
     //När motpart lämnade = Cannot set propert srcObject of null.if not null?
-    if (remoteVideo.current !== null) {
+    if (remoteVideo.current !== null && remoteVideo.current !== undefined) {
       remoteVideo.current.srcObject = e.streams[0];
     } else {
       console.log('ELSE!!');
       console.log('Could not find remoteVideo');
     }
+  };
+
+  const handleRemoveTrackEvent = async e => {
+    console.log('handleRemoveTrackEvent');
+    remoteVideo.current.srcObject = null;
+    console.log(peerRef.current);
   };
 
   useLayoutEffect(() => {
@@ -181,7 +221,8 @@ const Connection = ({
       peerRef.current = await createPeer(
         handleICECandidateEvent,
         handleDataChannelEvent,
-        handleTrackEvent
+        handleTrackEvent,
+        handleRemoveTrackEvent
       );
       await createChannel();
       handleNegotiationNeededEvent();
@@ -192,7 +233,8 @@ const Connection = ({
       peerRef.current = await createPeer(
         handleICECandidateEvent,
         handleDataChannelEvent,
-        handleTrackEvent
+        handleTrackEvent,
+        handleRemoveTrackEvent
       );
     });
 
@@ -220,7 +262,7 @@ const Connection = ({
           audio: true,
         });
         //När motpart lämnade = Cannot set propert srcObject of null.if not null?
-        if (localVideo.current !== null) {
+        if (localVideo.current !== null && localVideo.current !== undefined) {
           localVideo.current.srcObject = stream;
         } else {
           console.log('ELSE!!');
@@ -259,6 +301,7 @@ const Connection = ({
         </div>
         <Helpbar
           sendMessage={sendMessage}
+          removeSharingVideo={removeSharingVideo}
           disconnectConnection={disconnectConnection}
         />
       </div>
@@ -284,6 +327,7 @@ const Connection = ({
         </div>
         <Helpbar
           sendMessage={sendMessage}
+          removeSharingVideo={removeSharingVideo}
           disconnectConnection={disconnectConnection}
         />
       </div>
@@ -341,6 +385,7 @@ const Connection = ({
       </div>
       <Helpbar
         sendMessage={sendMessage}
+        removeSharingVideo={removeSharingVideo}
         disconnectConnection={disconnectConnection}
       />
     </div>
