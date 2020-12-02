@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const Jogger = require('../Jogger');
 const log = new Jogger(chalk.red('[registerRouter]'));
 const uuid = require('uuid');
-const user = require('../database/schemas/user');
+const { signer } = require('../jwt');
 
 const errorHandler = (req, res, err) => {
   res.json({ ok: false, error: err });
@@ -50,10 +50,15 @@ const registerRouter = Users => {
               },
               suggestions: {},
             };
-            const newUser = new Users(userInfo);
-            newUser
+            Users(userInfo)
               .save()
               .then(result => {
+                log.info('new user added', regEmail);
+                const token = signer({ userId: result.userId });
+                res.cookie('x-access-token', token, {
+                  httpOnly: true,
+                  sameSite: 'strict',
+                });
                 res.json({
                   userId: result.userId,
                   username: result.username,
@@ -65,9 +70,10 @@ const registerRouter = Users => {
                   settings: result.settings,
                   updated: result.updated,
                 });
-                log.info('new user added', regEmail);
               })
-              .catch(err => Error(err));
+              .catch(err => {
+                throw Error(err);
+              });
           } catch (err) {
             res.status(500);
             res.json(err);
