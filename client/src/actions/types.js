@@ -1,5 +1,6 @@
 //Auth
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_ERROR = 'LOGOUT_ERROR';
 export const AUTH_USER = 'AUTH_USER';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -26,5 +27,7 @@ export const OTHER_VIDEO = 'OTHER_VIDEO';
 export const FRIEND_DATA = 'FRIEND_DATA';
 export const SET_SOCKET = 'SET_SOCKET';
 
-//User
-export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';
+//Scheduler
+export const GET_SCHEDULE = 'GET_SCHEDULE';
+export const PUT_SCHEDULE = 'PUT_SCHEDULE';
+export const SCHEDULE_ERROR = 'SCHEDULE_ERROR';
