@@ -11,6 +11,23 @@ const cookieParse = c => {
   }
 };
 
+const getUser = (users, uid) => {
+  log.info('get user info for', uid);
+  return users.findOne(
+    { userId: uid },
+    {
+      _id: 0,
+      userId: 1,
+      username: 1,
+      email: 1,
+      bio: 1,
+      tagline: 1,
+      avatar: 1,
+      updated: 1,
+    }
+  );
+};
+
 const websocketListener = (server, meetings, users) => {
   log.ok('listening');
   const io = require('socket.io')(server);
@@ -29,33 +46,10 @@ const websocketListener = (server, meetings, users) => {
     const peerId = meetings.match(socket.userId) || null;
     if (peerId) {
       if (meetings.isOnline(peerId)) {
-        const prom1 = users.findOne(
-          { userId: socket.userId },
-          {
-            _id: 0,
-            userId: 1,
-            username: 1,
-            email: 1,
-            bio: 1,
-            tagline: 1,
-            avatar: 1,
-            updated: 1,
-          }
-        );
-        const prom2 = users.findOne(
-          { userId: peerId },
-          {
-            _id: 0,
-            userId: 1,
-            username: 1,
-            email: 1,
-            bio: 1,
-            tagline: 1,
-            avatar: 1,
-            updated: 1,
-          }
-        );
-        Promise.all([prom1, prom2]).then(([peer1, peer2]) => {
+        Promise.all([
+          getUser(users, peerId),
+          getUser(users, socket.userId),
+        ]).then(([peer1, peer2]) => {
           log.info2('matchUpdate. sending peer info to', peerId);
           io.to(meetings.socketId(peerId)).emit('matchUpdate', {
             msg: 'peer just connected',
@@ -72,18 +66,35 @@ const websocketListener = (server, meetings, users) => {
 
     socket.on('instantConnection', () => {
       log.info3('instant request from', socket.userId);
-      const match = meetings.instantMeeting(socket.userId) || null;
-      log.info3('match is', match);
-      if (match) {
-        log.info3('instant meeting availible');
-        log.info3('on instant: makeOffer to', match);
-        io.to(meetings.socketId(match)).emit('makeOffer', {
-          msg: '[socket] partner just connected',
-        });
-        log.info3('on instant: awaitOffer to', socket.userId);
-        socket.emit('awaitOffer', {
-          msg: '[socket] partner asked to send offer',
-        });
+      const peerId = meetings.instantMeeting(socket.userId) || null;
+      log.info3('peerId is', peerId);
+      if (peerId) {
+        if (meetings.isOnline(peerId)) {
+          Promise.all([
+            getUser(users, peerId),
+            getUser(users, socket.userId),
+          ]).then(([peer1, peer2]) => {
+            log.info2('matchUpdate. sending peer info to', peerId);
+            io.to(meetings.socketId(peerId)).emit('matchUpdate', {
+              msg: 'peer just connected',
+              peer: peer1,
+            });
+            log.info2('matchUpdate. sending peer info to', socket.userId);
+            socket.emit('matchUpdate', {
+              msg: 'peer is already online',
+              peer: peer2,
+            });
+          });
+          log.info3('instant meeting availible');
+          log.info3('on instant: makeOffer to', peerId);
+          io.to(meetings.socketId(peerId)).emit('makeOffer', {
+            msg: '[socket] partner just connected',
+          });
+          log.info3('on instant: awaitOffer to', socket.userId);
+          socket.emit('awaitOffer', {
+            msg: '[socket] partner asked to send offer',
+          });
+        }
       } else {
         log.info3('no instant meeting found for', socket.userId);
       }
