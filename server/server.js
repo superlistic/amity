@@ -10,6 +10,7 @@ const { MeetingHandler } = require('./MeetingHandler');
 const {
   logRouter,
   loginRouter,
+  logoutRouter,
   registerRouter,
   meetingsRouter,
 } = require('./routes');
