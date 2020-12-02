@@ -1,25 +1,19 @@
 .friend-profile {
   display: flex;
   flex-direction: column;
-  /* margin-top: 1rem; */
   user-select: none;
 }
 .friend-profile__avatar {
-  font-size: 9rem;
+  /* font-size: 9rem; */
   color: var(--color2);
   cursor: pointer;
   height: 11rem;
 }
 .friend-profile__bio,
-.friend-profile__name {
+.friend-profile__username {
   margin-top: 0.5rem;
   color: var(--color2);
 }
-.friend-profile__name {
+.friend-profile__username {
   cursor: pointer;
 }
-
-/* <div className="friend-profile">
-      <span className="material-icons friend-profile__avatar">face</span>
-      <p className="friend-profile__name">{friend.name}</p>
-      <p className="friend-profile__bio">{friend.bio}</p> */

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useLayoutEffect } from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 
@@ -6,7 +6,6 @@ import './Connection.css';
 import Sidebar from '../Sidebar/Sidebar';
 import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
-import Video from './Video/Video';
 import Helpbar from './Helpbar/Helpbar';
 import { createPeer } from '../../WebRTC/WebRTC';
 import {
@@ -31,7 +30,6 @@ const Connection = ({
 }) => {
   const peerRef = useRef();
   const dataChannel = useRef();
-  const receiveDataChannel = useRef();
   const localVideo = useRef();
   const remoteVideo = useRef();
   const userStream = useRef();
@@ -69,7 +67,7 @@ const Connection = ({
     const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
     const answer = await peerRef.current.createAnswer();
-    peerRef.current.setLocalDescription(answer);
+    await peerRef.current.setLocalDescription(answer);
     socket.emit('relay', { data: answer, type: 'answer' });
   };
 
@@ -109,15 +107,15 @@ const Connection = ({
   const disconnectConnection = () => {
     console.log('disconnectConnection');
     dataChannel.current.close();
-    receiveDataChannel.current.close();
-    //stäng ned track också
+    //stäng ned track
     userStream.current.stop();
+    localVideo.current.stop();
+    remoteVideo.current.stop();
+    peerRef.current.close();
     localVideo.current = null;
     remoteVideo.current = null;
     userStream.current = null;
-    peerRef.current.close();
     dataChannel.current = null;
-    receiveDataChannel.current = null;
     peerRef.current = null;
   };
 
@@ -150,10 +148,16 @@ const Connection = ({
 
   const handleTrackEvent = async e => {
     console.log('handleTrackEvent');
-    remoteVideo.current.srcObject = e.streams[0];
+    //När motpart lämnade = Cannot set propert srcObject of null.if not null?
+    if (remoteVideo.current !== null) {
+      remoteVideo.current.srcObject = e.streams[0];
+    } else {
+      console.log('ELSE!!');
+      console.log('Could not find remoteVideo');
+    }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     socket = io();
     socket.emit('ready');
 
@@ -205,8 +209,13 @@ const Connection = ({
           video: true,
           audio: true,
         });
-        localVideo.current.srcObject = stream;
-
+        //När motpart lämnade = Cannot set propert srcObject of null.if not null?
+        if (localVideo.current !== null) {
+          localVideo.current.srcObject = stream;
+        } else {
+          console.log('ELSE!!');
+          console.log('Could not find localVideo');
+        }
         if (isInitiator.current === true) {
           userStream.current = stream;
           userStream.current
@@ -222,24 +231,6 @@ const Connection = ({
       videoCall();
     }
   }, [isVideo, isOtherVideo]);
-
-  // useEffect(() => {
-  //   console.log('isOtherVideo');
-  //   const receiveVideoCall = async () => {
-  //     // remoteVideo.current = await new MediaStream();
-  //     console.log(remoteVideo.current);
-  //   };
-  //   receiveVideoCall();
-  // }, [isOtherVideo]);
-  // }
-
-  // communicationAccepted false
-
-  // communicationAccepted true
-  //    isVideo true isOtherVideo true == Båda ska se varandra i storskärm
-  //    isVideo true isOtherVideo false == Chat + lite bild för client, chat + stor för other?
-  //    isVideo false isOtherVideo true == Chat + stor bild för client, chat + liten för other?
-  //    isVideo false isOtherVideo false == Chat för client, chat för other
 
   if (!communicationAccepted) return <ConnectionLobby socket={socket} />;
 
@@ -361,16 +352,3 @@ export default connect(mapStateToProps, {
   handleOtherVideo,
   setFriendData,
 })(Connection);
-
-// {
-//   !isVideo ? (
-//     <Chat sendMessage={sendMessage} />
-//   ) : (
-//     <div>
-//       <div>
-//         <video autoPlay ref={remoteVideo} height="70%" width="50%" />
-//       </div>
-//       <video autoPlay muted ref={localVideo} height="30%" width="20%" />
-//     </div>
-//   );
-// }
