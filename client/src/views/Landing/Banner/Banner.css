@@ -1,4 +1,6 @@
 .banner {
+  grid-column: 3/7;
+  grid-row: 1/6;
   margin-top: 2rem;
   display: flex;
   flex-direction: column;

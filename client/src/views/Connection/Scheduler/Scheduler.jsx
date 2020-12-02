@@ -7,24 +7,42 @@ import './Scheduler.css';
 import { AccentButton } from '../../../components/button';
 import { getSchedule, addToSchedule } from '../../../actions/scheduler';
 
-const Scheduler = ({ getSchedule, addToSchedule }) => {
+const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
     console.log('GET_SCHEDULE');
     getSchedule();
-  }, [getSchedule]);
+  }, []);
 
   const onSaveDate = () => {
-    console.log('CLICKED');
     const time = new Date(startDate).getTime();
+    console.log(time);
+    console.log(Date.now());
     addToSchedule({ time });
   };
+
+  console.log(meetings);
+
+  const scheduledMeetings = meetings.map(meeting => {
+    if (meeting !== undefined) {
+      return (
+        <p
+          className="scheduled__session"
+          key={`${meeting.time}-${Math.random()}`}
+        >
+          {meeting !== undefined ? new Date(meeting.time).toUTCString() : ''}
+        </p>
+      );
+    }
+  });
+
+  // new Date(message.date).toLocaleTimeString();
   return (
     <div className="scheduler">
-      <p className="settings__title">Pick a date</p>
+      <p className="settings__title">Your Calendar</p>
       <p className="category__description">
-        When do you want to connect with a colleague?
+        When do you want to e-meet with a colleague?
       </p>
       <DatePicker
         placeholderText="Choose here"
@@ -40,7 +58,9 @@ const Scheduler = ({ getSchedule, addToSchedule }) => {
       <AccentButton onClick={onSaveDate}>Save to calendar</AccentButton>
 
       <p className="scheduler__sub-title">Your Scheduled Connections</p>
-      <section className="scheduled__sessions">{'january 25th'}</section>
+      <section className="scheduled__sessions">
+        {meetings.length > 0 && scheduledMeetings}
+      </section>
     </div>
   );
 };

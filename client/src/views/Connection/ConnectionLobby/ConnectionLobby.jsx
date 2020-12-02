@@ -17,16 +17,10 @@ const ConnectionLobby = ({
   stateSocket,
   friendData,
 }) => {
-  console.log(friendData);
-  console.log(socket);
-  console.log(stateSocket);
   const findConnection = () => {
-    console.log(socket);
     if (!stateSocket) {
-      console.log('stateSocket SATAN');
       socket.emit('instantConnection');
     } else {
-      console.log(stateSocket);
       stateSocket.emit('instantConnection');
     }
   };
@@ -49,13 +43,12 @@ const ConnectionLobby = ({
           alt={friendData.avatar}
           className="connection-lobby__avatar"
         ></img>
-
         <p className="connection-lobby__title">{friendData.username}</p>
-        <p className="connection-lobby__bio">{`Tagline: ${friendData.tagline}`}</p>
-        {friendData.bio ? (
+        {friendData.tagline && (
+          <p className="connection-lobby__bio">{`Tagline: ${friendData.tagline}`}</p>
+        )}
+        {friendData.bio && (
           <p className="connection-lobby__bio">{`Bio: ${friendData.bio}`}</p>
-        ) : (
-          ''
         )}
       </div>
     </div>
