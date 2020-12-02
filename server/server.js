@@ -77,5 +77,6 @@ Promise.all([Log(), User()]).then(([logs, users]) => {
   app.use('/api/login', loginRouter(users));
   app.use('/api/register', registerRouter(users));
   app.use('/api/meetings', meetingsRouter(meetings));
+  app.use('/api/logout', logoutRouter());
   addStatic(app);
 });

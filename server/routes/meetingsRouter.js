@@ -3,8 +3,6 @@ const router = express.Router();
 const chalk = require('chalk');
 const Jogger = require('../Jogger');
 const log = new Jogger(chalk.red('[meetingsRouter]'));
-const uuid = require('uuid');
-const user = require('../database/schemas/user');
 
 const errorHandler = (req, res, err) => {
   res.json({ ok: false, error: err });
@@ -33,8 +31,17 @@ const meetingsRouter = meetings => {
       errorHandler(req, res, Error('not authorized.'));
     }
   };
+  // DELETE
+  const removeMeeting = (req, res) => {
+    if (req.body && req.body.meetingId) {
+      log.debug(req.body.meetingId);
+    } else {
+      errorHandler(req, res, Error('invalid body, meeting id required'));
+    }
+  };
   router.get('/', myMeetings);
   router.post('/', newMeeting);
+  router.delete('/', removeMeeting);
   return router;
 };
 
