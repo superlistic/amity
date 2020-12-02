@@ -13,7 +13,7 @@ const errorHandler = (req, res, err) => {
 
 const meetingsRouter = meetings => {
   // GET
-  const getNewMeeting = (req, res) => {
+  const myMeetings = (req, res) => {
     if (req.token.userId) {
       const m = meetings.matchAll(req.token.userId);
       res.json({ meetings: m });
@@ -22,7 +22,19 @@ const meetingsRouter = meetings => {
       errorHandler(req, res, Error('not authorized. '));
     }
   };
-  router.get('/', getNewMeeting);
+  // POST
+  const newMeeting = (req, res) => {
+    if (req.token.userId) {
+      const m = { time: req.body.time, users: req.body.users };
+      const newM = meetings.create(m);
+      res.json(newM);
+    } else {
+      res.status(401);
+      errorHandler(req, res, Error('not authorized.'));
+    }
+  };
+  router.get('/', myMeetings);
+  router.post('/', newMeeting);
   return router;
 };
 

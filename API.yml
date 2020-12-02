@@ -12,28 +12,21 @@ paths:
   /meetings:
     post:
       summary: Add a meeting to the schedule
+      description: Will check if the an identical meeting has been scheduled. If it has no new meeting will be created but the origial will be returned
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Meeting'
+              $ref: '#/components/schemas/MeetingRequest'
       responses:
         '200':
-          description: OK
+          description: if posting duplicate it will return the original.
           content:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Meeting'
-        '400':
-          description: duplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example: 
-                error: DuplicateMeetingError
-                user-reason: meeting is already scheduled.
+       
     get:
       summary: list all metting in which you are attending
       security:
@@ -155,6 +148,24 @@ security:
 components:
   schemas:
     Meeting:
+      description: represents a scheduled meeting
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref:  "#/components/schemas/UUID"
+        time: 
+          $ref: "#/components/schemas/UnixEpoch"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UUID"
+          minItems: 2
+          uniqueItems: true
+          example:
+            - a1a07302-3fac-443b-ab6c-d90327cdf784
+            - 3353efd3-a5e5-40e5-aa5a-91eca1979221
+    MeetingRequest:
       description: represents a scheduled meeting
       type: object
       additionalProperties: false
