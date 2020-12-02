@@ -2,16 +2,60 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* justify-content: space-between; */
+  height: 93vh;
   /* margin-top: 1rem; */
 }
 
 .connection-lobby__actions {
   display: flex;
+  flex-direction: column;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  align-items: center;
+  /* height: 18rem; */
+  width: 21rem;
+  /* width: 50%; */
+}
+
+.connection-lobby__info {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  width: 65%;
+  /* align-items: space-around; */
+  /* height: 10rem; */
+  /* height: 20%;
+  justify-self: flex-end;
+  display: flex;
+  align-items: flex-end;
+  text-align: center; */
 }
 
 .connection-lobby__text {
   width: 33%;
   margin-top: 1rem;
+}
+.connection-lobby__banner-text {
+  /* max-width: 80%; */
+
+  margin-top: 1rem;
+  margin: 0 1rem;
+}
+
+.connection-lobby__friend {
+}
+
+.connection-lobby__avatar {
+  cursor: pointer;
+  height: 18rem;
+  margin: 2rem 0;
+}
+
+.connection-lobby__title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.connection-lobby__bio {
+  margin-bottom: 0.5rem;
 }

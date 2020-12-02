@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './Scheduler.css';
 import { AccentButton } from '../../../components/button';
+import { getSchedule, addToSchedule } from '../../../actions/scheduler';
 
-const Scheduler = () => {
+const Scheduler = ({ getSchedule, addToSchedule }) => {
   const [startDate, setStartDate] = useState(new Date());
+
+  useEffect(() => {
+    getSchedule();
+  }, []);
+
+  const onSaveDate = () => {
+    console.log('CLICKED');
+    const newDateAsTimeStamp = new Date(startDate).getTime();
+
+    // addToSchedule(payload);
+  };
   return (
     <div className="scheduler">
       <p className="settings__title">Pick a date</p>
       <p className="category__description">
-        When you want to connect to a colleague
+        When do you want to connect with a colleague?
       </p>
       <DatePicker
         placeholderText="Choose here"
@@ -24,12 +36,18 @@ const Scheduler = () => {
         timeCaption="time"
         dateFormat="MMMM d, yyyy h:mm aa"
       />
-      <AccentButton> Save to calendar</AccentButton>
+      <AccentButton onClick={onSaveDate}>Save to calendar</AccentButton>
 
-      <p className="category__description">Your Scheduled Connections</p>
+      <p className="scheduler__sub-title">Your Scheduled Connections</p>
       <section className="scheduled__sessions">{'january 25th'}</section>
     </div>
   );
 };
 
-export default Scheduler;
+const mapStateToProps = state => {
+  //
+};
+
+export default connect(mapStateToProps, { getSchedule, addToSchedule })(
+  Scheduler
+);

@@ -5,6 +5,7 @@ import './ConnectionLobby.css';
 import { AccentButton } from '../../../components/button';
 import { WideAccentOutlinedButton } from '../../../components/button';
 import { acceptConnection, denyConnection } from '../../../actions/connection';
+import Profile from '../Profile/Profile';
 
 const ConnectionLobby = ({
   isConnected,
@@ -14,7 +15,9 @@ const ConnectionLobby = ({
   user,
   loading,
   stateSocket,
+  friendData,
 }) => {
+  console.log(friendData);
   console.log(socket);
   console.log(stateSocket);
   const findConnection = () => {
@@ -32,32 +35,55 @@ const ConnectionLobby = ({
   return isConnected ? (
     <div className="connection-lobby">
       <p className="connection-lobby__text">
-        You have a connection with {'Johan'}!
+        {`You have a connection with ${friendData.username}!`}
       </p>
-      <AccentButton onClick={acceptConnection}>Join</AccentButton>
-      <WideAccentOutlinedButton onClick={denyConnection}>
-        Deny
-      </WideAccentOutlinedButton>
+      <div className="connection-lobby__actions">
+        <AccentButton onClick={acceptConnection}>Join now</AccentButton>
+        <WideAccentOutlinedButton to={'/schedule'}>
+          Reschedule
+        </WideAccentOutlinedButton>
+      </div>
+      <div className="connection-lobby__friend">
+        <img
+          src={friendData.avatar}
+          alt={friendData.avatar}
+          className="connection-lobby__avatar"
+        ></img>
+
+        <p className="connection-lobby__title">{friendData.username}</p>
+        <p className="connection-lobby__bio">{`Tagline: ${friendData.tagline}`}</p>
+        {friendData.bio ? (
+          <p className="connection-lobby__bio">{`Bio: ${friendData.bio}`}</p>
+        ) : (
+          ''
+        )}
+      </div>
     </div>
   ) : (
     <div className="connection-lobby">
-      <p className="settings__title">{`Hi there ${user.username}`}</p>
-      <p className="connection-lobby__text">
-        You dont have a connection right now.
-      </p>
+      <p className="settings__title">{`Hi there ${user.username}.`}</p>
+      <p className="connection-lobby__text">What do you want to do?</p>
 
-      <div className="connection-lobby__actions">
-        <AccentButton onClick={findConnection}>
-          Search for a instant connection
-        </AccentButton>
-        <WideAccentOutlinedButton to={'/schedule'}>
-          Schedule your available time
-        </WideAccentOutlinedButton>
-      </div>
-      <p className="connection-lobby__text">
-        Meet new friends within your company, discuss your daily lives or
-        exchange We will match you on random with an available colleague.
-      </p>
+      <section className="connection-lobby__info">
+        <div className="connection-lobby__actions">
+          <AccentButton onClick={findConnection}>
+            Search for an instant connection
+          </AccentButton>
+          <p className="connection-lobby__banner-text">
+            Chat with one of your awesome colleagues directly. We will randomly
+            pick a colleague that is available right now.
+          </p>
+        </div>
+        <div className="connection-lobby__actions">
+          <WideAccentOutlinedButton to={'/schedule'}>
+            Schedule your available time
+          </WideAccentOutlinedButton>
+          <p className="connection-lobby__banner-text">
+            Meet new friends within your company, discuss your daily lives or
+            exchange We will match you on random with an available colleague.
+          </p>
+        </div>
+      </section>
     </div>
   );
 };
@@ -66,6 +92,7 @@ const mapStateToProps = state => ({
   user: state.auth.user,
   loading: state.auth.loading,
   stateSocket: state.connection.stateSocket,
+  friendData: state.connection.friendData,
 });
 
 export default connect(mapStateToProps, {

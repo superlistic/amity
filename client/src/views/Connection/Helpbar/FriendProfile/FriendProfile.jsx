@@ -10,7 +10,7 @@ const FriendProfile = ({ friend }) => {
         className="friend-profile__avatar"
       ></img>
       <p className="friend-profile__username">{friend.username}</p>
-      {friend.bio ? (
+      {friend.tagline ? (
         <p className="friend-profile__bio">{friend.tagline}</p>
       ) : (
         ''
