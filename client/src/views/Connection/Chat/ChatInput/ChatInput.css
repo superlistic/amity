@@ -1,6 +1,6 @@
 .chat-input {
   position: sticky;
-  border-radius: 1rem;
+  border-radius: 3rem;
   min-height: 80%;
   max-height: 4rem;
   width: 80%;

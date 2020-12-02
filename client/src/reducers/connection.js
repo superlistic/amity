@@ -13,6 +13,7 @@ import {
   ACCEPT_COMMUNICATION,
   DENY_COMMUNICATION,
   OTHER_VIDEO,
+  FRIEND_DATA,
 } from '../actions/types';
 
 const initState = {
@@ -22,6 +23,7 @@ const initState = {
   isVideo: false,
   currentSuggestion: [],
   isOtherVideo: false,
+  friendData: {},
 };
 
 export default function connection(state = initState, action) {
@@ -41,12 +43,20 @@ export default function connection(state = initState, action) {
         communicationAccepted: false,
         isOtherVideo: false,
         messages: [],
+        friendData: {},
       };
     case ACCEPT_COMMUNICATION:
       return {
         ...state,
         communicationAccepted: true,
       };
+    case FRIEND_DATA:
+      return {
+        ...state,
+        friendData: payload,
+      };
+
+    //Messages
     case SENT_MESSAGE:
     case RECEIVED_MESSAGE:
       return {

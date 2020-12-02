@@ -4,9 +4,9 @@ import {
   LOGOUT_SUCCESS,
   AUTH_USER,
   AUTH_CHECK,
+  AUTH_ERROR,
 } from '../actions/types';
 
-// token:
 const initState = {
   isAuthenticated: false,
   loading: true,
@@ -53,6 +53,12 @@ export default function auth(state = initState, action) {
         isAuthenticated: true,
         loading: false,
         user: payload.data.user,
+      };
+    case AUTH_ERROR:
+      return {
+        ...state,
+        loading: false,
+        user: null,
       };
 
     default:

@@ -15,6 +15,7 @@ import {
   setConnectionEnded,
   setConnectionEstablished,
   handleOtherVideo,
+  setFriendData,
 } from '../../actions/connection';
 let socket;
 const Connection = ({
@@ -26,6 +27,7 @@ const Connection = ({
   communicationAccepted,
   isOtherVideo,
   handleOtherVideo,
+  setFriendData,
 }) => {
   const peerRef = useRef();
   const dataChannel = useRef();
@@ -73,6 +75,7 @@ const Connection = ({
 
   const handleAnswer = async sdp => {
     console.log('handleAnswer');
+    console.log(sdp);
     const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
   };
@@ -80,7 +83,7 @@ const Connection = ({
   const handleCandidate = async data => {
     console.log('ICE FOUND, RTC successful');
     const candidate = await new RTCIceCandidate(data);
-    peerRef.current.addIceCandidate(candidate);
+    await peerRef.current.addIceCandidate(candidate);
   };
 
   const handleNegotiationNeededEvent = async type => {
@@ -156,6 +159,7 @@ const Connection = ({
 
     socket.on('matchUpdate', payload => {
       console.log(payload);
+      setFriendData(payload.peer);
     });
 
     socket.on('makeOffer', async () => {
@@ -202,9 +206,6 @@ const Connection = ({
           audio: true,
         });
         localVideo.current.srcObject = stream;
-        console.log(localVideo.current);
-        console.log('userStream.current--------------------------');
-        console.log(isInitiator.current === true);
 
         if (isInitiator.current === true) {
           userStream.current = stream;
@@ -216,8 +217,6 @@ const Connection = ({
           handleNegotiationNeededEvent('video');
           isInitiator.current = false;
         }
-        console.log(userStream.current);
-        console.log(stream);
       };
 
       videoCall();
@@ -296,6 +295,7 @@ const Connection = ({
         <Sidebar />
         <div className="connection__main">
           <div className="video-container">
+            <p className="video__placeholder">You are sharing your webcam.</p>
             <video
               autoPlay
               muted
@@ -359,6 +359,7 @@ export default connect(mapStateToProps, {
   setConnectionEnded,
   setConnectionEstablished,
   handleOtherVideo,
+  setFriendData,
 })(Connection);
 
 // {

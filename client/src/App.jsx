@@ -23,7 +23,6 @@ import { checkAuth } from './actions/auth';
 
 const App = ({ checkAuth, loading, isAuthenticated }) => {
   useEffect(() => {
-    console.log('APP RENDERING (useEffect)');
     checkAuth();
   }, []);
 

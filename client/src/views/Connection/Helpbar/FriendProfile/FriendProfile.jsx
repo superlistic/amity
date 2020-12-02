@@ -4,13 +4,21 @@ import './FriendProfile.css';
 const FriendProfile = ({ friend }) => {
   return (
     <div className="friend-profile">
-      {friend.img && friend.img !== '' ? (
-        <img src="friend.img" alt="friend.imgalt"></img>
+      {friend.avatar && friend.avatar !== '' ? (
+        <img
+          src={friend.avatar}
+          alt={friend.avatar}
+          className="friend-profile__avatar"
+        ></img>
       ) : (
         <span className="material-icons friend-profile__avatar">face</span>
       )}
-      <p className="friend-profile__name">{friend.name}</p>
-      {friend.bio ? <p className="friend-profile__bio">{friend.bio}</p> : ''}
+      <p className="friend-profile__name">{friend.username}</p>
+      {friend.bio ? (
+        <p className="friend-profile__bio">{friend.tagline}</p>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

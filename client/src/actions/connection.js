@@ -15,6 +15,7 @@ import {
   ACCEPT_COMMUNICATION,
   DENY_COMMUNICATION,
   OTHER_VIDEO,
+  FRIEND_DATA,
 } from './types';
 
 //Connection
@@ -38,6 +39,12 @@ export const acceptConnection = () => dispatch => {
 export const denyConnection = () => dispatch => {
   dispatch({
     type: DENY_COMMUNICATION,
+  });
+};
+export const setFriendData = payload => dispatch => {
+  dispatch({
+    type: FRIEND_DATA,
+    payload,
   });
 };
 

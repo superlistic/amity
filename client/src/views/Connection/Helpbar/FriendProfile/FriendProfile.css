@@ -8,6 +8,7 @@
   font-size: 9rem;
   color: var(--color2);
   cursor: pointer;
+  height: 15rem;
 }
 .friend-profile__bio,
 .friend-profile__name {

@@ -53,6 +53,13 @@
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2); */
 }
 
+.video__placeholder {
+  grid-column: 1/9;
+  grid-row: 1/9;
+  color: var(--color2);
+  align-self: center;
+}
+
 .remote-video-wrap {
   display: flex;
   flex-direction: column;

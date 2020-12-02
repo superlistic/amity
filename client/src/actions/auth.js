@@ -74,6 +74,8 @@ export const checkAuth = () => async dispatch => {
       payload: res,
     });
   } catch (e) {
-    console.log(e);
+    dispatch({
+      type: AUTH_ERROR,
+    });
   }
 };

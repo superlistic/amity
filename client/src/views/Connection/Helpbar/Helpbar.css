@@ -1,6 +1,6 @@
 .helpbar {
   display: grid;
-  grid-template-rows: 0.5fr 2fr 3.5fr 1fr;
+  grid-template-rows: 0.3fr 2.5fr 2.7fr 1fr;
   background: var(--color1);
 }
 .helpbar__title {
