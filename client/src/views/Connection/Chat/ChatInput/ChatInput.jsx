@@ -18,9 +18,7 @@ const ChatInput = ({ sendMessage }) => {
     e.preventDefault();
     const trimmedMessage = message.trim();
     if (trimmedMessage !== '') {
-      // console.log(sendMessage);
       sendMessage(message);
-      //Fix autfocus after sent. Now it disappears.
       setMessage('');
     }
   };
@@ -49,9 +47,4 @@ const ChatInput = ({ sendMessage }) => {
   );
 };
 
-//connect to redux, Get name/profile of other person in connection.
 export default ChatInput;
-
-//  <button className="chat-input__button" onClick={(e) => sendMessage(e)}>
-//    Send message
-//  </button>;

@@ -6,7 +6,6 @@ import { toggleVideo, disableVideo } from '../../../../actions/connection';
 
 const Controller = ({
   disconnectConnection,
-  isConnected,
   toggleVideo,
   disableVideo,
   isVideo,
