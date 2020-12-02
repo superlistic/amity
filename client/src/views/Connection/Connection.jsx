@@ -192,6 +192,7 @@ const Connection = ({
     console.log('handleTrackEvent');
     //När motpart lämnade = Cannot set propert srcObject of null.if not null?
     if (remoteVideo.current !== null && remoteVideo.current !== undefined) {
+      console.log(e.streams);
       remoteVideo.current.srcObject = e.streams[0];
     } else {
       console.log('ELSE!!');

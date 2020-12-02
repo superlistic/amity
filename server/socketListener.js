@@ -53,12 +53,12 @@ const websocketListener = (server, meetings, users) => {
           log.info2('matchUpdate. sending peer info to', peerId);
           io.to(meetings.socketId(peerId)).emit('matchUpdate', {
             msg: 'peer just connected',
-            peer: peer1,
+            peer: peer2,
           });
           log.info2('matchUpdate. sending peer info to', socket.userId);
           socket.emit('matchUpdate', {
             msg: 'peer is already online',
-            peer: peer2,
+            peer: peer1,
           });
         });
       }
@@ -77,12 +77,12 @@ const websocketListener = (server, meetings, users) => {
             log.info2('matchUpdate. sending peer info to', peerId);
             io.to(meetings.socketId(peerId)).emit('matchUpdate', {
               msg: 'peer just connected',
-              peer: peer1,
+              peer: peer2,
             });
             log.info2('matchUpdate. sending peer info to', socket.userId);
             socket.emit('matchUpdate', {
               msg: 'peer is already online',
-              peer: peer2,
+              peer: peer1,
             });
           });
           log.info3('instant meeting availible');
