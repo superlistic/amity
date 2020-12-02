@@ -22,15 +22,24 @@ const meetingsRouter = meetings => {
   };
   // POST
   const newMeeting = (req, res) => {
-    if (req.token.userId) {
-      const m = { time: req.body.time, users: req.body.users };
-      const newM = meetings.create(m);
-      res.json(newM);
+    if (req.token.userId && req.body.time) {
+      const m = meetings.createBlind(req.body.time, req.token.userId);
+      res.json(m);
     } else {
       res.status(401);
       errorHandler(req, res, Error('not authorized.'));
     }
   };
+  // const newMeeting = (req, res) => {
+  //   if (req.token.userId) {
+  //     const m = { time: req.body.time, users: req.body.users };
+  //     const newM = meetings.create(m);
+  //     res.json(newM);
+  //   } else {
+  //     res.status(401);
+  //     errorHandler(req, res, Error('not authorized.'));
+  //   }
+  // };
   // DELETE
   const removeMeeting = (req, res) => {
     if (req.body && req.body.meetingId) {

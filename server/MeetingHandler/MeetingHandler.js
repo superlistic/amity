@@ -38,9 +38,9 @@ class MeetingHandler {
     }
     const duplicate = this.meetings.find(m => {
       if (
+        m.time === meeting.time &&
         m.users.includes(meeting.users[0]) &&
-        m.users.includes(meeting.users[1]) &&
-        m.time === meeting.time
+        m.users.includes(meeting.users[1])
       ) {
         return m;
       }
@@ -54,6 +54,26 @@ class MeetingHandler {
       log.warn('asked to add Duplicate. returning original');
       return duplicate;
     }
+  }
+  createBlind(time, userId) {
+    if (time && userId) {
+      const existing = this.meetings.find(m => {
+        if (m.time === time && m.users.includes(userId)) {
+          return m;
+        }
+        if (m.time === time && m.users.length < 2) {
+          m.users.push(userId);
+          return m;
+        }
+      });
+      if (!existing) {
+        const newMeet = this.create({ time, users: [userId] });
+        return newMeet;
+      }
+      return existing;
+    }
+    log.err('missing parameters to createBlind()');
+    throw Error('MalformedMeetingError');
   }
   createInsta(meeting) {
     log.debug('creating instaMeeting');
@@ -77,7 +97,10 @@ class MeetingHandler {
     }
   }
   match(uid) {
-    let meeting = this.meetings.find(m => m.users.includes(uid));
+    let meeting = this.meetings.find(m => {
+      if (m.users.length < 2 && m.users.includes(uid)) {
+      }
+    });
     if (!meeting) {
       meeting = this.instaMeetings.find(m => m.users.includes(uid));
       if (!meeting) {
