@@ -8,14 +8,21 @@ import Controller from './Controller/Controller';
 
 //action on load for fetching suggestions.
 
-const Helpbar = ({ sendMessage, disconnectConnection, friendData }) => {
-  console.log(friendData);
+const Helpbar = ({
+  sendMessage,
+  disconnectConnection,
+  friendData,
+  removeSharingVideo,
+}) => {
   return (
     <div className="helpbar">
       <p className="helpbar__title">You have connected with..</p>
       <FriendProfile friend={friendData} />
       <Suggestions sendMessage={sendMessage} />
-      <Controller disconnectConnection={disconnectConnection} />
+      <Controller
+        disconnectConnection={disconnectConnection}
+        removeSharingVideo={removeSharingVideo}
+      />
     </div>
   );
 };

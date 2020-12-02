@@ -19,11 +19,12 @@ const ConnectionLobby = ({
   console.log(stateSocket);
   const findConnection = () => {
     console.log(socket);
-    if (stateSocket) {
+    if (!stateSocket) {
+      console.log('stateSocket SATAN');
+      socket.emit('instantConnection');
+    } else {
       console.log(stateSocket);
       stateSocket.emit('instantConnection');
-    } else {
-      console.log('stateSocket SATAN');
     }
   };
 
