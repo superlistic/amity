@@ -5,7 +5,7 @@ const initState = {
 };
 
 export default function scheduler(state = initState, action) {
-  console.log(state, action);
+  // console.log(state, action);
   const { type, payload } = action;
   switch (type) {
     case GET_SCHEDULE:
@@ -14,8 +14,7 @@ export default function scheduler(state = initState, action) {
         meetings: [payload.meetings],
       };
     case PUT_SCHEDULE:
-      const { id, time } = payload.meetings;
-      // const {id, time}= meetings;
+      const { id, time } = payload.data;
       return {
         ...state,
         meetings: [...state.meetings, { id, time }],

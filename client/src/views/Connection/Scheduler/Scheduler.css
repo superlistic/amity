@@ -21,5 +21,14 @@
 
 .scheduler__sub-title {
   margin-top: 2rem;
-  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.scheduled__sessions {
+  /* display:grid; */
+}
+
+.scheduled__session {
+  margin: 0.5rem 0;
 }

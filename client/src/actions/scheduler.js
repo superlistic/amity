@@ -9,7 +9,10 @@ export const getSchedule = () => async dispatch => {
       payload: res,
     });
   } catch (e) {
-    console.log(e);
+    // dispatch({
+    //   type: SCHEDULE_ERROR,
+    //   payload: 'FRÅN GET',
+    // });
   }
 };
 
@@ -26,9 +29,9 @@ export const addToSchedule = payload => async dispatch => {
       payload: res,
     });
   } catch (e) {
-    console.log(e);
     dispatch({
       type: SCHEDULE_ERROR,
+      payload: 'FRÅN PSOT',
     });
   }
 };
