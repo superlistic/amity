@@ -13,7 +13,7 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
   useEffect(() => {
     console.log('GET_SCHEDULE');
     getSchedule();
-  }, []);
+  }, [getSchedule]);
 
   const onSaveDate = () => {
     const time = new Date(startDate).getTime();
