@@ -18,3 +18,8 @@
 .react-datepicker__time-list-item {
   color: var(--color__black);
 }
+
+.scheduler__sub-title {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}

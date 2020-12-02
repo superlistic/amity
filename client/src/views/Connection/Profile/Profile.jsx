@@ -13,7 +13,7 @@ const Profile = ({ user, loading }) => {
       <hr className="profile__divider" />
       <p className="profile__text">{`Tagline: ${user.tagline}`}</p>
       <p className="profile__text">{`Bio: ${user.bio}`}</p>
-      <p className="profile__text">{`Bio: ${user.email}`}</p>
+      <p className="profile__text">{`Contact: ${user.email}`}</p>
     </div>
   );
 };

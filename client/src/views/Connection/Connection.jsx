@@ -118,11 +118,13 @@ const Connection = ({
     // console.log(RTCRtpSender.track);
 
     const videoTrack = userStream.current.getVideoTracks()[0];
+    const audioTrack = userStream.current.getVideoTracks()[0];
     // const videoTrackPeer = peerRef.current.getTracks();
 
     console.log(videoTrack);
-    console.log(peerRef.current.getSenders());
+    console.log(peerRef.current.getSenders()[1]);
 
+    const y = peerRef.current.getSenders()[0];
     const x = peerRef.current.getSenders()[1];
 
     console.log(x);
@@ -130,9 +132,13 @@ const Connection = ({
     // console.log(RTCRtpSender.getStats());
 
     if (videoTrack) {
-      // userStream.current.removeTrack(videoTrack);
+      userStream.current.removeTrack(videoTrack);
+      userStream.current.removeTrack(audioTrack);
+      peerRef.current.removeTrack(y);
       peerRef.current.removeTrack(x);
-      // userStream.current.stop();
+      userStream.current = null;
+      // userStream.current.stop(x);
+      // userStream.current.stop(y);
       // var video = document.querySelector('video');
       // video.src = window.URL.createObjectURL(userStream);
     }

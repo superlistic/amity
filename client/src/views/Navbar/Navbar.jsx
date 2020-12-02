@@ -7,10 +7,6 @@ import './Navbar.css';
 import { logOut } from '../../actions/auth';
 
 const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
-  // let socket = io();
-  console.log(user);
-
-  // socket.emit('test', { data: 'test', type: 'TEST' });
   const NAV_LINKS = {
     true: (
       <div className="navbar__container--authenticated">
