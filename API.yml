@@ -1,32 +1,37 @@
 openapi: 3.0.0
 info:
   description: Authentication is mainly handled through a small token in the headers. The server validates and authorizes on a per request basis.
-  version: '1.0.0'
+  version: "1.0.0"
   title: Amity API
 servers:
-  - url: 'http://127.0.0.1:3001/api/'
+  - url: "http://127.0.0.1:3001/api/"
     description: localhost
-  - url: 'http://salt.styl.services/api/'
+  - url: "http://salt.styl.services/api/"
     description: prod
 paths:
   /meetings:
     post:
-      summary: Add a meeting to the schedule
-      description: Will check if the an identical meeting has been scheduled. If it has no new meeting will be created but the origial will be returned
+      summary: Add a blind meeting to the schedule
+      description: 'if the same user has a meeting at the same time. if yes, return that.
+      if theres a meeting at that time with only one participantm. if yes. add posting user and return
+      else create a new with only poster as participant and return that'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MeetingRequest'
+              properties:
+                time:
+                  $ref: "#/components/schemas/UnixEpoch"
+
       responses:
-        '200':
-          description: if posting duplicate it will return the original.
+        "200":
+          description: response may not include 2 participants
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/Meeting'
-       
+              schema:
+                $ref: "#/components/schemas/Meeting"
+
     get:
       summary: list all metting in which you are attending
       security:
@@ -40,8 +45,8 @@ paths:
                 properties:
                   meetings:
                     type: array
-                    items: 
-                      $ref: '#/components/schemas/Meeting'
+                    items:
+                      $ref: "#/components/schemas/Meeting"
   /register:
     post:
       summary: register new user
@@ -51,22 +56,22 @@ paths:
         required: true
         content:
           application/json:
-            schema: 
+            schema:
               $ref: "#/components/schemas/RegistrationObj"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
+                $ref: "#/components/schemas/User"
+        "400":
           description: Email already registered
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              example: 
+                $ref: "#/components/schemas/Error"
+              example:
                 error: DuplicateEmailError
                 user-reason: email is already registered.
   /logout:
@@ -84,43 +89,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthCredentials'
+              $ref: "#/components/schemas/AuthCredentials"
       responses:
-        '200':
+        "200":
           description: auth successful
           headers:
             Set-Cookie:
               description: access-token
-              schema: 
+              schema:
                 type: string
                 pattern: ^[^\W]+.[^\W]+.[^\W]+$
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
         401:
           description: auth failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     get:
       summary: "get user info associated with the requests 'x-access-token'"
       security:
         - x-access-token: []
       responses:
-        '200':
+        "200":
           description: token is valid. response contains associated user info.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
         401:
-          description: 'no valid token found'
+          description: "no valid token found"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
   /settings:
     put:
       summary: update user settings by passing settings object
@@ -132,21 +137,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Settings'
+              $ref: "#/components/schemas/Settings"
       responses:
-        '200':
+        "200":
           description: settings object valid. returning settings
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Settings'
-        '400':
+                $ref: "#/components/schemas/Settings"
+        "400":
           description: settings object invalid
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/Error'
-              example: 
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
                 error: ValidationError
                 user-reason: error saving new settings
 security:
@@ -159,8 +164,8 @@ components:
       additionalProperties: false
       properties:
         id:
-          $ref:  "#/components/schemas/UUID"
-        time: 
+          $ref: "#/components/schemas/UUID"
+        time:
           $ref: "#/components/schemas/UnixEpoch"
         users:
           type: array
@@ -176,7 +181,7 @@ components:
       type: object
       additionalProperties: false
       properties:
-        time: 
+        time:
           $ref: "#/components/schemas/UnixEpoch"
         users:
           type: array
@@ -191,23 +196,23 @@ components:
       type: object
       additionalProperties: false
       properties:
-        username: 
-          $ref:  "#/components/schemas/Username"
+        username:
+          $ref: "#/components/schemas/Username"
         email:
-          $ref:  "#/components/schemas/Email"
+          $ref: "#/components/schemas/Email"
         password:
-          $ref:  "#/components/schemas/PasswordHash"
+          $ref: "#/components/schemas/PasswordHash"
     User:
       description: describes user incl. settings
       type: object
       additionalProperties: false
       properties:
         userId:
-          $ref: '#/components/schemas/UUID'
+          $ref: "#/components/schemas/UUID"
         username:
-          $ref: '#/components/schemas/Username'
+          $ref: "#/components/schemas/Username"
         email:
-          $ref: '#/components/schemas/Email'
+          $ref: "#/components/schemas/Email"
         bio:
           type: string
           maxLength: 2500
@@ -227,9 +232,9 @@ components:
           example: https://url.domain.com/image.jpg
 
         settings:
-          $ref: '#/components/schemas/Settings'
+          $ref: "#/components/schemas/Settings"
         updated:
-          $ref: '#/components/schemas/UnixEpoch'
+          $ref: "#/components/schemas/UnixEpoch"
     Settings:
       type: object
       properties:
@@ -255,12 +260,12 @@ components:
       additionalProperties: false
       properties:
         email:
-          $ref: '#/components/schemas/Email'
+          $ref: "#/components/schemas/Email"
         password:
-          $ref: '#/components/schemas/PasswordHash'
-          
+          $ref: "#/components/schemas/PasswordHash"
+
     UUID:
-      description: UUID v4. guaranteed (practically) unique identifier. 
+      description: UUID v4. guaranteed (practically) unique identifier.
       type: string
       pattern: ^[0-9a-e]{8}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{4}-[0-9a-e]{12}$
       maxLength: 36
@@ -276,14 +281,14 @@ components:
     Username:
       description: userselected display-name
       type: string
-      example: Allan888 
+      example: Allan888
       maxLength: 30
       minLength: 1
       pattern: ^\S+$
     PasswordHash:
       description: sha512 hash of <email><password>
       type: string
-      maxLength: 128 
+      maxLength: 128
       minLength: 128
       pattern: ^[0-9a-f]+$
       format: SHA512
@@ -292,7 +297,7 @@ components:
       type: number
       description: UNIX time w/ millis
       minimum: 1600000000000
-      maximum: 2000000000000 
+      maximum: 2000000000000
       example: 1606727487134
   securitySchemes:
     key:
@@ -303,4 +308,3 @@ components:
       type: apiKey
       name: x-access-token
       in: cookie
-
