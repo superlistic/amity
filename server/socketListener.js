@@ -56,10 +56,12 @@ const websocketListener = (server, meetings, users) => {
           }
         );
         Promise.all([prom1, prom2]).then(([peer1, peer2]) => {
+          log.info2('matchUpdate. sending peer info to', peerId);
           io.to(meetings.socketId(peerId)).emit('matchUpdate', {
             msg: 'peer just connected',
             peer: peer1,
           });
+          log.info2('matchUpdate. sending peer info to', socket.userId);
           socket.emit('matchUpdate', {
             msg: 'peer is already online',
             peer: peer2,
@@ -69,17 +71,21 @@ const websocketListener = (server, meetings, users) => {
     }
 
     socket.on('instantConnection', () => {
+      log.info3('instant request from', socket.userId);
       const match = meetings.instantMeeting(socket.userId) || null;
+      log.info3('match is', match);
       if (match) {
-        log.mute('instant meeting availible');
+        log.info3('instant meeting availible');
+        log.info3('on instant: makeOffer to', match);
         io.to(meetings.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
+        log.info3('on instant: awaitOffer to', socket.userId);
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
       } else {
-        log.warn('no instant meeting found for', socket.userId);
+        log.info3('no instant meeting found for', socket.userId);
       }
     });
 
@@ -91,17 +97,19 @@ const websocketListener = (server, meetings, users) => {
 
     socket.on('ready', () => {
       const match = meetings.match(socket.userId) || null;
-      log.mute('"ready" recieved from', socket.userId);
+      log.info('"ready" recieved from', socket.userId);
       if (match) {
-        log.mute('meeting exists');
+        log.info('meeting exists');
+        log.info('onReady: makeOffer to', match);
         io.to(meetings.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
+        log.info('onReady: awaitOffer to', match);
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
       } else {
-        log.warn('no meeting found for', socket.userId);
+        log.info('no meeting found for', socket.userId);
       }
     });
 

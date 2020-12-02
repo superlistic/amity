@@ -7,6 +7,7 @@ const uuid = require('uuid');
 class MeetingHandler {
   constructor() {
     this.instaQue = null;
+    this.instaMeetings = [];
     this.users = {};
     this.meetings = [];
   }
@@ -46,6 +47,7 @@ class MeetingHandler {
     });
     if (!duplicate) {
       const m = { ...meeting, id: uuid.v4() };
+      log.warn('creating meeting');
       this.meetings.push(m);
       return m;
     } else {
@@ -53,12 +55,23 @@ class MeetingHandler {
       return duplicate;
     }
   }
+  createInsta(meeting) {
+    log.debug('creating instaMeeting');
+    console.log(meeting);
+    if (!meeting.users.length === 2) {
+      throw Error('invalid meeting');
+    }
+    this.instaMeetings.push(meeting);
+  }
+
   instantMeeting(uid) {
+    log.info('instantMeeting for', uid);
     if (this.instaQue && this.instaQue !== uid) {
       const uid2 = this.instaQue;
-      this.create({ time: Date.now(), users: [uid, uid2] });
+      log.info('with', uid2);
       this.instaQue = null;
-      return this.match(uid);
+      this.createInsta({ users: [uid, uid2] });
+      return uid2;
     } else {
       this.instaQue = uid;
     }
@@ -66,7 +79,10 @@ class MeetingHandler {
   match(uid) {
     let meeting = this.meetings.find(m => m.users.includes(uid));
     if (!meeting) {
-      return null;
+      meeting = this.instaMeetings.find(m => m.users.includes(uid));
+      if (!meeting) {
+        return null;
+      }
     }
     if (meeting.users[0] === uid) {
       return meeting.users[1];
@@ -98,7 +114,7 @@ class MeetingHandler {
         delete this.Users[id];
         log.debug('user deleted', id);
       } else {
-        log.err('no such user');
+        log.err('no such user', id);
       }
     }
   }
