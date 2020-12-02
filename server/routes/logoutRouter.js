@@ -10,6 +10,7 @@ const logoutRouter = () => {
     res.clearCookie('x-access-token');
   };
 
-  router.all('/', logout);
+  router.get('/', logout);
+  return router;
 };
 module.exports = { logoutRouter };
