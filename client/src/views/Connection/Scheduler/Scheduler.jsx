@@ -13,28 +13,22 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
   useEffect(() => {
     console.log('GET_SCHEDULE');
     getSchedule();
-  }, []);
+  }, [getSchedule]);
 
   const onSaveDate = () => {
     const time = new Date(startDate).getTime();
-    console.log(time);
-    console.log(Date.now());
     addToSchedule({ time });
   };
 
-  console.log(meetings);
-
+  const orderedMeetings = meetings.sort((a, b) => a.time - b.time);
+  console.log('meetings', orderedMeetings);
   const scheduledMeetings = meetings.map(meeting => {
-    if (meeting !== undefined) {
-      return (
-        <p
-          className="scheduled__session"
-          key={`${meeting.time}-${Math.random()}`}
-        >
-          {meeting !== undefined ? new Date(meeting.time).toUTCString() : ''}
-        </p>
-      );
-    }
+    return (
+      <p className="scheduled__session" key={`${meeting.id}`}>
+        {new Date(meeting.time).toDateString()} at{' '}
+        {new Date(meeting.time).toLocaleTimeString()}
+      </p>
+    );
   });
 
   // new Date(message.date).toLocaleTimeString();
@@ -58,9 +52,7 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
       <AccentButton onClick={onSaveDate}>Save to calendar</AccentButton>
 
       <p className="scheduler__sub-title">Your Scheduled Connections</p>
-      <section className="scheduled__sessions">
-        {meetings.length > 0 && scheduledMeetings}
-      </section>
+      <section className="scheduled__sessions">{scheduledMeetings}</section>
     </div>
   );
 };
