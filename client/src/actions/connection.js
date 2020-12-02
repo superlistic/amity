@@ -16,6 +16,7 @@ import {
   DENY_COMMUNICATION,
   OTHER_VIDEO,
   FRIEND_DATA,
+  SET_SOCKET,
 } from './types';
 
 //Connection
@@ -39,6 +40,12 @@ export const acceptConnection = () => dispatch => {
 export const denyConnection = () => dispatch => {
   dispatch({
     type: DENY_COMMUNICATION,
+  });
+};
+export const setSocket = payload => dispatch => {
+  dispatch({
+    type: SET_SOCKET,
+    payload,
   });
 };
 export const setFriendData = payload => dispatch => {

@@ -15,6 +15,7 @@ import {
   setConnectionEstablished,
   handleOtherVideo,
   setFriendData,
+  setSocket,
 } from '../../actions/connection';
 let socket;
 const Connection = ({
@@ -27,6 +28,7 @@ const Connection = ({
   isOtherVideo,
   handleOtherVideo,
   setFriendData,
+  setSocket,
 }) => {
   const peerRef = useRef();
   const dataChannel = useRef();
@@ -108,9 +110,15 @@ const Connection = ({
     console.log('disconnectConnection');
     dataChannel.current.close();
     //stäng ned track
-    userStream.current.stop();
-    localVideo.current.stop();
-    remoteVideo.current.stop();
+    //FUNGERAR EJ = Cannot read property 'stop' of null
+    console.log(userStream.current);
+    console.log(localVideo.current);
+    console.log(remoteVideo.current);
+    // userStream.current.stop();
+    // localVideo.current.stop();
+    // remoteVideo.current.stop();
+
+    //ta bort användandet av webcam??
     peerRef.current.close();
     localVideo.current = null;
     remoteVideo.current = null;
@@ -159,6 +167,8 @@ const Connection = ({
 
   useLayoutEffect(() => {
     socket = io();
+    console.log(socket);
+    setSocket(socket);
     socket.emit('ready');
 
     socket.on('matchUpdate', payload => {
@@ -351,4 +361,5 @@ export default connect(mapStateToProps, {
   setConnectionEstablished,
   handleOtherVideo,
   setFriendData,
+  setSocket,
 })(Connection);

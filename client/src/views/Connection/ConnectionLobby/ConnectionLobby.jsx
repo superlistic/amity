@@ -13,11 +13,18 @@ const ConnectionLobby = ({
   socket,
   user,
   loading,
+  stateSocket,
 }) => {
   console.log(socket);
+  console.log(stateSocket);
   const findConnection = () => {
     console.log(socket);
-    socket.emit('instantConnection');
+    if (stateSocket) {
+      console.log(stateSocket);
+      stateSocket.emit('instantConnection');
+    } else {
+      console.log('stateSocket SATAN');
+    }
   };
 
   if (loading) return <p>Loading..</p>;
@@ -57,6 +64,7 @@ const mapStateToProps = state => ({
   isConnected: state.connection.isConnected,
   user: state.auth.user,
   loading: state.auth.loading,
+  stateSocket: state.connection.stateSocket,
 });
 
 export default connect(mapStateToProps, {
