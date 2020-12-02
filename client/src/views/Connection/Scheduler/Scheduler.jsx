@@ -11,14 +11,14 @@ const Scheduler = ({ getSchedule, addToSchedule }) => {
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
+    console.log('GET_SCHEDULE');
     getSchedule();
-  }, []);
+  }, [getSchedule]);
 
   const onSaveDate = () => {
     console.log('CLICKED');
-    const newDateAsTimeStamp = new Date(startDate).getTime();
-
-    // addToSchedule(payload);
+    const time = new Date(startDate).getTime();
+    addToSchedule({ time });
   };
   return (
     <div className="scheduler">
@@ -45,9 +45,9 @@ const Scheduler = ({ getSchedule, addToSchedule }) => {
   );
 };
 
-const mapStateToProps = state => {
-  //
-};
+const mapStateToProps = state => ({
+  meetings: state.scheduler.meetings,
+});
 
 export default connect(mapStateToProps, { getSchedule, addToSchedule })(
   Scheduler
