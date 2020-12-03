@@ -1,5 +1,8 @@
 # Amity incorporated
 
+<img width="1440" alt="amity_screenshot" src="https://user-images.githubusercontent.com/67574043/101093120-9b434b80-35ba-11eb-910d-b90c7d0b2db4.png">
+
+
 todo-backend:
 
 - <strike>register</strike>
