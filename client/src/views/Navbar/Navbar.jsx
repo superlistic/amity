@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import io from 'socket.io-client';
 
 import './Navbar.css';
 import { logOut } from '../../actions/auth';
+import { ThinAccentOutlinedButton } from '../../components/button';
 
 const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
   const NAV_LINKS = {
@@ -28,13 +28,11 @@ const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
           >
             {user && user.username}
           </NavLink>
-          <NavLink to="/schedule" className="navbar__settings">
-            <span className="material-icons navbar__settings__span">today</span>
+          <NavLink to="/schedule" className="navbar__icon-container">
+            <span className="material-icons navbar__icon">today</span>
           </NavLink>
-          <NavLink to="/settings" className="navbar__settings">
-            <span className="material-icons navbar__settings__span">
-              settings
-            </span>
+          <NavLink to="/settings" className="navbar__icon-container">
+            <span className="material-icons navbar__icon">settings</span>
           </NavLink>
           <NavLink to="/" className="navbar__link--auth" onClick={logOut}>
             Logout
@@ -61,14 +59,13 @@ const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
           <NavLink to="/login" className="navbar__link">
             Login
           </NavLink>
-          <NavLink to="/register">
-            <button className="navbar__register">Register</button>
-          </NavLink>
+          <ThinAccentOutlinedButton className="navbar__register" to="/register">
+            Register
+          </ThinAccentOutlinedButton>
         </div>
       </div>
     ),
   };
-
   return <div className="navbar">{NAV_LINKS[isAuthenticated]}</div>;
 };
 

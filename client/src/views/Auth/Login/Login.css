@@ -1,0 +1,21 @@
+.login {
+  width: 25%;
+  margin: 0 auto;
+  margin-top: 1rem;
+}
+
+.login__title {
+}
+.login__form {
+}
+.login__button {
+  margin: 0.5rem 0;
+}
+.login__forgot {
+  cursor: pointer;
+}
+.login__forgot:hover {
+  /* color: var(--color3); */
+  text-shadow: 0px 0.5px 1px var(--color4);
+  /* text-shadow: 0px 0.5px 0.5px var(--color__black); */
+}

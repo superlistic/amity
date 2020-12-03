@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
+import { motion } from 'framer-motion';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './Scheduler.css';
@@ -39,7 +40,13 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
 
   // new Date(message.date).toLocaleTimeString();
   return (
-    <div className="scheduler">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
+      className="scheduler"
+    >
       <p className="settings__title">Your Calendar</p>
       <p className="category__description">
         When do you want to e-meet with a colleague?
@@ -61,7 +68,7 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
       <section className="scheduled__sessions">
         {meetings.length > 0 && scheduledMeetings}
       </section>
-    </div>
+    </motion.div>
   );
 };
 

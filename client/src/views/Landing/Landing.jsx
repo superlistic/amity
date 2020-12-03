@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import './Landing.css';
 import Banner from './Banner/Banner';
-import GreetingCards from './GreetingCards/GreetingCards';
+import BannerFooter from './BannerFooter/BannerFooter';
 
 const Landing = () => {
   return (
@@ -20,8 +20,11 @@ const Landing = () => {
         />
         <div className="landing__overlay"></div>
         <Banner />
+        <span className="material-icons landing__down-arrow">
+          keyboard_arrow_down
+        </span>
       </div>
-      <GreetingCards />
+      <BannerFooter />
     </div>
   );
 };

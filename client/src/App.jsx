@@ -37,14 +37,8 @@ const App = ({ checkAuth, loading, isAuthenticated }) => {
           <AuthOnlyRoute path="/schedule" exact component={Scheduler} />
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
-          {isAuthenticated ? (
-            <Redirect to="/login" />
-          ) : (
-            <>
-              <Route path="/about" exact component={About} />
-              <Route path="/" exact component={Landing} />
-            </>
-          )}
+          <Route path="/about" exact component={About} />
+          <Route path="/" exact component={Landing} />
           <Route path="/*" component={ErrorComponent} />
         </Switch>
       </div>

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { motion } from 'framer-motion';
 
 import './ConnectionLobby.css';
 import { AccentButton } from '../../../components/button';
 import { WideAccentOutlinedButton } from '../../../components/button';
-import { acceptConnection, denyConnection } from '../../../actions/connection';
-import Profile from '../Profile/Profile';
+import {
+  acceptConnection,
+  denyConnection,
+  searchState,
+} from '../../../actions/connection';
 
 const ConnectionLobby = ({
   isConnected,
@@ -16,8 +20,13 @@ const ConnectionLobby = ({
   loading,
   stateSocket,
   friendData,
+  isSearching,
+  searchState,
 }) => {
+  // const [useState
   const findConnection = () => {
+    searchState(true);
+
     if (!stateSocket) {
       socket.emit('instantConnection');
     } else {
@@ -25,13 +34,38 @@ const ConnectionLobby = ({
     }
   };
 
+  const stopSearch = () => {
+    searchState(false);
+  };
+
   if (loading) return <p>Loading..</p>;
+  if (isSearching)
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        exit={{ opacity: 0 }}
+        className="connection-lobby"
+      >
+        <p>Searching for an e-meet..</p>
+        <WideAccentOutlinedButton onClick={stopSearch}>
+          Stop
+        </WideAccentOutlinedButton>
+      </motion.div>
+    );
   return isConnected ? (
-    <div className="connection-lobby">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
+      className="connection-lobby"
+    >
       <p className="connection-lobby__text">
         {`You have a connection with ${friendData.username}!`}
       </p>
-      <div className="connection-lobby__actions">
+      <div className="connection-lobby__connected">
         <AccentButton onClick={acceptConnection}>Join now</AccentButton>
         <WideAccentOutlinedButton to={'/schedule'}>
           Reschedule
@@ -51,9 +85,15 @@ const ConnectionLobby = ({
           <p className="connection-lobby__bio">{`Bio: ${friendData.bio}`}</p>
         )}
       </div>
-    </div>
+    </motion.div>
   ) : (
-    <div className="connection-lobby">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
+      className="connection-lobby"
+    >
       <p className="settings__title">{`Hi there ${user.username}.`}</p>
       <p className="connection-lobby__text">What do you want to do?</p>
 
@@ -77,7 +117,10 @@ const ConnectionLobby = ({
           </p>
         </div>
       </section>
-    </div>
+      <p className="connection-lobby__help">
+        Need help or have some feedback to give us? Click here!
+      </p>
+    </motion.div>
   );
 };
 const mapStateToProps = state => ({
@@ -86,11 +129,13 @@ const mapStateToProps = state => ({
   loading: state.auth.loading,
   stateSocket: state.connection.stateSocket,
   friendData: state.connection.friendData,
+  isSearching: state.connection.isSearching,
 });
 
 export default connect(mapStateToProps, {
   acceptConnection,
   denyConnection,
+  searchState,
 })(ConnectionLobby);
 
 // <p>
