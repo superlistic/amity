@@ -42,8 +42,8 @@ const Banner = () => {
         animate="animate"
       >
         <p className="banner__text">
-          We are social beings living in a digital era, why should working
-          remotely stop us from beeing social with our colleges? It should not!
+          We are social beings living in a digital era, should working remotely
+          stop us from beeing social with our colleauges? It should not!
         </p>
       </motion.div>
     </div>

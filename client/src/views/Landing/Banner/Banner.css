@@ -24,16 +24,17 @@
   margin-top: 3rem;
 }
 .banner__intro {
-  font-family: 'Work Sans', sans-serif;
+  /* font-family: 'Work Sans', sans-serif; */
   font-size: 1rem;
   margin-bottom: 0.5rem;
   align-self: flex-end;
 }
 .banner__text {
-  font-family: 'Work Sans', sans-serif;
+  /* font-family: 'Work Sans', sans-serif; */
   font-size: 1rem;
   margin-top: 1rem;
   align-self: flex-end;
+  color: var(--color6);
 }
 
 .banner__primary {

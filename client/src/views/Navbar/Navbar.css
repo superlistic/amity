@@ -27,6 +27,7 @@
   align-self: center;
   text-decoration: none;
   z-index: 2;
+  width: 135px;
 }
 .navbar__icon-container {
   text-decoration: none;

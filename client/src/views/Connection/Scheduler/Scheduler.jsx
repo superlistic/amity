@@ -61,7 +61,7 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
       <p className="scheduler__sub-title">Your Scheduled Connections</p>
 
       <section className="scheduled__sessions">{scheduledMeetings}</section>
-    </div>
+    </motion.div>
   );
 };
 

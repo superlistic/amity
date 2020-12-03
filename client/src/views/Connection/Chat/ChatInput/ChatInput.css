@@ -40,14 +40,12 @@
   cursor: pointer;
   margin-left: 0.4rem;
   transition: 0.05s ease-in-out;
-  /* pointer-events: none; */
 }
 .chat-input__send:active {
   color: var(--color5);
   font-size: 2.7rem;
 }
 .chat-input__emoji {
-  /* width: 30%; */
   font-size: 2.5rem;
   color: var(--color4);
   text-align: center;
@@ -55,16 +53,3 @@
   cursor: pointer;
   padding-top: 0.25rem;
 }
-
-/* .chat-input__button {
-  background: var(--color5);
-  border: none;
-  outline: none;
-  border-radius: 2rem;
-}
-.chat-input__button:hover {
-  background: var(--color4);
-}
-.chat-input__button:active {
-  background: var(--color3);
-} */
