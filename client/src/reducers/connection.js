@@ -15,6 +15,7 @@ import {
   OTHER_VIDEO,
   FRIEND_DATA,
   SET_SOCKET,
+  SEARCH_STATE,
 } from '../actions/types';
 
 const initState = {
@@ -26,16 +27,19 @@ const initState = {
   isOtherVideo: false,
   friendData: {},
   stateSocket: {},
+  isSearching: false,
 };
 
 export default function connection(state = initState, action) {
   const { type, payload } = action;
+  console.log(type, payload);
   switch (type) {
     //Connection
     case CONNECTION_ESTABLISHED:
       return {
         ...state,
         isConnected: true,
+        isSearching: false,
       };
     case DENY_COMMUNICATION:
     case CONNECTION_ENDED:
@@ -47,6 +51,7 @@ export default function connection(state = initState, action) {
         messages: [],
         friendData: {},
         stateSocket: {},
+        isSearching: false,
       };
     case ACCEPT_COMMUNICATION:
       return {
@@ -62,6 +67,11 @@ export default function connection(state = initState, action) {
       return {
         ...state,
         friendData: payload,
+      };
+    case SEARCH_STATE:
+      return {
+        ...state,
+        isSearching: payload,
       };
 
     //Messages

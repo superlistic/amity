@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import FacebookLoginWithButton from 'react-facebook-login';
-import GoogleLogin from 'react-google-login';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -28,22 +26,10 @@ const Login = ({ login, isAuthenticated }) => {
     setLoginData(initState);
   };
 
-  const responseFacebook = response => {
-    console.log(response);
-  };
-
-  const componentClicked = () => {
-    console.log('Clicked!');
-  };
-
-  const responseGoogle = response => {
-    console.log(response);
-  };
-
   if (isAuthenticated) return <Redirect to="/connection" />;
 
   return (
-    <div className="register">
+    <div className="login">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -75,25 +61,6 @@ const Login = ({ login, isAuthenticated }) => {
           <AccentButton className="login__button" onClick={e => onLogin(e)}>
             Login
           </AccentButton>
-          <p className="login__intro">Or login directly below.</p>
-          <div className="register__alternative-methods">
-            {/* <GoogleLogin
-              className="register__google"
-              clientId={process.env.REACT_APP_.GOOGLE}
-              buttonText="Login with Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              theme="dark"
-            />
-            <FacebookLoginWithButton
-              size="small"
-              appId={process.env.REACT_APP_.FACEBOOK}
-              fields="name,email,picture"
-              onClick={componentClicked}
-              callback={responseFacebook}
-              icon="fa-facebook"
-            /> */}
-          </div>
         </form>
         <br />
         <p className="login__forgot">

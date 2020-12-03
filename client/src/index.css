@@ -3,10 +3,11 @@
 :root {
   --color1: #f7f7f9;
   --color2: #2b2d42;
-  /* --color3: #ff7f11; */
   --color3: #f7e733;
   --color4: #e86a92;
   --color5: #6ba292;
+  --color6: #dedee0;
+  --color7: #c5c5c7;
   --color__white: white;
   --color__black: black;
 }
@@ -36,8 +37,3 @@ body {
   background: var(--color2);
   overflow: hidden;
 }
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */

@@ -17,6 +17,7 @@ import {
   OTHER_VIDEO,
   FRIEND_DATA,
   SET_SOCKET,
+  SEARCH_STATE,
 } from './types';
 
 //Connection
@@ -51,6 +52,12 @@ export const setSocket = payload => dispatch => {
 export const setFriendData = payload => dispatch => {
   dispatch({
     type: FRIEND_DATA,
+    payload,
+  });
+};
+export const searchState = payload => dispatch => {
+  dispatch({
+    type: SEARCH_STATE,
     payload,
   });
 };

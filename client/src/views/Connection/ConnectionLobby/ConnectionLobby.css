@@ -13,8 +13,17 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   align-items: center;
-  /* height: 18rem; */
+  height: 100%;
   width: 21rem;
+  /* width: 50%; */
+}
+.connection-lobby__connected {
+  display: flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  width: 21rem;
+  /* height: 50%; */
   /* width: 50%; */
 }
 
@@ -23,13 +32,6 @@
   justify-content: center;
   margin-top: 3rem;
   width: 65%;
-  /* align-items: space-around; */
-  /* height: 10rem; */
-  /* height: 20%;
-  justify-self: flex-end;
-  display: flex;
-  align-items: flex-end;
-  text-align: center; */
 }
 
 .connection-lobby__text {
@@ -37,9 +39,7 @@
   margin-top: 1rem;
 }
 .connection-lobby__banner-text {
-  /* max-width: 80%; */
-
-  margin-top: 1rem;
+  padding-top: 1.5rem;
   margin: 0 1rem;
 }
 
@@ -58,4 +58,13 @@
 }
 .connection-lobby__bio {
   margin-bottom: 0.5rem;
+}
+
+.connection-lobby__help {
+  margin-top: 16rem;
+  justify-self: flex-end;
+  cursor: pointer;
+}
+.connection-lobby__help:hover {
+  text-shadow: 0px 0.5px 1px var(--color4);
 }

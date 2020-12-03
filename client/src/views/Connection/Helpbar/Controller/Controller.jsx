@@ -48,7 +48,7 @@ const Controller = ({
           className="material-icons controller__icon"
           onClick={() => onVideo()}
         >
-          videocam
+          {!isVideo ? 'videocam' : 'videocam_off'}
         </span>
         <span
           className="material-icons controller__icon"
