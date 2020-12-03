@@ -58,7 +58,10 @@ class MeetingHandler {
   createBlind(time, userId) {
     if (time && userId) {
       const existing = this.meetings.find(m => {
-        if (m.time === time && m.users.includes(userId)) {
+        if (
+          Math.floor(m.time / 1000) * 1000 === Math.floor(time / 1000) * 1000 &&
+          m.users.includes(userId)
+        ) {
           return m;
         }
         if (m.time === time && m.users.length < 2) {
