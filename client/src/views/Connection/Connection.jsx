@@ -143,7 +143,6 @@ const Connection = ({
   };
 
   const handleDataChannelEvent = e => {
-    console.log('handleDataChannelEvent');
     dataChannel.current = e.channel;
     dataChannel.current.onopen = e => {
       console.log('WebRTC DC: open.');
