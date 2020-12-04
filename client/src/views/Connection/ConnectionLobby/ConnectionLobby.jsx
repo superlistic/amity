@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
 
@@ -25,10 +25,10 @@ const ConnectionLobby = ({
 }) => {
   const findConnection = () => {
     searchState(true);
-    if (!socket) {
-      stateSocket.emit('instantConnection');
-    } else {
+    if (!stateSocket) {
       socket.emit('instantConnection');
+    } else {
+      stateSocket.emit('instantConnection');
     }
   };
 
