@@ -27,10 +27,10 @@ const ConnectionLobby = ({
   const findConnection = () => {
     searchState(true);
 
-    if (!stateSocket) {
-      socket.emit('instantConnection');
-    } else {
+    if (!socket) {
       stateSocket.emit('instantConnection');
+    } else {
+      socket.emit('instantConnection');
     }
   };
 

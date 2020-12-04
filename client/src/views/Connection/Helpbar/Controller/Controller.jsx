@@ -11,13 +11,10 @@ const Controller = ({
   removeSharingVideo,
 }) => {
   const onChat = () => {
-    //get chat component instead of video?
-    console.log('Chat icon clicked!');
-    toggleVideo(!isVideo);
+    //TODO: Toggle Chat?
   };
-  const onVolumeOff = () => {
-    //mute video component
-    console.log('volume_off!');
+  const onVolume = () => {
+    //TODO: Toggle Volume?
   };
   const onVideo = () => {
     if (!isVideo) {
@@ -40,7 +37,7 @@ const Controller = ({
         </span>
         <span
           className="material-icons controller__icon"
-          onClick={() => onVolumeOff()}
+          onClick={() => onVolume()}
         >
           volume_off
         </span>

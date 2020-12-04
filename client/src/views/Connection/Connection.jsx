@@ -109,27 +109,10 @@ const Connection = ({
 
   const removeSharingVideo = () => {
     console.log('removeSharingVideo');
-    console.log(peerRef.current);
-    console.log(userStream.current);
-
-    // const x = new RTCRtpSender();
-    // console.log(x);
-    // console.log(RTCRtpSender);
-    // console.log(RTCRtpSender.track);
-
     const videoTrack = userStream.current.getVideoTracks()[0];
     const audioTrack = userStream.current.getVideoTracks()[0];
-    // const videoTrackPeer = peerRef.current.getTracks();
-
-    console.log(videoTrack);
-    console.log(peerRef.current.getSenders()[1]);
-
     const y = peerRef.current.getSenders()[0];
     const x = peerRef.current.getSenders()[1];
-
-    console.log(x);
-    // console.log(RTCRtpSender);
-    // console.log(RTCRtpSender.getStats());
 
     if (videoTrack) {
       userStream.current.removeTrack(videoTrack);
@@ -137,10 +120,6 @@ const Connection = ({
       peerRef.current.removeTrack(y);
       peerRef.current.removeTrack(x);
       userStream.current = null;
-      // userStream.current.stop(x);
-      // userStream.current.stop(y);
-      // var video = document.querySelector('video');
-      // video.src = window.URL.createObjectURL(userStream);
     }
 
     localVideo.current = null;
@@ -148,17 +127,8 @@ const Connection = ({
 
   const disconnectConnection = () => {
     console.log('disconnectConnection');
+    socket.disconnect();
     dataChannel.current.close();
-    //stäng ned track
-    //FUNGERAR EJ = Cannot read property 'stop' of null
-    console.log(userStream.current);
-    console.log(localVideo.current);
-    console.log(remoteVideo.current);
-    // userStream.current.stop();
-    // localVideo.current.stop();
-    // remoteVideo.current.stop();
-
-    //ta bort användandet av webcam??
     peerRef.current.close();
     localVideo.current = null;
     remoteVideo.current = null;
@@ -200,16 +170,12 @@ const Connection = ({
     if (remoteVideo.current !== null && remoteVideo.current !== undefined) {
       console.log(e.streams);
       remoteVideo.current.srcObject = e.streams[0];
-    } else {
-      console.log('ELSE!!');
-      console.log('Could not find remoteVideo');
     }
   };
 
   const handleRemoveTrackEvent = async e => {
     console.log('handleRemoveTrackEvent');
     remoteVideo.current.srcObject = null;
-    console.log(peerRef.current);
   };
 
   useLayoutEffect(() => {
@@ -221,6 +187,10 @@ const Connection = ({
     socket.on('matchUpdate', payload => {
       console.log(payload);
       setFriendData(payload.peer);
+      if (payload.msg === '[socket] partner disconnected') {
+        console.log('disconnect');
+        // friendDisconnected();
+      }
     });
 
     socket.on('makeOffer', async () => {
@@ -361,6 +331,7 @@ const Connection = ({
         </div>
         <Helpbar
           sendMessage={sendMessage}
+          removeSharingVideo={removeSharingVideo}
           disconnectConnection={disconnectConnection}
         />
       </div>
