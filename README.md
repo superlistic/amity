@@ -2,7 +2,7 @@
 
 Amity is a way of staying social in these isolated times. With Amity we want to make working from home more fun, exciting and socially rewarding.
 
-This project was the graduation project of Johan Strand and Viktor Norman, from the </Salt> fall 2020 bootcamp. By utilizing WebRTC and sockets the chat and video response is very quick between the users. 
+This project was the graduation project of Johan Strand and Viktor Norman, from the '</Salt>' fall 2020 bootcamp. By utilizing WebRTC and sockets the chat and video response is very quick between the users. 
 
 ### Features of our two week MVP are:
 - Matchmaking between users
