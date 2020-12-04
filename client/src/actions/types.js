@@ -27,6 +27,7 @@ export const OTHER_VIDEO = 'OTHER_VIDEO';
 export const FRIEND_DATA = 'FRIEND_DATA';
 export const SET_SOCKET = 'SET_SOCKET';
 export const SEARCH_STATE = 'SEARCH_STATE';
+export const FRIEND_DISCONNECTED = 'FRIEND_DISCONNECTED';
 
 //Scheduler
 export const GET_SCHEDULE = 'GET_SCHEDULE';

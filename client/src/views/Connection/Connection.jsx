@@ -16,6 +16,7 @@ import {
   handleOtherVideo,
   setFriendData,
   setSocket,
+  friendDisconnected,
 } from '../../actions/connection';
 let socket;
 const Connection = ({
@@ -29,6 +30,7 @@ const Connection = ({
   handleOtherVideo,
   setFriendData,
   setSocket,
+  friendDisconnected,
 }) => {
   const peerRef = useRef();
   const dataChannel = useRef();
@@ -36,9 +38,6 @@ const Connection = ({
   const remoteVideo = useRef();
   const userStream = useRef();
   const isInitiator = useRef(true);
-
-  console.log('RENDER');
-  // socket = io();
 
   const createChannel = () => {
     console.log('Create CHANNEL');
@@ -110,7 +109,7 @@ const Connection = ({
   const removeSharingVideo = () => {
     console.log('removeSharingVideo');
     const videoTrack = userStream.current.getVideoTracks()[0];
-    const audioTrack = userStream.current.getVideoTracks()[0];
+    const audioTrack = userStream.current.getAudioTracks()[0];
     const y = peerRef.current.getSenders()[0];
     const x = peerRef.current.getSenders()[1];
 
@@ -121,8 +120,8 @@ const Connection = ({
       peerRef.current.removeTrack(x);
       userStream.current = null;
     }
-
     localVideo.current = null;
+    socket.emit('relay', { data: '', type: 'removeOtherVideo' });
   };
 
   const disconnectConnection = () => {
@@ -176,6 +175,7 @@ const Connection = ({
   const handleRemoveTrackEvent = async e => {
     console.log('handleRemoveTrackEvent');
     remoteVideo.current.srcObject = null;
+    handleOtherVideo(false);
   };
 
   useLayoutEffect(() => {
@@ -189,7 +189,7 @@ const Connection = ({
       setFriendData(payload.peer);
       if (payload.msg === '[socket] partner disconnected') {
         console.log('disconnect');
-        // friendDisconnected();
+        friendDisconnected();
       }
     });
 
@@ -224,6 +224,8 @@ const Connection = ({
           return handleAnswer(data, method);
         case 'candidate':
           return handleCandidate(data);
+        case 'removeOtherVideo':
+          return handleRemoveTrackEvent();
         default:
           return 'error';
       }
@@ -238,14 +240,10 @@ const Connection = ({
           video: true,
           audio: true,
         });
-        //När motpart lämnade = Cannot set propert srcObject of null.if not null?
         if (localVideo.current !== null && localVideo.current !== undefined) {
           localVideo.current.srcObject = stream;
-        } else {
-          console.log('ELSE!!');
-          console.log('Could not find localVideo');
         }
-        if (isInitiator.current === true) {
+        if (userStream.current === null || userStream.current === undefined) {
           userStream.current = stream;
           userStream.current
             .getTracks()
@@ -385,4 +383,5 @@ export default connect(mapStateToProps, {
   handleOtherVideo,
   setFriendData,
   setSocket,
+  friendDisconnected,
 })(Connection);

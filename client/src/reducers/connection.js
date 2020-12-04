@@ -4,10 +4,6 @@ import {
   RECEIVED_MESSAGE,
   SENT_MESSAGE,
   TOGGLE_VIDEO,
-  ENABLE_AUDIO,
-  DISABLE_AUDIO,
-  ENABLE_SOUND,
-  DISABLE_SOUND,
   SET_SUGGESTION,
   CLICKED_SUGGESTION,
   ACCEPT_COMMUNICATION,
@@ -16,6 +12,7 @@ import {
   FRIEND_DATA,
   SET_SOCKET,
   SEARCH_STATE,
+  FRIEND_DISCONNECTED,
 } from '../actions/types';
 
 const initState = {
@@ -32,7 +29,6 @@ const initState = {
 
 export default function connection(state = initState, action) {
   const { type, payload } = action;
-  console.log(type, payload);
   switch (type) {
     //Connection
     case CONNECTION_ESTABLISHED:
@@ -72,6 +68,10 @@ export default function connection(state = initState, action) {
       return {
         ...state,
         isSearching: payload,
+      };
+    case FRIEND_DISCONNECTED:
+      return {
+        initState,
       };
 
     //Messages
