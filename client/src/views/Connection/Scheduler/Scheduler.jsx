@@ -12,7 +12,6 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
-    console.log('GET_SCHEDULE');
     getSchedule();
   }, [getSchedule]);
 
@@ -22,7 +21,6 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
   };
 
   const orderedMeetings = meetings.sort((a, b) => a.time - b.time);
-  console.log('meetings', orderedMeetings);
   const scheduledMeetings = meetings.map(meeting => {
     return (
       <p className="scheduled__session" key={`${meeting.id}`}>
@@ -32,7 +30,6 @@ const Scheduler = ({ getSchedule, addToSchedule, meetings }) => {
     );
   });
 
-  // new Date(message.date).toLocaleTimeString();
   return (
     <motion.div
       initial={{ opacity: 0 }}

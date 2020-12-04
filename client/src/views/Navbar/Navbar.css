@@ -48,7 +48,6 @@
   justify-self: center;
   align-self: center;
   text-decoration: none;
-  /* z-index: 2; */
   cursor: pointer;
 }
 .navbar__link--auth {

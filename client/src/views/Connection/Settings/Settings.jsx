@@ -17,37 +17,9 @@ const Settings = ({ user, loading }) => {
   };
   const [userData, setUserData] = useState(user || initUser);
   const [settingsTopic, setSettingsTopic] = useState('General');
-  // console.log(user);
-  // if (user) {
-  //   const { email, avatar, bio, tagline } = user;
-  //   console.log(email);
-  // }
 
-  // if (userId) {
-  //   console.log(email);
-  //   console.log(bio);
-  // }
-  // const { username, email, password, password2 } = registerData;
-
-  const onClick = e => {
-    console.log(e);
-    //
-  };
   const onChange = e =>
     setUserData({ ...userData, [e.target.name]: e.target.value });
-
-  // const onRegister = e => {
-  //   e.preventDefault();
-  //   if (password !== password2) {
-  //     alert('Passwords do not match.', 'danger');
-  //   } else if (password.length < 6 || password2.length < 6) {
-  //     alert('Password should be longer than 6 characters.', 'danger');
-  //   } else {
-  //     register({ username, email, password });
-  //   }
-  //   setRegisterData(initState);
-  // };
-  // if (loading || !user) ;
 
   return (
     user && (

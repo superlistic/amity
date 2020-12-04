@@ -40,11 +40,9 @@ const Connection = ({
   const isInitiator = useRef(true);
 
   const createChannel = () => {
-    console.log('Create CHANNEL');
     dataChannel.current = peerRef.current.createDataChannel('dataChannel');
     dataChannel.current.onopen = e => {
       setConnectionEstablished();
-      console.log('open!!!!');
     };
     dataChannel.current.onmessage = e => {
       const newMessage = e.data.toString();
@@ -53,16 +51,13 @@ const Connection = ({
         client: false,
         date: Date.now(),
       });
-      console.log('messsage received!!!' + e.data);
     };
     dataChannel.current.onclose = e => {
       setConnectionEnded();
-      console.log('closed!!!!!!');
     };
   };
 
   const handleOffer = async (sdp, method) => {
-    console.log('handleOffer');
     if (method === 'video') {
       await handleOtherVideo(true);
     }
@@ -74,20 +69,16 @@ const Connection = ({
   };
 
   const handleAnswer = async sdp => {
-    console.log('handleAnswer');
-    console.log(sdp);
     const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
   };
 
   const handleCandidate = async data => {
-    console.log('ICE FOUND, RTC successful');
     const candidate = await new RTCIceCandidate(data);
     await peerRef.current.addIceCandidate(candidate);
   };
 
   const handleNegotiationNeededEvent = async type => {
-    console.log('handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
@@ -99,7 +90,6 @@ const Connection = ({
   };
 
   const handleICECandidateEvent = e => {
-    console.log('handleICECandidateEvent');
     const { candidate } = e;
     if (candidate) {
       socket.emit('relay', { data: candidate, type: 'candidate' });
@@ -107,7 +97,6 @@ const Connection = ({
   };
 
   const removeSharingVideo = () => {
-    console.log('removeSharingVideo');
     const videoTrack = userStream.current.getVideoTracks()[0];
     const audioTrack = userStream.current.getAudioTracks()[0];
     const y = peerRef.current.getSenders()[0];
@@ -125,7 +114,6 @@ const Connection = ({
   };
 
   const disconnectConnection = () => {
-    console.log('disconnectConnection');
     socket.disconnect();
     dataChannel.current.close();
     peerRef.current.close();
@@ -142,15 +130,12 @@ const Connection = ({
   };
 
   const handleDataChannelEvent = e => {
-    console.log('handleDataChannelEvent');
     dataChannel.current = e.channel;
     dataChannel.current.onopen = e => {
-      console.log('WebRTC DC: open.');
       setConnectionEstablished();
     };
     dataChannel.current.onmessage = e => {
       const newMessage = e.data.toString();
-      console.log('WebRTC DC: message received');
       messageReceived({
         message: newMessage,
         client: false,
@@ -158,43 +143,34 @@ const Connection = ({
       });
     };
     dataChannel.current.onclose = e => {
-      console.log('WebRTC DC: closed');
       setConnectionEnded();
     };
   };
 
   const handleTrackEvent = async e => {
-    console.log('handleTrackEvent');
-    //När motpart lämnade = Cannot set propert srcObject of null.if not null?
     if (remoteVideo.current !== null && remoteVideo.current !== undefined) {
-      console.log(e.streams);
       remoteVideo.current.srcObject = e.streams[0];
     }
   };
 
   const handleRemoveTrackEvent = async e => {
-    console.log('handleRemoveTrackEvent');
     remoteVideo.current.srcObject = null;
     handleOtherVideo(false);
   };
 
   useLayoutEffect(() => {
     socket = io();
-    console.log(socket);
     setSocket(socket);
     socket.emit('ready');
 
     socket.on('matchUpdate', payload => {
-      console.log(payload);
       setFriendData(payload.peer);
       if (payload.msg === '[socket] partner disconnected') {
-        console.log('disconnect');
         friendDisconnected();
       }
     });
 
     socket.on('makeOffer', async () => {
-      console.log('User is making an offer');
       peerRef.current = await createPeer(
         handleICECandidateEvent,
         handleDataChannelEvent,
@@ -206,7 +182,6 @@ const Connection = ({
     });
 
     socket.on('awaitOffer', async () => {
-      console.log('User waiting for offer');
       peerRef.current = await createPeer(
         handleICECandidateEvent,
         handleDataChannelEvent,
@@ -234,7 +209,6 @@ const Connection = ({
 
   useEffect(() => {
     if (isVideo) {
-      console.log('video tajm');
       const videoCall = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
@@ -261,8 +235,7 @@ const Connection = ({
 
   if (!communicationAccepted) return <ConnectionLobby socket={socket} />;
 
-  if (!isVideo && !isOtherVideo) {
-    console.log('!isVideo && !isOtherVideo');
+  if (!isVideo && !isOtherVideo)
     return (
       <div className="connection">
         <Sidebar />
@@ -281,10 +254,8 @@ const Connection = ({
         />
       </div>
     );
-  }
 
-  if (!isVideo && isOtherVideo) {
-    console.log('!isVideo && isOtherVideo');
+  if (!isVideo && isOtherVideo)
     return (
       <div className="connection">
         <Sidebar />
@@ -307,9 +278,8 @@ const Connection = ({
         />
       </div>
     );
-  }
-  if (isVideo && !isOtherVideo) {
-    console.log('isVideo && !isOtherVideo');
+
+  if (isVideo && !isOtherVideo)
     return (
       <div className="connection">
         <Sidebar />
@@ -334,7 +304,6 @@ const Connection = ({
         />
       </div>
     );
-  }
 
   return (
     <div className="connection">

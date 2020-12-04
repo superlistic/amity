@@ -55,6 +55,7 @@ export const register = ({ username, email, password }) => async dispatch => {
     });
   }
 };
+
 export const logOut = () => async dispatch => {
   try {
     const res = await axios.get('/api/logout');
@@ -71,8 +72,6 @@ export const logOut = () => async dispatch => {
       type: LOGOUT_ERROR,
     });
   }
-
-  //Behöver ändras till att verkligen stänga ned WebRTC connection, men ska förstå hur jag kan göra det på bästa sätt från sibling components först.
 };
 
 export const checkAuth = () => async dispatch => {

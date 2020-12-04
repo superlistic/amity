@@ -1,6 +1,4 @@
 .banner__footer {
-  /* grid-column: 6/8;
-  grid-row: 3/4; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -13,17 +11,3 @@
   width: 50%;
   margin-top: 1rem;
 }
-
-/* 
-.greeting__card {
-
-  background-color: var(--color2);
-  width: 12rem;
-  height: 10rem;
-  border-radius: 15px;
-  padding: 1rem;
-  margin: 0 1rem;
-}
-.greeting__text {
-  font-family: 'Work Sans', sans-serif;
-} */

@@ -1,9 +1,9 @@
 .landing {
   height: 91vh;
   width: 100vw;
-  /* overflow: scroll;
+  overflow: scroll;
   overflow-x: hidden;
-  scroll-behavior: smooth; */
+  scroll-behavior: smooth;
 }
 
 .landing::-webkit-scrollbar-track {

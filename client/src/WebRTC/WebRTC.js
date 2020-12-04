@@ -4,7 +4,6 @@ export const createPeer = (
   handleTrackEvent,
   handleRemoveTrackEvent
 ) => {
-  console.log('2.createPeer invoked');
   const config = {
     iceServers: [
       {

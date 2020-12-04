@@ -2,9 +2,6 @@
   width: 25%;
   margin: 0 auto;
   margin-top: 1rem;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
 }
 .register__title {
   font-size: 2.5rem;
@@ -32,21 +29,6 @@
   margin: 0 auto;
   margin-top: 0.5rem;
 }
-
-/* .register__facebook {
-  height: 50%;
-} */
-
-/* .register__input {
-  background: var(--color1);
-  border: none;
-  height: 3rem;
-  color: var(--color2);
-  border-radius: 1rem;
-  padding-left: 1rem;
-  margin-top: 0.5rem;
-  outline: none;
-} */
 
 .register__button {
   margin-top: 1rem;

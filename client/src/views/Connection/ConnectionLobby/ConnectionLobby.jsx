@@ -23,10 +23,8 @@ const ConnectionLobby = ({
   isSearching,
   searchState,
 }) => {
-  // const [useState
   const findConnection = () => {
     searchState(true);
-
     if (!socket) {
       stateSocket.emit('instantConnection');
     } else {
@@ -137,14 +135,3 @@ export default connect(mapStateToProps, {
   denyConnection,
   searchState,
 })(ConnectionLobby);
-
-// <p>
-//   We match you on random, and try to make sure that your commonalities are
-//   suggested as topics.
-// </p>;
-
-// <p className="connection-lobby__text">
-//   Choose an alternative below if you want to chat with one of your awesome
-//   colleagues. Check if someone is available right now or schedule a date and
-//   time that works for you.
-// </p>;

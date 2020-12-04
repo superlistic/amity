@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
-import Picker from 'emoji-picker-react';
 
 import './ChatInput.css';
 import { RoundButton } from '../../../../components/button';
 
 const ChatInput = ({ sendMessage }) => {
-  const [toggleDisplay, setToggleDisplay] = useState(false);
   const [message, setMessage] = useState('');
-  const [chosenEmoji, setChosenEmoji] = useState(null);
-
-  const onEmojiClick = (event, emojiObject) => {
-    setChosenEmoji(emojiObject);
-    // setToggleDisplay(!toggleDisplay);
-  };
 
   const newMessage = e => {
     e.preventDefault();

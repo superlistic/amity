@@ -6,4 +6,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-// <span class="material-icons sidebar__icon">favorite</span>;

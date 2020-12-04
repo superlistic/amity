@@ -41,17 +41,13 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
     while (array.length > 0) {
       const suggestion = array.shift();
       await setSuggestion(suggestion);
-      if (currentSuggestion.length !== 0) {
-        await timeout(14000);
-      }
+      await timeout(14000);
     }
   };
 
   useEffect(() => {
     queue(listOfSuggestions);
   }, []);
-
-  // const removeSuggestion = () => {};
 
   const getSuggestion = suggestion => {
     return suggestion.map(s => (

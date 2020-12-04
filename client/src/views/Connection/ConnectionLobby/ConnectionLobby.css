@@ -2,9 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
   height: 93vh;
-  /* margin-top: 1rem; */
 }
 
 .connection-lobby__actions {
@@ -15,7 +13,6 @@
   align-items: center;
   height: 100%;
   width: 21rem;
-  /* width: 50%; */
 }
 .connection-lobby__connected {
   display: flex;
@@ -23,8 +20,6 @@
   margin-bottom: 1rem;
   align-items: center;
   width: 21rem;
-  /* height: 50%; */
-  /* width: 50%; */
 }
 
 .connection-lobby__info {
@@ -43,9 +38,6 @@
   margin: 0 1rem;
 }
 
-.connection-lobby__friend {
-}
-
 .connection-lobby__avatar {
   cursor: pointer;
   height: 18rem;
@@ -56,6 +48,7 @@
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
+
 .connection-lobby__bio {
   margin-bottom: 0.5rem;
 }
@@ -65,6 +58,7 @@
   justify-self: flex-end;
   cursor: pointer;
 }
+
 .connection-lobby__help:hover {
   text-shadow: 0px 0.5px 1px var(--color4);
 }

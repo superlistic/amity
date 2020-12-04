@@ -22,7 +22,6 @@ const Controller = ({
     } else {
       toggleVideo(false);
       removeSharingVideo();
-      //stop sending track to other user.
     }
   };
 

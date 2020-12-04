@@ -104,8 +104,3 @@ export const StyledRoundButton = styled(StyledButton)`
     transition: box-shadow 0.05s ease-in-out;
   }
 `;
-
-//   &:focus {
-//     box-shadow: 0 0 0 2px ${theme.bg.default}, 0 0 0 4px ${theme.bg.border};
-//     transition: box-shadow 0.2s ease-in-out;
-//   }

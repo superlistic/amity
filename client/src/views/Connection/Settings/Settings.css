@@ -1,7 +1,5 @@
 .settings {
-  /* width: 80%; */
   margin: 0 auto;
-  /* margin-top: 1rem; */
 }
 .settings__title {
   font-size: 2.5rem;
@@ -10,8 +8,6 @@
 
 .settings__container {
   border-radius: 2rem;
-  /* background: lightgray; */
-  /* background: var(--color__black); */
   display: grid;
   padding-top: 0.5rem;
 
@@ -27,8 +23,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  /* background-color: var(--color1); */
 }
 
 .category__container {
@@ -38,11 +32,10 @@
   cursor: pointer;
   padding-bottom: 0.5rem;
 }
+
 .category__icon {
   text-align: start;
   margin: 0 0.5rem;
-}
-.category__description {
 }
 
 .category__title {
@@ -53,19 +46,12 @@
 .settings__options {
   grid-area: settings__options;
   padding-bottom: 0.5rem;
-  /* display: grid;
-  grid-template-rows: 2fr 8fr; */
-  /* flex-direction: column;
-  justify-content: center;
-  align-items: center; */
-}
-
-.option {
 }
 
 .settings__input {
   width: 60%;
 }
+
 .settings__button {
   margin: 0 auto;
   margin-top: 2rem;

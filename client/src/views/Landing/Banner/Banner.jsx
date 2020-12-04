@@ -51,9 +51,3 @@ const Banner = () => {
 };
 
 export default Banner;
-
-// <p className="banner__text">
-// Meet with your friends and family over the internet or find new friends via our 'matcher'. You can chat by text, audio or video, discuss interesting topics, solve puzzles or play games together.
-// </p>
-
-// <p className="banner__intro">This is where digital meets occur.</p>;

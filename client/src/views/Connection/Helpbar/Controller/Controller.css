@@ -17,10 +17,7 @@
   display: flex;
   justify-content: space-evenly;
   width: 90%;
-  /* height: 100%; */
-  /* min-height: 3rem; */
   margin: 0 auto;
-  /* padding-top: 1rem; */
 }
 
 .controller__text {
@@ -40,5 +37,4 @@
 }
 .controller__icon:hover {
   color: var(--color4);
-  /* box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25); */
 }
