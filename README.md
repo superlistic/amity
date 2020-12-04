@@ -1,8 +1,14 @@
-# Amity incorporated
+# Amity
 
-Amity is a way of staying social in these isolated times. With Amity we want to make wokring from home more fun, exciting and socially rewarding. Features of  two week MVP are: Text and video chat between users, authorized login with user accounts, furthermore the user will in chat get suggestions of conversation topics.
+Amity is a way of staying social in these isolated times. With Amity we want to make working from home more fun, exciting and socially rewarding.
 
-This project was the graduation project of Johan Strand and Viktor Norman, from the </Salt> fall 2020 bootcamp. By utilizing WebRTC and sockets the chat and video response is very quick between the users.
+This project was the graduation project of Johan Strand and Viktor Norman, from the </Salt> fall 2020 bootcamp. By utilizing WebRTC and sockets the chat and video response is very quick between the users. 
+
+### Features of our two week MVP are:
+- Matchmaking between users
+- Text and video chat between users
+- Authorized login with user accounts 
+- Chat suggestions of conversation topics
 
 ## Screenshots
 <img width="1440" alt="amity_screenshot" src="https://user-images.githubusercontent.com/67574043/101093120-9b434b80-35ba-11eb-910d-b90c7d0b2db4.png">
