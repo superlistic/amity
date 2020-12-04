@@ -1,8 +1,8 @@
 # Amity
 
-Amity is a way of staying social in these isolated times. With Amity we want to make working from home more fun, exciting and socially rewarding.
+Amity is a way of staying social in these isolated times. With Amity we want to make working from home more fun, exciting and socially rewarding. By utilizing WebRTC and sockets the users connect each other randomly through our matchmaking. Thereafter the two connected users have quick real time communication with both video and chat.
 
-This project was the graduation project of Johan Strand and Viktor Norman, from the Salt fall 2020 bootcamp. By utilizing WebRTC and sockets the chat and video response is very quick between the users. 
+This project was the graduation project of Johan Strand and Viktor Norman, from the Salt fall 2020 bootcamp. 
 
 ### Features of our two week MVP are:
 - Matchmaking between users
