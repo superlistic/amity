@@ -24,16 +24,55 @@ export const StyledButton = styled.button`
 
 export const StyledAccentButton = styled(StyledButton)`
   background: ${theme.secondary};
+  &:hover {
+    transform: scale(1.01);
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    border: none;
+    background: ${theme.success};
+    box-shadow: 0 0 0 2px ${theme.success}, 0 0 0 4px ${theme.success};
+    transition: box-shadow 0.05s ease-in-out;
+  }
+`;
+export const StyledThinAccentOutlinedButton = styled(StyledButton)`
+  height: 2rem;
+  border: 2px solid ${theme.secondary};
+  width: ${props => (props.inputWidth ? props.inputWidth : '6rem')};
+  background: transparent;
+  &:hover {
+    border: 2px solid ${theme.gray};
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    border: 2px solid ${theme.success};
+  }
 `;
 export const StyledAccentOutlinedButton = styled(StyledButton)`
   border: 2px solid ${theme.secondary};
   width: ${props => (props.inputWidth ? props.inputWidth : '6rem')};
   background: transparent;
+  &:hover {
+    transform: scale(1.01);
+    border: 2px solid ${theme.gray};
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    border: 2px solid ${theme.success};
+  }
 `;
 export const StyledWideAccentOutlinedButton = styled(StyledButton)`
   border: 2px solid ${theme.secondary};
   width: ${props => (props.inputWidth ? props.inputWidth : '8rem')};
   background: transparent;
+  &:hover {
+    transform: scale(1.01);
+    border: 2px solid ${theme.secondary};
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    border: 2px solid ${theme.success};
+  }
 `;
 export const StyledGrayButton = styled(StyledButton)`
   background: ${theme.gray};
@@ -42,6 +81,14 @@ export const StyledGrayOutlinedButton = styled(StyledButton)`
   border: 2px solid ${theme.gray};
   width: 6rem;
   background: transparent;
+  &:hover {
+    transform: scale(1.01);
+    border: 2px solid ${theme.secondary};
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    border: 2px solid ${theme.success};
+  }
 `;
 export const StyledRoundButton = styled(StyledButton)`
   border-radius: 50%;
@@ -57,8 +104,3 @@ export const StyledRoundButton = styled(StyledButton)`
     transition: box-shadow 0.05s ease-in-out;
   }
 `;
-
-//   &:focus {
-//     box-shadow: 0 0 0 2px ${theme.bg.default}, 0 0 0 4px ${theme.bg.border};
-//     transition: box-shadow 0.2s ease-in-out;
-//   }

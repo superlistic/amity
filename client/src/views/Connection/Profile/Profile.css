@@ -9,6 +9,7 @@
   margin-bottom: 1rem;
 }
 .profile__text {
+  color: var(--color6);
   width: 30%;
   text-align: left;
   margin-bottom: 1rem;

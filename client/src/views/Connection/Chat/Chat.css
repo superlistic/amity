@@ -1,4 +1,5 @@
 .chat {
+  height: 100%;
   background: white;
   display: grid;
   grid-template-rows: 82% 18%;
@@ -13,8 +14,7 @@
   display: flex;
   flex-direction: column;
   width: 80%;
-  /* min-height: 30rem; */
-  height: 80vh;
+  max-height: 80vh;
   margin: 0 auto;
 }
 

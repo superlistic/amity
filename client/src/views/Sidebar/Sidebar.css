@@ -1,3 +1,7 @@
 .sidebar {
   background: var(--color1);
 }
+
+.sidebar__icon {
+  color: var(--color4);
+}

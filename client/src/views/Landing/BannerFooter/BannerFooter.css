@@ -1,0 +1,13 @@
+.banner__footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  height: 90vh;
+}
+
+.footer__text {
+  width: 50%;
+  margin-top: 1rem;
+}

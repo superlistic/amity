@@ -5,6 +5,7 @@ import {
   StyledAccentButton,
   StyledAccentOutlinedButton,
   StyledWideAccentOutlinedButton,
+  StyledThinAccentOutlinedButton,
   StyledGrayButton,
   StyledGrayOutlinedButton,
   StyledRoundButton,
@@ -27,6 +28,8 @@ export const GrayButton = props => buttonWrapper(StyledGrayButton, props);
 
 export const AccentOutlinedButton = props =>
   buttonWrapper(StyledAccentOutlinedButton, props);
+export const ThinAccentOutlinedButton = props =>
+  buttonWrapper(StyledThinAccentOutlinedButton, props);
 
 export const GrayOutlinedButton = props =>
   buttonWrapper(StyledGrayOutlinedButton, props);

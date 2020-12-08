@@ -16,6 +16,7 @@ import {
   handleOtherVideo,
   setFriendData,
   setSocket,
+  friendDisconnected,
 } from '../../actions/connection';
 let socket;
 const Connection = ({
@@ -29,6 +30,7 @@ const Connection = ({
   handleOtherVideo,
   setFriendData,
   setSocket,
+  friendDisconnected,
 }) => {
   const peerRef = useRef();
   const dataChannel = useRef();
@@ -37,15 +39,10 @@ const Connection = ({
   const userStream = useRef();
   const isInitiator = useRef(true);
 
-  console.log('RENDER');
-  // socket = io();
-
   const createChannel = () => {
-    console.log('Create CHANNEL');
     dataChannel.current = peerRef.current.createDataChannel('dataChannel');
     dataChannel.current.onopen = e => {
       setConnectionEstablished();
-      console.log('open!!!!');
     };
     dataChannel.current.onmessage = e => {
       const newMessage = e.data.toString();
@@ -54,16 +51,13 @@ const Connection = ({
         client: false,
         date: Date.now(),
       });
-      console.log('messsage received!!!' + e.data);
     };
     dataChannel.current.onclose = e => {
       setConnectionEnded();
-      console.log('closed!!!!!!');
     };
   };
 
   const handleOffer = async (sdp, method) => {
-    console.log('handleOffer');
     if (method === 'video') {
       await handleOtherVideo(true);
     }
@@ -75,20 +69,16 @@ const Connection = ({
   };
 
   const handleAnswer = async sdp => {
-    console.log('handleAnswer');
-    console.log(sdp);
     const description = await new RTCSessionDescription(sdp);
     await peerRef.current.setRemoteDescription(description);
   };
 
   const handleCandidate = async data => {
-    console.log('ICE FOUND, RTC successful');
     const candidate = await new RTCIceCandidate(data);
     await peerRef.current.addIceCandidate(candidate);
   };
 
   const handleNegotiationNeededEvent = async type => {
-    console.log('handleNegotiationNeededEvent');
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     const localDescription = peerRef.current.localDescription;
@@ -100,7 +90,6 @@ const Connection = ({
   };
 
   const handleICECandidateEvent = e => {
-    console.log('handleICECandidateEvent');
     const { candidate } = e;
     if (candidate) {
       socket.emit('relay', { data: candidate, type: 'candidate' });
@@ -108,28 +97,10 @@ const Connection = ({
   };
 
   const removeSharingVideo = () => {
-    console.log('removeSharingVideo');
-    console.log(peerRef.current);
-    console.log(userStream.current);
-
-    // const x = new RTCRtpSender();
-    // console.log(x);
-    // console.log(RTCRtpSender);
-    // console.log(RTCRtpSender.track);
-
     const videoTrack = userStream.current.getVideoTracks()[0];
-    const audioTrack = userStream.current.getVideoTracks()[0];
-    // const videoTrackPeer = peerRef.current.getTracks();
-
-    console.log(videoTrack);
-    console.log(peerRef.current.getSenders()[1]);
-
+    const audioTrack = userStream.current.getAudioTracks()[0];
     const y = peerRef.current.getSenders()[0];
     const x = peerRef.current.getSenders()[1];
-
-    console.log(x);
-    // console.log(RTCRtpSender);
-    // console.log(RTCRtpSender.getStats());
 
     if (videoTrack) {
       userStream.current.removeTrack(videoTrack);
@@ -137,28 +108,14 @@ const Connection = ({
       peerRef.current.removeTrack(y);
       peerRef.current.removeTrack(x);
       userStream.current = null;
-      // userStream.current.stop(x);
-      // userStream.current.stop(y);
-      // var video = document.querySelector('video');
-      // video.src = window.URL.createObjectURL(userStream);
     }
-
     localVideo.current = null;
+    socket.emit('relay', { data: '', type: 'removeOtherVideo' });
   };
 
   const disconnectConnection = () => {
-    console.log('disconnectConnection');
+    socket.disconnect();
     dataChannel.current.close();
-    //stäng ned track
-    //FUNGERAR EJ = Cannot read property 'stop' of null
-    console.log(userStream.current);
-    console.log(localVideo.current);
-    console.log(remoteVideo.current);
-    // userStream.current.stop();
-    // localVideo.current.stop();
-    // remoteVideo.current.stop();
-
-    //ta bort användandet av webcam??
     peerRef.current.close();
     localVideo.current = null;
     remoteVideo.current = null;
@@ -173,15 +130,12 @@ const Connection = ({
   };
 
   const handleDataChannelEvent = e => {
-    console.log('handleDataChannelEvent');
     dataChannel.current = e.channel;
     dataChannel.current.onopen = e => {
-      console.log('WebRTC DC: open.');
       setConnectionEstablished();
     };
     dataChannel.current.onmessage = e => {
       const newMessage = e.data.toString();
-      console.log('WebRTC DC: message received');
       messageReceived({
         message: newMessage,
         client: false,
@@ -189,42 +143,34 @@ const Connection = ({
       });
     };
     dataChannel.current.onclose = e => {
-      console.log('WebRTC DC: closed');
       setConnectionEnded();
     };
   };
 
   const handleTrackEvent = async e => {
-    console.log('handleTrackEvent');
-    //När motpart lämnade = Cannot set propert srcObject of null.if not null?
     if (remoteVideo.current !== null && remoteVideo.current !== undefined) {
-      console.log(e.streams);
       remoteVideo.current.srcObject = e.streams[0];
-    } else {
-      console.log('ELSE!!');
-      console.log('Could not find remoteVideo');
     }
   };
 
   const handleRemoveTrackEvent = async e => {
-    console.log('handleRemoveTrackEvent');
     remoteVideo.current.srcObject = null;
-    console.log(peerRef.current);
+    handleOtherVideo(false);
   };
 
   useLayoutEffect(() => {
     socket = io();
-    console.log(socket);
     setSocket(socket);
     socket.emit('ready');
 
     socket.on('matchUpdate', payload => {
-      console.log(payload);
       setFriendData(payload.peer);
+      if (payload.msg === '[socket] partner disconnected') {
+        friendDisconnected();
+      }
     });
 
     socket.on('makeOffer', async () => {
-      console.log('User is making an offer');
       peerRef.current = await createPeer(
         handleICECandidateEvent,
         handleDataChannelEvent,
@@ -236,7 +182,6 @@ const Connection = ({
     });
 
     socket.on('awaitOffer', async () => {
-      console.log('User waiting for offer');
       peerRef.current = await createPeer(
         handleICECandidateEvent,
         handleDataChannelEvent,
@@ -254,6 +199,8 @@ const Connection = ({
           return handleAnswer(data, method);
         case 'candidate':
           return handleCandidate(data);
+        case 'removeOtherVideo':
+          return handleRemoveTrackEvent();
         default:
           return 'error';
       }
@@ -262,20 +209,15 @@ const Connection = ({
 
   useEffect(() => {
     if (isVideo) {
-      console.log('video tajm');
       const videoCall = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
         });
-        //När motpart lämnade = Cannot set propert srcObject of null.if not null?
         if (localVideo.current !== null && localVideo.current !== undefined) {
           localVideo.current.srcObject = stream;
-        } else {
-          console.log('ELSE!!');
-          console.log('Could not find localVideo');
         }
-        if (isInitiator.current === true) {
+        if (userStream.current === null || userStream.current === undefined) {
           userStream.current = stream;
           userStream.current
             .getTracks()
@@ -293,8 +235,7 @@ const Connection = ({
 
   if (!communicationAccepted) return <ConnectionLobby socket={socket} />;
 
-  if (!isVideo && !isOtherVideo) {
-    console.log('!isVideo && !isOtherVideo');
+  if (!isVideo && !isOtherVideo)
     return (
       <div className="connection">
         <Sidebar />
@@ -313,10 +254,8 @@ const Connection = ({
         />
       </div>
     );
-  }
 
-  if (!isVideo && isOtherVideo) {
-    console.log('!isVideo && isOtherVideo');
+  if (!isVideo && isOtherVideo)
     return (
       <div className="connection">
         <Sidebar />
@@ -339,9 +278,8 @@ const Connection = ({
         />
       </div>
     );
-  }
-  if (isVideo && !isOtherVideo) {
-    console.log('isVideo && !isOtherVideo');
+
+  if (isVideo && !isOtherVideo)
     return (
       <div className="connection">
         <Sidebar />
@@ -361,11 +299,11 @@ const Connection = ({
         </div>
         <Helpbar
           sendMessage={sendMessage}
+          removeSharingVideo={removeSharingVideo}
           disconnectConnection={disconnectConnection}
         />
       </div>
     );
-  }
 
   return (
     <div className="connection">
@@ -414,4 +352,5 @@ export default connect(mapStateToProps, {
   handleOtherVideo,
   setFriendData,
   setSocket,
+  friendDisconnected,
 })(Connection);

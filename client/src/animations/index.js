@@ -44,12 +44,7 @@ export const suggestionVariant = {
     opacity: [0, 1, 1, 1, 1, 0],
     y: 0,
     transition: {
-      // times: [0, 0.2, 1],
-      // ease: 'easeInOut',
-      // type:
       duration: 14,
-      // when: 'beforeChildren',
-      // staggerChildren: 0.2,
     },
   }),
 };

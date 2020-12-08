@@ -15,18 +15,22 @@
   text-align: center;
   outline: none;
 }
+.react-datepicker__day,
+.react-datepicker__day-name,
 .react-datepicker__time-list-item {
-  color: var(--color__black);
+  font-family: 'Ubuntu', sans-serif;
+  color: var(--color2);
+}
+.react-datepicker__day--selected {
+  background: var(--color2);
+  color: var(--color1);
+  outline: none;
 }
 
 .scheduler__sub-title {
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-size: 1.5rem;
-}
-
-.scheduled__sessions {
-  /* display:grid; */
 }
 
 .scheduled__session {

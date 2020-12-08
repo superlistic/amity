@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import FacebookLoginWithButton from 'react-facebook-login';
-import GoogleLogin from 'react-google-login';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
 import { Redirect } from 'react-router-dom';
@@ -34,18 +32,6 @@ const Register = ({ register, isAuthenticated }) => {
       register({ username, email, password });
     }
     setRegisterData(initState);
-  };
-
-  const responseFacebook = response => {
-    console.log(response);
-  };
-
-  const componentClicked = () => {
-    console.log('Clicked!');
-  };
-
-  const responseGoogle = response => {
-    console.log(response);
   };
 
   if (isAuthenticated) return <Redirect to="/connection" />;
@@ -105,25 +91,6 @@ const Register = ({ register, isAuthenticated }) => {
           <AccentButton className="register__button" onClick={onRegister}>
             Register
           </AccentButton>
-          <p className="register__intro">Or connect directly below.</p>
-          <div className="register__alternative-methods">
-            {/* <GoogleLogin
-              className="register__google"
-              clientId={process.env.REACT_APP_.GOOGLE}
-              buttonText="Login with Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              theme="dark"
-            />
-            <FacebookLoginWithButton
-              size="small"
-              appId={process.env.REACT_APP_.FACEBOOK}
-              fields="name,email,picture"
-              onClick={componentClicked}
-              callback={responseFacebook}
-              icon="fa-facebook"
-            /> */}
-          </div>
         </form>
       </motion.div>
     </div>

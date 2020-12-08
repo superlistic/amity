@@ -18,8 +18,8 @@ const Banner = () => {
       </motion.p>
       <div className="banner__container">
         <p className="banner__intro">
-          We are putting the <span className="banner__secondary">social</span>{' '}
-          back into your worklife.
+          We are putting <span className="banner__secondary">social</span> back
+          into your worklife.
         </p>
       </div>
       <motion.section
@@ -42,11 +42,8 @@ const Banner = () => {
         animate="animate"
       >
         <p className="banner__text">
-          We are social beings living in a digital era, why should working
-          remotely stop us from beeing social with our colleges? It should not!
-        </p>
-        <p>
-          Amity is here to give the remote workplace the social spark it needs.
+          We are social beings living in a digital era, should working remotely
+          stop us from beeing social with our colleauges? It should not!
         </p>
       </motion.div>
     </div>
@@ -54,9 +51,3 @@ const Banner = () => {
 };
 
 export default Banner;
-
-// <p className="banner__text">
-// Meet with your friends and family over the internet or find new friends via our 'matcher'. You can chat by text, audio or video, discuss interesting topics, solve puzzles or play games together.
-// </p>
-
-// <p className="banner__intro">This is where digital meets occur.</p>;

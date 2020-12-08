@@ -31,7 +31,6 @@ export default function auth(state = initState, action) {
         isAuthenticated: false,
         loading: false,
         user: null,
-        // errorMessage: '',
       };
     case LOGOUT_SUCCESS:
       return {

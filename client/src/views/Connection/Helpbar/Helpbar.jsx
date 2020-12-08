@@ -6,8 +6,6 @@ import FriendProfile from './FriendProfile/FriendProfile';
 import Suggestions from './Suggestions/Suggestions';
 import Controller from './Controller/Controller';
 
-//action on load for fetching suggestions.
-
 const Helpbar = ({
   sendMessage,
   disconnectConnection,

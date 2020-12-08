@@ -27,16 +27,20 @@
   align-self: center;
   text-decoration: none;
   z-index: 2;
+  width: 135px;
 }
-.navbar__settings {
+.navbar__icon-container {
   text-decoration: none;
   z-index: 2;
 }
-.navbar__settings__span {
+.navbar__icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
   margin-top: 0.3rem;
   color: white;
+}
+.navbar__icon:hover {
+  text-shadow: 0px 0.5px 1px var(--color4);
 }
 .navbar__link,
 .navbar__link--auth {
@@ -44,24 +48,13 @@
   justify-self: center;
   align-self: center;
   text-decoration: none;
-  z-index: 2;
   cursor: pointer;
 }
 .navbar__link--auth {
   margin: 0 0.5rem;
 }
 
-.navbar__register {
-  z-index: 2;
-  outline: none;
-  border: 2px solid var(--color4);
-  color: var(--color4);
-  width: 6rem;
-  height: 2rem;
-  margin-left: 1rem;
-  border-radius: 5px;
-  background: transparent;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+.navbar__link:hover,
+.navbar__link--auth:hover {
+  text-shadow: 0px 0.5px 1px var(--color4);
 }

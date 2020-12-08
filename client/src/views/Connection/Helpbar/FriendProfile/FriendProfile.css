@@ -4,7 +4,6 @@
   user-select: none;
 }
 .friend-profile__avatar {
-  /* font-size: 9rem; */
   color: var(--color2);
   cursor: pointer;
   height: 11rem;

@@ -3,13 +3,8 @@ import {
   CONNECTION_ENDED,
   RECEIVED_MESSAGE,
   SENT_MESSAGE,
-  ENABLE_VIDEO,
   DISABLE_VIDEO,
   TOGGLE_VIDEO,
-  ENABLE_AUDIO,
-  DISABLE_AUDIO,
-  ENABLE_SOUND,
-  DISABLE_SOUND,
   SET_SUGGESTION,
   CLICKED_SUGGESTION,
   ACCEPT_COMMUNICATION,
@@ -17,6 +12,8 @@ import {
   OTHER_VIDEO,
   FRIEND_DATA,
   SET_SOCKET,
+  SEARCH_STATE,
+  FRIEND_DISCONNECTED,
 } from './types';
 
 //Connection
@@ -25,33 +22,50 @@ export const setConnectionEstablished = () => dispatch => {
     type: CONNECTION_ESTABLISHED,
   });
 };
+
 export const setConnectionEnded = () => dispatch => {
   //Send socket message to BE that connection is ended? For new matches and so forth :)
   dispatch({
     type: CONNECTION_ENDED,
   });
 };
+
 export const acceptConnection = () => dispatch => {
   dispatch({
     type: ACCEPT_COMMUNICATION,
   });
 };
-//Send socket message to BE that connection is denied? For new matches and so forth :)
+
 export const denyConnection = () => dispatch => {
   dispatch({
     type: DENY_COMMUNICATION,
   });
 };
+
 export const setSocket = payload => dispatch => {
   dispatch({
     type: SET_SOCKET,
     payload,
   });
 };
+
 export const setFriendData = payload => dispatch => {
   dispatch({
     type: FRIEND_DATA,
     payload,
+  });
+};
+
+export const searchState = payload => dispatch => {
+  dispatch({
+    type: SEARCH_STATE,
+    payload,
+  });
+};
+
+export const friendDisconnected = () => dispatch => {
+  dispatch({
+    type: FRIEND_DISCONNECTED,
   });
 };
 
@@ -77,6 +91,7 @@ export const setSuggestion = payload => dispatch => {
     payload,
   });
 };
+
 export const clickedSuggestion = () => dispatch => {
   dispatch({
     type: CLICKED_SUGGESTION,
@@ -90,11 +105,13 @@ export const toggleVideo = payload => dispatch => {
     payload,
   });
 };
+
 export const disableVideo = payload => dispatch => {
   dispatch({
     type: DISABLE_VIDEO,
   });
 };
+
 export const handleOtherVideo = payload => dispatch => {
   dispatch({
     type: OTHER_VIDEO,

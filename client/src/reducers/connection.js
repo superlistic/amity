@@ -4,10 +4,6 @@ import {
   RECEIVED_MESSAGE,
   SENT_MESSAGE,
   TOGGLE_VIDEO,
-  ENABLE_AUDIO,
-  DISABLE_AUDIO,
-  ENABLE_SOUND,
-  DISABLE_SOUND,
   SET_SUGGESTION,
   CLICKED_SUGGESTION,
   ACCEPT_COMMUNICATION,
@@ -15,6 +11,8 @@ import {
   OTHER_VIDEO,
   FRIEND_DATA,
   SET_SOCKET,
+  SEARCH_STATE,
+  FRIEND_DISCONNECTED,
 } from '../actions/types';
 
 const initState = {
@@ -26,6 +24,7 @@ const initState = {
   isOtherVideo: false,
   friendData: {},
   stateSocket: {},
+  isSearching: false,
 };
 
 export default function connection(state = initState, action) {
@@ -36,6 +35,7 @@ export default function connection(state = initState, action) {
       return {
         ...state,
         isConnected: true,
+        isSearching: false,
       };
     case DENY_COMMUNICATION:
     case CONNECTION_ENDED:
@@ -47,6 +47,7 @@ export default function connection(state = initState, action) {
         messages: [],
         friendData: {},
         stateSocket: {},
+        isSearching: false,
       };
     case ACCEPT_COMMUNICATION:
       return {
@@ -62,6 +63,15 @@ export default function connection(state = initState, action) {
       return {
         ...state,
         friendData: payload,
+      };
+    case SEARCH_STATE:
+      return {
+        ...state,
+        isSearching: payload,
+      };
+    case FRIEND_DISCONNECTED:
+      return {
+        initState,
       };
 
     //Messages
