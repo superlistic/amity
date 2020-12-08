@@ -19,9 +19,17 @@
     <br />
     <br />
     <input type="button" value="emit 'ready'" onClick="connect()" />
+    <input type="button" value="emit 'instaConnect'" onClick="instaConnect()" />
     <input type="button" value="socket relay" onClick="relay()" />
     <input type="button" value="disconnect socket" onClick="disconnect()" />
     <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
+    <br />
+    <input type="button" value="emit 'ready'" onClick="connect()" />
+    <input type="button" value="emit 'instaConnect'" onClick="instaConnect()" />
+    <input type="button" value="socket relay" onClick="relay()" />
+    <input type="button" value="disconnect socket" onClick="disconnect()" />
+    <input type="button" value="rtc-send" onClick="sendOnDataChannel()" />
+
     <ul id="events"></ul>
     <div class="stats-box"></div>
 
@@ -55,22 +63,24 @@
           {
             urls: ['stun:stun.l.google.com:19302'],
           },
-          // {
-          //   urls: 'turn:127.0.0.1:3478',
-          //   credential: '',
-          //   username: '',
-          // },
         ],
       };
       // SOCKET METHODS
       const relay = () => {
         const msg = document.querySelector('#username').value;
-        socket.emit('relay', { type: '-TEST-', msg: msg });
+        socket.emit('relay', { type: '-TEST-', data: msg });
         logVerbose('relay:', msg);
       };
       const connect = () => {
         socket.emit('ready', { type: 'ready', data: null });
-        logVerbose('ready emitted:');
+        log('ready emitted:');
+      };
+      const instaConnect = () => {
+        socket.emit('instantConnection', {
+          type: 'instantConnection',
+          data: null,
+        });
+        log('instaConnect');
       };
 
       const disconnect = () => {
@@ -108,12 +118,12 @@
         logVerbose('webRTC-send: ', msg);
       };
 
-      const attatchDataChannelHandlers = (dc, id) => {
-        dc.onmessage = e => logVerbose(id + ' webRTC-recieved: ', e.data);
-        dc.onopen = e => log(id + ' connection opened', e);
-        dc.onclose = e => log(id + ' connection closed', e);
-        dc.onclosíng = e => log(id + ' connection closing', e);
-        dc.onerror = e => log(id + ' connection error', e);
+      const attatchDataChannelHandlers = dc => {
+        dc.onmessage = e => logVerbose(' webRTC-recieved: ', e.data);
+        dc.onopen = e => log('connection opened', e);
+        dc.onclose = e => log('connection closed', e);
+        dc.onclosíng = e => log('connection closing', e);
+        dc.onerror = e => log('connection error', e);
       };
 
       const createDataChannel = () => {
@@ -184,7 +194,7 @@
 
       // relay
       socket.on('relay', payload => {
-        logVerbose('RELAY: ' + payload.type, payload.data);
+        logVerbose('RELAY: ', payload.data);
         switch (payload.type) {
           case 'offer':
             log('offer: RECIEVED', payload);
