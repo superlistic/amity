@@ -27,17 +27,7 @@ This project was the graduation project of Johan Strand and Viktor Norman, from 
 - Styled Components
 
 ## Getting started with using the app
-Clone the project, run our start script by writing..
-
-### Login via two Test accounts 
-User 1:
-- email:
-- password: password
-
-
-User 2:
-- email:
-- password: password
+This app will be hosted in a near future.
 
 ## Future improvements
 - Admin tool
