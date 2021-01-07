@@ -126,7 +126,13 @@ const websocketListener = (server, meetings, users) => {
 
     socket.on('disconnect', reason => {
       meetings.remove(socket.id);
-      io.to(meetings.match(socket.userId)).emit('matchUpdate', {
+      console.log('meetings.users');
+      console.log(meetings.users);
+      console.log('socket.userId');
+      console.log(socket.userId);
+      console.log(meetings.match(socket.userId));
+      const peerId = meetings.match(socket.userId);
+      io.to(meetings.socketId(peerId)).emit('friendDisconnected', {
         msg: '[socket] partner disconnected',
       });
 

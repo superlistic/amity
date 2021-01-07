@@ -5,6 +5,7 @@ import {
   AUTH_USER,
   AUTH_CHECK,
   AUTH_ERROR,
+  SET_SOCKET,
 } from '../actions/types';
 
 const initState = {
@@ -23,6 +24,7 @@ export default function auth(state = initState, action) {
         isAuthenticated: true,
         loading: false,
         user: payload.data.user,
+        stateSocket: {},
       };
 
     case LOGIN_ERROR:
@@ -58,6 +60,11 @@ export default function auth(state = initState, action) {
         ...state,
         loading: false,
         user: null,
+      };
+    case SET_SOCKET:
+      return {
+        ...state,
+        stateSocket: payload,
       };
 
     default:

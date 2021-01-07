@@ -8,6 +8,7 @@ import {
   AUTH_ERROR,
   AUTH_CHECK,
   CONNECTION_ENDED,
+  SET_SOCKET,
 } from './types';
 const axios = require('axios');
 
@@ -86,4 +87,11 @@ export const checkAuth = () => async dispatch => {
       type: AUTH_ERROR,
     });
   }
+};
+
+export const setSocket = payload => dispatch => {
+  dispatch({
+    type: SET_SOCKET,
+    payload,
+  });
 };

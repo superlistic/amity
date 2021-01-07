@@ -135,17 +135,39 @@ class MeetingHandler {
     }
   }
   remove(uid) {
+    // console.log(meetings);
+    console.log('Remove');
+    console.log(uid);
+    console.log(this.Users);
+    console.log(this.meetings);
+    // console.log(this.Users[uid]);
     for (const id in this.Users) {
-      if (this.Users[uid]) {
-        delete this.Users[id];
+      console.log('id');
+      console.log(id);
+      if (users[uid]) {
+        delete users[id];
         log.debug('user deleted', id);
       } else {
         log.err('no such user', id);
       }
     }
+    // for (const id in this.Users) {
+    //   console.log('id');
+    //   console.log(id);
+    //   if (this.Users[uid]) {
+    //     delete this.Users[id];
+    //     log.debug('user deleted', id);
+    //   } else {
+    //     log.err('no such user', id);
+    //   }
+    // }
   }
 
   socketId(uid) {
+    console.log('----------socketId---------------------');
+    console.log(this.meetings);
+    console.log('this.users');
+    console.log(this.users);
     if (this.users[uid]) {
       return this.users[uid].socket.id;
     } else {

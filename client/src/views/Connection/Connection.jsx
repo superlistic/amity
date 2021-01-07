@@ -8,6 +8,8 @@ import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
 import Helpbar from './Helpbar/Helpbar';
 import { createPeer } from '../../WebRTC/WebRTC';
+
+import { setSocket } from '../../actions/auth';
 import {
   messageReceived,
   messageSent,
@@ -15,7 +17,6 @@ import {
   setConnectionEstablished,
   handleOtherVideo,
   setFriendData,
-  setSocket,
   friendDisconnected,
 } from '../../actions/connection';
 let socket;
@@ -114,7 +115,8 @@ const Connection = ({
   };
 
   const disconnectConnection = () => {
-    socket.disconnect();
+    console.log(socket);
+    // socket.disconnect();
     dataChannel.current.close();
     peerRef.current.close();
     localVideo.current = null;
@@ -122,6 +124,8 @@ const Connection = ({
     userStream.current = null;
     dataChannel.current = null;
     peerRef.current = null;
+    socket.disconnect();
+    //Skicka disconnect till socket?
   };
 
   const sendMessage = message => {
@@ -161,11 +165,26 @@ const Connection = ({
   useLayoutEffect(() => {
     socket = io();
     setSocket(socket);
+    console.log('socket created');
+    console.log(socket);
     socket.emit('ready');
 
+    // socket.on('matchUpdate', payload => {
+    //   setFriendData(payload.peer);
+    //   console.log(payload);
+    //   if (payload.msg === '[socket] partner disconnected') {
+    //     console.log('Friend disconnected, check state');
+    //     friendDisconnected();
+    //   }
+    // });
     socket.on('matchUpdate', payload => {
       setFriendData(payload.peer);
+    });
+
+    socket.on('friendDisconnected', payload => {
+      console.log(payload);
       if (payload.msg === '[socket] partner disconnected') {
+        console.log('Friend disconnected, check state');
         friendDisconnected();
       }
     });
@@ -217,6 +236,9 @@ const Connection = ({
         if (localVideo.current !== null && localVideo.current !== undefined) {
           localVideo.current.srcObject = stream;
         }
+        console.log(
+          userStream.current === null || userStream.current === undefined
+        );
         if (userStream.current === null || userStream.current === undefined) {
           userStream.current = stream;
           userStream.current
