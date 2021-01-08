@@ -38,15 +38,7 @@ export default function connection(state = initState, action) {
     case DENY_COMMUNICATION:
     case CONNECTION_ENDED:
       return {
-        ...state,
-        isConnected: false,
-        communicationAccepted: false,
-        messages: [],
-        isVideo: false,
-        currentSuggestion: [],
-        isOtherVideo: false,
-        friendData: {},
-        isSearching: false,
+        ...initState,
       };
     case ACCEPT_COMMUNICATION:
       return {
@@ -66,15 +58,7 @@ export default function connection(state = initState, action) {
     case FRIEND_DISCONNECTED:
       console.log('FRIEND_DISCONNECTED');
       return {
-        ...state,
-        isConnected: false,
-        communicationAccepted: false,
-        messages: [],
-        isVideo: false,
-        currentSuggestion: [],
-        isOtherVideo: false,
-        friendData: {},
-        isSearching: false,
+        ...initState,
       };
 
     //Messages

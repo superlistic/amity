@@ -98,32 +98,39 @@ const Connection = ({
   };
 
   const removeSharingVideo = () => {
+    localVideo.current = null;
+    if (userStream.current === null || userStream.current === undefined) return;
+    if (peerRef.current === null || peerRef.current === undefined) return;
+
     const videoTrack = userStream.current.getVideoTracks()[0];
-    const audioTrack = userStream.current.getAudioTracks()[0];
+    // const audioTrack = userStream.current.getAudioTracks()[0];
+    if (!videoTrack) return;
+
     const y = peerRef.current.getSenders()[0];
     const x = peerRef.current.getSenders()[1];
-
-    if (videoTrack) {
-      userStream.current.removeTrack(videoTrack);
-      userStream.current.removeTrack(audioTrack);
+    if (y && x) {
       peerRef.current.removeTrack(y);
       peerRef.current.removeTrack(x);
-      userStream.current = null;
     }
-    localVideo.current = null;
+    userStream.current.getTracks().forEach(function (track) {
+      track.stop();
+    });
+    // userStream.current.removeTrack(videoTrack);
+    // userStream.current.removeTrack(audioTrack);
+    userStream.current = null;
     socket.emit('relay', { data: '', type: 'removeOtherVideo' });
   };
 
-  const disconnectConnection = () => {
-    console.log(socket);
-    // socket.disconnect();
-    dataChannel.current.close();
+  const disconnectConnection = async () => {
+    console.log('Disconnecting!');
+    await removeSharingVideo();
+    if (dataChannel.current) dataChannel.current.close();
     peerRef.current.close();
-    localVideo.current = null;
     remoteVideo.current = null;
-    userStream.current = null;
+    // userStream.current = null;
     dataChannel.current = null;
     peerRef.current = null;
+    // socket.close();
     socket.disconnect();
     //Skicka disconnect till socket?
   };
@@ -158,6 +165,7 @@ const Connection = ({
   };
 
   const handleRemoveTrackEvent = async e => {
+    if (!remoteVideo.current) return;
     remoteVideo.current.srcObject = null;
     handleOtherVideo(false);
   };
@@ -185,6 +193,7 @@ const Connection = ({
       console.log(payload);
       if (payload.msg === '[socket] partner disconnected') {
         console.log('Friend disconnected, check state');
+        disconnectConnection();
         friendDisconnected();
       }
     });
@@ -224,6 +233,7 @@ const Connection = ({
           return 'error';
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -236,10 +246,14 @@ const Connection = ({
         if (localVideo.current !== null && localVideo.current !== undefined) {
           localVideo.current.srcObject = stream;
         }
-        console.log(
-          userStream.current === null || userStream.current === undefined
-        );
-        if (userStream.current === null || userStream.current === undefined) {
+        if (peerRef.current === undefined) {
+          console.log('UNDEFINED egen video,create new?');
+        } else if (
+          userStream.current === null ||
+          userStream.current === undefined
+        ) {
+          console.log(peerRef.current);
+          console.log(stream);
           userStream.current = stream;
           userStream.current
             .getTracks()
