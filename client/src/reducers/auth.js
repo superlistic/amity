@@ -13,6 +13,7 @@ const initState = {
   loading: true,
   user: null,
   errorMessage: '',
+  stateSocket: {},
 };
 
 export default function auth(state = initState, action) {
@@ -33,6 +34,7 @@ export default function auth(state = initState, action) {
         isAuthenticated: false,
         loading: false,
         user: null,
+        stateSocket: {},
       };
     case LOGOUT_SUCCESS:
       return {
@@ -40,6 +42,7 @@ export default function auth(state = initState, action) {
         isAuthenticated: false,
         loading: false,
         user: null,
+        stateSocket: {},
       };
     case AUTH_USER:
       return {

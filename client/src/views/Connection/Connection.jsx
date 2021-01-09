@@ -173,18 +173,8 @@ const Connection = ({
   useLayoutEffect(() => {
     socket = io();
     setSocket(socket);
-    console.log('socket created');
-    console.log(socket);
     socket.emit('ready');
 
-    // socket.on('matchUpdate', payload => {
-    //   setFriendData(payload.peer);
-    //   console.log(payload);
-    //   if (payload.msg === '[socket] partner disconnected') {
-    //     console.log('Friend disconnected, check state');
-    //     friendDisconnected();
-    //   }
-    // });
     socket.on('matchUpdate', payload => {
       setFriendData(payload.peer);
     });
