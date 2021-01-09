@@ -12,12 +12,12 @@ const logoutRouter = (meetings, io) => {
 
     const socketId = meetings.socketId(req.token.userId);
     meetings.remove(socketId);
-    const peerId = meetings.match(socket.userId);
+    const peerId = meetings.match(req.token.userId);
     io.to(meetings.socketId(peerId)).emit('friendDisconnected', {
       msg: '[socket] partner disconnected',
     });
 
-    log.info('disconnected', socket.id), log.mute(reason);
+    log.info('disconnected', socketId), log.mute(reason);
   };
 
   router.get('/', logout);
