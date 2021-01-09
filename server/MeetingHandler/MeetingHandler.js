@@ -88,6 +88,7 @@ class MeetingHandler {
   }
 
   instantMeeting(uid) {
+    // TODO:  enable instaque for more than one user?
     log.info('instantMeeting for', uid);
     if (this.instaQue && this.instaQue !== uid) {
       const uid2 = this.instaQue;
@@ -135,12 +136,12 @@ class MeetingHandler {
     }
   }
   remove(uid) {
-    for (const id in this.Users) {
-      if (this.Users[uid]) {
-        delete this.Users[id];
-        log.debug('user deleted', id);
+    for (const id in this.users) {
+      if (this.users[uid]) {
+        delete this.users[id];
+        log.debug('remove: user deleted', id);
       } else {
-        log.err('no such user', id);
+        log.err('remove: no such user', id);
       }
     }
   }

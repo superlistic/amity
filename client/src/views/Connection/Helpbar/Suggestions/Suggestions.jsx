@@ -5,7 +5,13 @@ import './Suggestions.css';
 import Suggestion from './Suggestion';
 import { setSuggestion } from '../../../../actions/connection';
 
-const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
+const Suggestions = ({
+  sendMessage,
+  setSuggestion,
+  currentSuggestion,
+  isSearching,
+  isConnected,
+}) => {
   const listOfSuggestions = [
     {
       id: 1,
@@ -60,18 +66,23 @@ const Suggestions = ({ sendMessage, setSuggestion, currentSuggestion }) => {
     ));
   };
 
-  return (
-    <div className="suggestions">
-      <hr className="suggestions__divider" />
-      <p className="suggestions__title">
-        Click on a suggestion to send it in chat.
-      </p>
-      {currentSuggestion.length !== 0 ? getSuggestion(currentSuggestion) : ''}
-    </div>
-  );
+  if (!isSearching && isConnected)
+    return (
+      <div className="suggestions">
+        <hr className="suggestions__divider" />
+        <p className="suggestions__title">
+          Click on a suggestion to send it in chat.
+        </p>
+        {currentSuggestion && currentSuggestion.length !== 0
+          ? getSuggestion(currentSuggestion)
+          : ''}
+      </div>
+    );
 };
 const mapStateToProps = state => ({
+  isConnected: state.connection.isConnected,
   currentSuggestion: state.connection.currentSuggestion,
+  isSearching: state.connection.isSearching,
 });
 
 export default connect(mapStateToProps, { setSuggestion })(Suggestions);

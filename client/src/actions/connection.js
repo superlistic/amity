@@ -11,7 +11,6 @@ import {
   DENY_COMMUNICATION,
   OTHER_VIDEO,
   FRIEND_DATA,
-  SET_SOCKET,
   SEARCH_STATE,
   FRIEND_DISCONNECTED,
 } from './types';
@@ -24,7 +23,6 @@ export const setConnectionEstablished = () => dispatch => {
 };
 
 export const setConnectionEnded = () => dispatch => {
-  //Send socket message to BE that connection is ended? For new matches and so forth :)
   dispatch({
     type: CONNECTION_ENDED,
   });
@@ -39,13 +37,6 @@ export const acceptConnection = () => dispatch => {
 export const denyConnection = () => dispatch => {
   dispatch({
     type: DENY_COMMUNICATION,
-  });
-};
-
-export const setSocket = payload => dispatch => {
-  dispatch({
-    type: SET_SOCKET,
-    payload,
   });
 };
 

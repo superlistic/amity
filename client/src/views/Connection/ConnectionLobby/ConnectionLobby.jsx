@@ -122,10 +122,10 @@ const ConnectionLobby = ({
   );
 };
 const mapStateToProps = state => ({
-  isConnected: state.connection.isConnected,
   user: state.auth.user,
   loading: state.auth.loading,
-  stateSocket: state.connection.stateSocket,
+  stateSocket: state.auth.stateSocket,
+  isConnected: state.connection.isConnected,
   friendData: state.connection.friendData,
   isSearching: state.connection.isSearching,
 });

@@ -6,7 +6,12 @@ import './Navbar.css';
 import { logOut } from '../../actions/auth';
 import { ThinAccentOutlinedButton } from '../../components/button';
 
-const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
+const Navbar = ({ isAuthenticated, logOut, user, loading, stateSocket }) => {
+  const onLogOut = () => {
+    if (stateSocket) stateSocket.disconnect();
+    logOut();
+  };
+
   const NAV_LINKS = {
     true: (
       <div className="navbar__container--authenticated">
@@ -34,7 +39,7 @@ const Navbar = ({ isAuthenticated, logOut, user, loading }) => {
           <NavLink to="/settings" className="navbar__icon-container">
             <span className="material-icons navbar__icon">settings</span>
           </NavLink>
-          <NavLink to="/" className="navbar__link--auth" onClick={logOut}>
+          <NavLink to="/" className="navbar__link--auth" onClick={onLogOut}>
             Logout
           </NavLink>
         </div>
@@ -73,6 +78,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
   user: state.auth.user,
+  stateSocket: state.auth.stateSocket,
 });
 
 export default connect(mapStateToProps, { logOut })(Navbar);

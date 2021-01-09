@@ -115,7 +115,7 @@ const websocketListener = (server, meetings, users) => {
         io.to(meetings.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
-        log.info('onReady: awaitOffer to', match);
+        log.info('onReady: awaitOffer to', socket.userId);
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
@@ -126,7 +126,13 @@ const websocketListener = (server, meetings, users) => {
 
     socket.on('disconnect', reason => {
       meetings.remove(socket.id);
-      io.to(meetings.match(socket.userId)).emit('matchUpdate', {
+      console.log('meetings.users');
+      console.log(meetings.users);
+      console.log('socket.userId');
+      console.log(socket.userId);
+      console.log(meetings.match(socket.userId));
+      const peerId = meetings.match(socket.userId);
+      io.to(meetings.socketId(peerId)).emit('friendDisconnected', {
         msg: '[socket] partner disconnected',
       });
 

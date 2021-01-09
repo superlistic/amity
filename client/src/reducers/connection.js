@@ -10,7 +10,6 @@ import {
   DENY_COMMUNICATION,
   OTHER_VIDEO,
   FRIEND_DATA,
-  SET_SOCKET,
   SEARCH_STATE,
   FRIEND_DISCONNECTED,
 } from '../actions/types';
@@ -23,7 +22,6 @@ const initState = {
   currentSuggestion: [],
   isOtherVideo: false,
   friendData: {},
-  stateSocket: {},
   isSearching: false,
 };
 
@@ -40,24 +38,12 @@ export default function connection(state = initState, action) {
     case DENY_COMMUNICATION:
     case CONNECTION_ENDED:
       return {
-        ...state,
-        isConnected: false,
-        communicationAccepted: false,
-        isOtherVideo: false,
-        messages: [],
-        friendData: {},
-        stateSocket: {},
-        isSearching: false,
+        ...initState,
       };
     case ACCEPT_COMMUNICATION:
       return {
         ...state,
         communicationAccepted: true,
-      };
-    case SET_SOCKET:
-      return {
-        ...state,
-        stateSocket: payload,
       };
     case FRIEND_DATA:
       return {
@@ -71,7 +57,7 @@ export default function connection(state = initState, action) {
       };
     case FRIEND_DISCONNECTED:
       return {
-        initState,
+        ...initState,
       };
 
     //Messages

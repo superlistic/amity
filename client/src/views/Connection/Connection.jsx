@@ -8,6 +8,8 @@ import ConnectionLobby from './ConnectionLobby/ConnectionLobby';
 import Chat from './Chat/Chat';
 import Helpbar from './Helpbar/Helpbar';
 import { createPeer } from '../../WebRTC/WebRTC';
+
+import { setSocket } from '../../actions/auth';
 import {
   messageReceived,
   messageSent,
@@ -15,7 +17,6 @@ import {
   setConnectionEstablished,
   handleOtherVideo,
   setFriendData,
-  setSocket,
   friendDisconnected,
 } from '../../actions/connection';
 let socket;
@@ -97,31 +98,35 @@ const Connection = ({
   };
 
   const removeSharingVideo = () => {
+    localVideo.current = null;
+    if (userStream.current === null || userStream.current === undefined) return;
+    if (peerRef.current === null || peerRef.current === undefined) return;
+
     const videoTrack = userStream.current.getVideoTracks()[0];
-    const audioTrack = userStream.current.getAudioTracks()[0];
+    if (!videoTrack) return;
+
     const y = peerRef.current.getSenders()[0];
     const x = peerRef.current.getSenders()[1];
-
-    if (videoTrack) {
-      userStream.current.removeTrack(videoTrack);
-      userStream.current.removeTrack(audioTrack);
+    if (y && x) {
       peerRef.current.removeTrack(y);
       peerRef.current.removeTrack(x);
-      userStream.current = null;
     }
-    localVideo.current = null;
+    userStream.current.getTracks().forEach(function (track) {
+      track.stop();
+    });
+    userStream.current = null;
     socket.emit('relay', { data: '', type: 'removeOtherVideo' });
   };
 
-  const disconnectConnection = () => {
-    socket.disconnect();
-    dataChannel.current.close();
-    peerRef.current.close();
-    localVideo.current = null;
+  const disconnectConnection = async () => {
+    await removeSharingVideo();
+    if (dataChannel.current) dataChannel.current.close();
+    if (peerRef.current) {
+      peerRef.current.close();
+      peerRef.current = null;
+    }
     remoteVideo.current = null;
-    userStream.current = null;
     dataChannel.current = null;
-    peerRef.current = null;
   };
 
   const sendMessage = message => {
@@ -154,6 +159,7 @@ const Connection = ({
   };
 
   const handleRemoveTrackEvent = async e => {
+    if (!remoteVideo.current) return;
     remoteVideo.current.srcObject = null;
     handleOtherVideo(false);
   };
@@ -165,7 +171,11 @@ const Connection = ({
 
     socket.on('matchUpdate', payload => {
       setFriendData(payload.peer);
+    });
+
+    socket.on('friendDisconnected', payload => {
       if (payload.msg === '[socket] partner disconnected') {
+        disconnectConnection();
         friendDisconnected();
       }
     });
@@ -205,6 +215,7 @@ const Connection = ({
           return 'error';
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -217,7 +228,11 @@ const Connection = ({
         if (localVideo.current !== null && localVideo.current !== undefined) {
           localVideo.current.srcObject = stream;
         }
-        if (userStream.current === null || userStream.current === undefined) {
+        if (peerRef.current === undefined) {
+        } else if (
+          userStream.current === null ||
+          userStream.current === undefined
+        ) {
           userStream.current = stream;
           userStream.current
             .getTracks()
