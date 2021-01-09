@@ -71,13 +71,14 @@ const addStatic = app => {
 // INIT
 Promise.all([Log(), User()]).then(([logs, users]) => {
   // SOCKET.IO
-  websocketListener(server, meetings, users);
+  const io = require('socket.io')(server);
+  websocketListener(server, meetings, users, io);
 
   app.use(logger(logs));
   app.use('/api/logs', logRouter(logs));
   app.use('/api/login', loginRouter(users));
   app.use('/api/register', registerRouter(users));
   app.use('/api/meetings', meetingsRouter(meetings));
-  app.use('/api/logout', logoutRouter());
+  app.use('/api/logout', logoutRouter(meetings, io));
   addStatic(app);
 });

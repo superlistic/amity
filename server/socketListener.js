@@ -30,7 +30,6 @@ const getUser = (users, uid) => {
 
 const websocketListener = (server, meetings, users) => {
   log.ok('listening');
-  const io = require('socket.io')(server);
   io.on('connection', socket => {
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
     if (!token) {
