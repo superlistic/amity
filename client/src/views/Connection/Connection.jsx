@@ -103,7 +103,6 @@ const Connection = ({
     if (peerRef.current === null || peerRef.current === undefined) return;
 
     const videoTrack = userStream.current.getVideoTracks()[0];
-    // const audioTrack = userStream.current.getAudioTracks()[0];
     if (!videoTrack) return;
 
     const y = peerRef.current.getSenders()[0];
@@ -115,24 +114,19 @@ const Connection = ({
     userStream.current.getTracks().forEach(function (track) {
       track.stop();
     });
-    // userStream.current.removeTrack(videoTrack);
-    // userStream.current.removeTrack(audioTrack);
     userStream.current = null;
     socket.emit('relay', { data: '', type: 'removeOtherVideo' });
   };
 
   const disconnectConnection = async () => {
-    console.log('Disconnecting!');
     await removeSharingVideo();
     if (dataChannel.current) dataChannel.current.close();
-    peerRef.current.close();
+    if (peerRef.current) {
+      peerRef.current.close();
+      peerRef.current = null;
+    }
     remoteVideo.current = null;
-    // userStream.current = null;
     dataChannel.current = null;
-    peerRef.current = null;
-    // socket.close();
-    socket.disconnect();
-    //Skicka disconnect till socket?
   };
 
   const sendMessage = message => {
@@ -180,9 +174,7 @@ const Connection = ({
     });
 
     socket.on('friendDisconnected', payload => {
-      console.log(payload);
       if (payload.msg === '[socket] partner disconnected') {
-        console.log('Friend disconnected, check state');
         disconnectConnection();
         friendDisconnected();
       }
@@ -237,13 +229,10 @@ const Connection = ({
           localVideo.current.srcObject = stream;
         }
         if (peerRef.current === undefined) {
-          console.log('UNDEFINED egen video,create new?');
         } else if (
           userStream.current === null ||
           userStream.current === undefined
         ) {
-          console.log(peerRef.current);
-          console.log(stream);
           userStream.current = stream;
           userStream.current
             .getTracks()

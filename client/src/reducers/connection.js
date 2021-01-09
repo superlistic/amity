@@ -56,7 +56,6 @@ export default function connection(state = initState, action) {
         isSearching: payload,
       };
     case FRIEND_DISCONNECTED:
-      console.log('FRIEND_DISCONNECTED');
       return {
         ...initState,
       };

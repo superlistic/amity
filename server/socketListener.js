@@ -30,6 +30,7 @@ const getUser = (users, uid) => {
 
 const websocketListener = (server, meetings, users) => {
   log.ok('listening');
+  const io = require('socket.io')(server);
   io.on('connection', socket => {
     const token = verifyer(cookieParse(socket.handshake.headers.cookie));
     if (!token) {
@@ -114,7 +115,7 @@ const websocketListener = (server, meetings, users) => {
         io.to(meetings.socketId(match)).emit('makeOffer', {
           msg: '[socket] partner just connected',
         });
-        log.info('onReady: awaitOffer to', match);
+        log.info('onReady: awaitOffer to', socket.userId);
         socket.emit('awaitOffer', {
           msg: '[socket] partner asked to send offer',
         });
