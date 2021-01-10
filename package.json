@@ -1,0 +1,20 @@
+{
+  "name": "amity",
+  "version": "1.0.0",
+  "description": "Amity is a way of staying social in these isolated times. With Amity we want to make remote work more fun, exciting and socially rewarding. By utilizing WebRTC and sockets the users connect each other randomly through our matchmaking. Thereafter the two connected users have quick real time communication with both video and chat.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superlistic/amity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/superlistic/amity/issues"
+  },
+  "homepage": "https://github.com/superlistic/amity#readme"
+}

@@ -61,6 +61,7 @@ const addStatic = app => {
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, env.BUILD_PATH, '/index.html'));
   });
+
   // SERVER INIT
   server.listen(env.PORT, () => {
     elog.mute('Build path is: ' + env.BUILD_PATH);
